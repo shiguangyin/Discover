@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:id="@+id/item_home"
+        android:title="@string/item_home"
+        android:icon="@drawable/ic_home_black_24dp"/>
+
+    <item android:id="@+id/item_collections"
+        android:title="@string/item_collections"
+        android:icon="@drawable/ic_collections_black_24dp"/>
+
+    <item android:id="@+id/item_tags"
+        android:title="@string/item_tags"
+        android:icon="@drawable/ic_tag_24dp"/>
+
+    <item android:id="@+id/item_favorite"
+        android:title="@string/item_favorite"
+        android:icon="@drawable/ic_favorite_black_24dp"/>
+
+    <item android:id="@+id/item_download"
+        android:title="@string/item_download"
+        android:icon="@drawable/ic_file_download_black_24dp"/>
+
+    <item android:id="@+id/item_settings"
+        android:title="@string/item_settings"
+        android:icon="@drawable/ic_settings_black_24dp"/>
+
+    <item android:id="@+id/item_exit"
+        android:title="@string/item_exit"
+        android:icon="@drawable/ic_exit_to_app_black_24dp"/>
+
+</menu>

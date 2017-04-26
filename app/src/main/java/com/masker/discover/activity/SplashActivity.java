@@ -34,6 +34,7 @@ public class SplashActivity extends BaseActivity{
             @Override
             public void onAnimationEnd(Animation animation) {
                 invokeActivity(SplashActivity.this,HomeActivity.class);
+                finish();
             }
 
             @Override
