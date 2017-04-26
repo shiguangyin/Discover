@@ -1,6 +1,10 @@
 package com.masker.discover.model.http;
 
 
+import android.util.Log;
+
+import com.masker.discover.AppConstants;
+
 import java.io.IOException;
 
 import okhttp3.Interceptor;
@@ -12,8 +16,14 @@ import okhttp3.Response;
  */
 
 public class HeaderInterceptor implements Interceptor{
+
     @Override
     public Response intercept(Chain chain) throws IOException {
-       return null;
+        Request originRequest = chain.request();
+        String value = "Client-ID "+ AppConstants.APP_ID;
+        Request newRequest = originRequest.newBuilder()
+                .addHeader("Authorization",value)
+                .build();
+        return chain.proceed(newRequest);
     }
 }

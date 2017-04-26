@@ -51,7 +51,7 @@ public class HomeFragment extends BaseFragment implements HomeContract.View{
 
     @Override
     public void showPhotos(List<Photo> photos) {
-        Log.i(TAG, "showPhotos: "+photos.size());
+        
     }
 
     @Override
