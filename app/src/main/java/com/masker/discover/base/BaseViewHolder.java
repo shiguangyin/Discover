@@ -3,6 +3,7 @@ package com.masker.discover.base;
 import android.support.v4.util.SparseArrayCompat;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
+import android.widget.TextView;
 
 public class BaseViewHolder extends RecyclerView.ViewHolder{
 
@@ -16,6 +17,9 @@ public class BaseViewHolder extends RecyclerView.ViewHolder{
         views = new SparseArrayCompat<>();
     }
 
+    /*
+    * get view by resId
+     */
     public <T extends View> T getView(int resId){
         if(views.get(resId)!=null){
             return (T) views.get(resId);
@@ -25,4 +29,15 @@ public class BaseViewHolder extends RecyclerView.ViewHolder{
         return view;
     }
 
+    public View getItemView(){
+        return itemView;
+    }
+
+    /*
+    * set text for textview
+     */
+    public void setText(int resId,String text){
+        TextView tv = getView(resId);
+        tv.setText(text);
+    }
 }

@@ -24,7 +24,7 @@ public class SplashActivity extends BaseActivity{
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         AlphaAnimation animation = new AlphaAnimation(0.1f,1.0f);
-        animation.setDuration(3000);
+        animation.setDuration(2000);
         animation.setAnimationListener(new Animation.AnimationListener() {
             @Override
             public void onAnimationStart(Animation animation) {
