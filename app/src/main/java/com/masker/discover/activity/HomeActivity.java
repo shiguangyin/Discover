@@ -1,6 +1,8 @@
 package com.masker.discover.activity;
 
 import android.os.Bundle;
+import android.os.PersistableBundle;
+import android.support.annotation.Nullable;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -8,6 +10,7 @@ import android.support.v4.app.FragmentTransaction;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.widget.Toolbar;
+import android.view.Menu;
 
 import com.masker.discover.R;
 import com.masker.discover.base.BaseActivity;
@@ -88,4 +91,9 @@ public class HomeActivity extends BaseActivity {
         return null;
     }
 
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.menu_main,menu);
+        return true;
+    }
 }

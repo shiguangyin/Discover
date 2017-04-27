@@ -3,14 +3,10 @@ package com.masker.discover.adapter;
 import android.content.Context;
 import android.graphics.drawable.ColorDrawable;
 import android.support.v4.content.ContextCompat;
-import android.support.v4.print.PrintHelper;
-import android.util.Log;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.AbsListView;
+
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
-import android.widget.TextView;
+
 
 import com.bumptech.glide.Glide;
 import com.masker.discover.R;
@@ -46,9 +42,8 @@ public class PhotoAdapter extends BaseAdpater<Photo>{
         lp.height = height;
         ivPhoto.setLayoutParams(lp);
         String url = data.getUrls().getRegular();
-        ColorDrawable colorDrawable = new ColorDrawable(ContextCompat.getColor(context,
-                android.R.color.darker_gray));
-        Glide.with(context).load(url).placeholder(colorDrawable).crossFade().into(ivPhoto);
+        ColorDrawable placeHolder = getPlaceHolder();
+        Glide.with(context).load(url).placeholder(placeHolder).crossFade().into(ivPhoto);
 
         String avatorUrl = data.getUser().getProfile_image().getLarge();
         CircleImageView ivAvator = holder.getView(R.id.iv_avator);
@@ -59,5 +54,21 @@ public class PhotoAdapter extends BaseAdpater<Photo>{
 
         String likes = String.valueOf( data.getLikes());
         holder.setText(R.id.tv_likes,likes);
+    }
+
+    private ColorDrawable getPlaceHolder(){
+        int index = (int) (Math.random()*5);
+        switch (index){
+            case 0:
+                return new ColorDrawable(ContextCompat.getColor(context,R.color.place_holder_0));
+            case 1:
+                return new ColorDrawable(ContextCompat.getColor(context,R.color.place_holder_1));
+            case 2:
+                return new ColorDrawable(ContextCompat.getColor(context,R.color.place_holder_2));
+            case 3:
+                return new ColorDrawable(ContextCompat.getColor(context,R.color.place_holder_3));
+            default:
+                return new ColorDrawable(ContextCompat.getColor(context,R.color.place_holder_4));
+        }
     }
 }
