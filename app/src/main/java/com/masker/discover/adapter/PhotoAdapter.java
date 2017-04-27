@@ -37,7 +37,7 @@ public class PhotoAdapter extends BaseAdpater<Photo>{
     @Override
     public void convert(BaseViewHolder holder, int position, Photo data) {
         ImageView ivPhoto = holder.getView(R.id.iv_photo);
-        int width = ScreenUtils.getScreenWidth(context)-ScreenUtils.dp2px(context,20);
+        int width = ScreenUtils.getScreenWidth(context);
         int picWidth = data.getWidth();
         int picHeight = data.getHeight();
         int height = (width*picHeight)/picWidth;
@@ -57,6 +57,7 @@ public class PhotoAdapter extends BaseAdpater<Photo>{
         String name = data.getUser().getName();
         holder.setText(R.id.tv_name,name);
 
-
+        String likes = String.valueOf( data.getLikes());
+        holder.setText(R.id.tv_likes,likes);
     }
 }

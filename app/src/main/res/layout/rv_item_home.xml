@@ -1,44 +1,58 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
-    android:layout_marginLeft="5dp"
-    android:layout_marginRight="5dp"
-    android:layout_marginTop="5dp"
-    android:layout_marginBottom="5dp"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    app:cardElevation="5dp"
-    app:cardCornerRadius="4dp">
-    <RelativeLayout
-        android:layout_width="wrap_content"
+   >
+    <ImageView
+        android:id="@+id/iv_photo"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        >
-        <ImageView
-            android:id="@+id/iv_photo"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:scaleType="fitXY"/>
+        android:scaleType="fitXY"/>
 
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="30dp"
+        android:layout_alignParentBottom="true"
+        android:background="#1feceff1">
         <de.hdodenhof.circleimageview.CircleImageView
             android:id="@+id/iv_avator"
-            android:layout_width="30dp"
-            android:layout_height="30dp"
-            android:layout_below="@+id/iv_photo"
-            android:layout_margin="4dp"/>
+            android:layout_width="26dp"
+            android:layout_height="26dp"
+            android:layout_centerVertical="true"
+            android:layout_margin="5dp" />
 
         <TextView
             android:id="@+id/tv_name"
             android:layout_width="wrap_content"
-            android:layout_height="30dp"
+            android:layout_height="wrap_content"
             android:maxWidth="200dp"
-            android:textSize="20sp"
-            android:layout_margin="4dp"
+            android:textSize="14sp"
+            android:maxLines="1"
+            android:textColor="@color/color_text_white"
+            android:layout_margin="5dp"
             android:gravity="center_vertical"
-            android:layout_below="@id/iv_photo"
             android:layout_toEndOf="@id/iv_avator"/>
 
+        <TextView
+            android:id="@+id/tv_likes"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="14sp"
+            android:maxLines="1"
+            android:textColor="@color/color_text_white"
+            android:layout_margin="5dp"
+            android:gravity="center_vertical"
+            android:layout_marginRight="10dp"
+            android:layout_alignParentEnd="true"
+            />
 
-
+        <ImageView
+            android:id="@+id/iv_likes"
+            android:layout_width="18dp"
+            android:layout_height="18dp"
+            android:src="@drawable/ic_like_white_24dp"
+            android:layout_centerVertical="true"
+            android:layout_toStartOf="@+id/tv_likes"/>
     </RelativeLayout>
 
-</android.support.v7.widget.CardView>
+</RelativeLayout>
