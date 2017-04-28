@@ -27,7 +27,9 @@
     <string name="action_settings">Settings</string>
 
 
-
-
+    <!--collection list frament title-->
+    <string name="all">All</string>
+    <string name="curated">Curated</string>
+    <string name="featured">Featured</string>
 
 </resources>
