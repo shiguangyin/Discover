@@ -2,19 +2,14 @@ package com.masker.discover.fragment;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.v4.view.MenuItemCompat;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
-import android.widget.Spinner;
 
 import com.masker.discover.R;
 import com.masker.discover.adapter.PhotoAdapter;
@@ -26,8 +21,6 @@ import com.masker.discover.model.entity.Photo;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.RunnableFuture;
-import java.util.concurrent.TransferQueue;
 
 /**
  * Created by masker on 2017/4/26.
@@ -76,7 +69,7 @@ public class HomeFragment extends BaseFragment implements HomeContract.View{
         mRefreshLayout.setOnRefreshListener(mRefreshListener);
         mRecyclerView = getViewById(R.id.recycler_view);
         mPhotos = new ArrayList<>();
-        mPhotoAdapter = new PhotoAdapter(mPhotos,R.layout.rv_item_home,getContext());
+        mPhotoAdapter = new PhotoAdapter(mPhotos,R.layout.rv_item_photo,getContext());
         mPhotoAdapter.setLoadMoreListener(new BaseAdpater.LoadMoreListener() {
             @Override
             public void onLoadMore() {
