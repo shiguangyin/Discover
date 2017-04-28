@@ -7,7 +7,6 @@ import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 
-import uk.co.chrisjenx.calligraphy.CalligraphyContextWrapper;
 
 /**
  * Author: masker.
@@ -49,11 +48,4 @@ public abstract class BaseActivity extends AppCompatActivity{
     protected abstract void initViews();
 
 
-    /*
-    * custom font
-     */
-    @Override
-    protected void attachBaseContext(Context newBase) {
-        super.attachBaseContext(CalligraphyContextWrapper.wrap(newBase));
-    }
 }

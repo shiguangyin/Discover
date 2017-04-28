@@ -26,28 +26,21 @@ import rx.subscriptions.Subscriptions;
 
 public class HomePresenter implements HomeContract.Presenter{
 
-    private  Context mContext;
     private  HomeContract.View mView;
 
     private CompositeSubscription mSubscriptions;
 
 
-    public HomePresenter(Context context,HomeContract.View view){
-        mContext = context;
+    public HomePresenter(HomeContract.View view){
         mView = view;
         mSubscriptions = new CompositeSubscription();
         mView.setPresenter(this);
     }
 
-    @Override
-    public void onSubscribe() {
-
-    }
 
     @Override
     public void onUnsubscribe() {
         mSubscriptions.clear();
-        mContext = null;
     }
 
     @Override

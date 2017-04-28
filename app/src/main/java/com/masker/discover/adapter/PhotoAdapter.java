@@ -20,8 +20,11 @@ import java.util.List;
 import de.hdodenhof.circleimageview.CircleImageView;
 
 /**
- * Created by masker on 2017/4/26.
+ * CreatedBy: masker
+ * Date: 2017/4/28
+ * Description:
  */
+
 
 public class PhotoAdapter extends BaseAdpater<Photo>{
     private static final String TAG = "PhotoAdapter";
@@ -54,6 +57,7 @@ public class PhotoAdapter extends BaseAdpater<Photo>{
 
         String likes = String.valueOf( data.getLikes());
         holder.setText(R.id.tv_likes,likes);
+
     }
 
     private ColorDrawable getPlaceHolder(){

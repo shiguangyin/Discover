@@ -9,6 +9,7 @@ import android.view.View;
 
 import com.masker.discover.R;
 import com.masker.discover.adapter.CollectionAdapter;
+import com.masker.discover.base.BaseAdpater;
 import com.masker.discover.base.BaseFragment;
 import com.masker.discover.contract.CollectionContract;
 import com.masker.discover.model.entity.Collection;
@@ -28,6 +29,10 @@ public class CollectionListFragment extends BaseFragment
 
     public static final String TYPE = "type";
 
+    //load const value
+    public static final int START_PAGE = 1;
+    public static final int PER_PAGE = 20;
+
     public static final int ALL = 0;
     public static final int CURATED  = 1;
     public static final int FEATURED = 2;
@@ -36,10 +41,12 @@ public class CollectionListFragment extends BaseFragment
 
     private RecyclerView mRecyclerView;
     private SwipeRefreshLayout mRefreshLayout;
+    private SwipeRefreshLayout.OnRefreshListener mListener;
     private CollectionAdapter mAdapter;
     private List<Collection> mCollections;
 
     private CollectionContract.Presenter mPresenter;
+    private int mPage = START_PAGE;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -56,16 +63,38 @@ public class CollectionListFragment extends BaseFragment
     @Override
     protected void initViews(View contentView) {
         mRefreshLayout = getViewById(R.id.swipe_refresh_layout);
+        mListener = new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                mPage = START_PAGE;
+                mCollections.clear();
+                mPresenter.loadCollections(mPage,PER_PAGE,mType);
+            }
+        };
+        mRefreshLayout.setOnRefreshListener(mListener);
         mRecyclerView = getViewById(R.id.recycler_view);
         mCollections = new ArrayList<>();
         mAdapter = new CollectionAdapter(mCollections,R.layout.rv_item_collection,getContext());
+        mAdapter.setLoadMoreListener(new BaseAdpater.LoadMoreListener() {
+            @Override
+            public void onLoadMore() {
+                mPage++;
+                mPresenter.loadCollections(mPage,PER_PAGE,mType);
+            }
+        });
         mRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         mRecyclerView.setAdapter(mAdapter);
     }
 
     @Override
     protected void initData() {
-        mPresenter.loadCollections(1,20,mType);
+        mRefreshLayout.post(new Runnable() {
+            @Override
+            public void run() {
+                mRefreshLayout.setRefreshing(true);
+            }
+        });
+        mListener.onRefresh();
     }
 
     public static CollectionListFragment newInstance(int type){
@@ -84,6 +113,7 @@ public class CollectionListFragment extends BaseFragment
 
     @Override
     public void showCollections(List<Collection> collections) {
+        mRefreshLayout.setRefreshing(false);
         mCollections.addAll(collections);
         mAdapter.notifyDataSetChanged();
     }
@@ -91,5 +121,11 @@ public class CollectionListFragment extends BaseFragment
     @Override
     public void showError() {
 
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        mPresenter.onUnsubscribe();
     }
 }

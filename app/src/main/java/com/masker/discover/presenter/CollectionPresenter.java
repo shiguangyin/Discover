@@ -6,9 +6,11 @@ import com.masker.discover.model.repository.CollectionRepository;
 
 import java.util.List;
 
+import rx.Observable;
 import rx.Subscription;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.functions.Action1;
+import rx.functions.Func1;
 import rx.schedulers.Schedulers;
 import rx.subscriptions.CompositeSubscription;
 
@@ -32,10 +34,6 @@ public class CollectionPresenter implements CollectionContract.Presenter{
     }
 
 
-    @Override
-    public void onSubscribe() {
-
-    }
 
     @Override
     public void onUnsubscribe() {
@@ -50,7 +48,21 @@ public class CollectionPresenter implements CollectionContract.Presenter{
                 .subscribe(new Action1<List<Collection>>() {
                     @Override
                     public void call(List<Collection> collections) {
-                        mView.showCollections(collections);
+                        //filter
+                        Observable.from(collections)
+                                .filter(new Func1<Collection, Boolean>() {
+                                    @Override
+                                    public Boolean call(Collection collection) {
+                                        return collection.getCover_photo() != null;
+                                    }
+                                })
+                                .toList()
+                                .subscribe(new Action1<List<Collection>>() {
+                                    @Override
+                                    public void call(List<Collection> collections) {
+                                        mView.showCollections(collections);
+                                    }
+                                });
                     }
                 }, new Action1<Throwable>() {
                     @Override

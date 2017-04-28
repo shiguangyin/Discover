@@ -23,8 +23,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Created by masker on 2017/4/26.
+ * CreatedBy: masker
+ * Date: 2017/4/28
+ * Description:
  */
+
 
 public class HomeFragment extends BaseFragment implements HomeContract.View{
 
@@ -42,7 +45,7 @@ public class HomeFragment extends BaseFragment implements HomeContract.View{
     private String mOrder = PhotoService.LATEST;
 
 
-    private HomeContract.Presenter presenter;
+    private HomeContract.Presenter mPresenter;
 
     @Override
     protected int getLayoutId() {
@@ -63,7 +66,7 @@ public class HomeFragment extends BaseFragment implements HomeContract.View{
             public void onRefresh() {
                 mPage = START_PAGE;
                 mPhotos.clear();
-                presenter.loadPhotos(mPage,mPerPage,mOrder);
+                mPresenter.loadPhotos(mPage,mPerPage,mOrder);
             }
         };
         mRefreshLayout.setOnRefreshListener(mRefreshListener);
@@ -73,7 +76,7 @@ public class HomeFragment extends BaseFragment implements HomeContract.View{
         mPhotoAdapter.setLoadMoreListener(new BaseAdpater.LoadMoreListener() {
             @Override
             public void onLoadMore() {
-                presenter.loadPhotos(mPage,mPerPage,mOrder);
+                mPresenter.loadPhotos(mPage,mPerPage,mOrder);
             }
         });
         mRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
@@ -94,7 +97,7 @@ public class HomeFragment extends BaseFragment implements HomeContract.View{
 
     @Override
     public void setPresenter(HomeContract.Presenter presenter) {
-        this.presenter = presenter;
+        this.mPresenter = presenter;
     }
 
 
@@ -145,5 +148,11 @@ public class HomeFragment extends BaseFragment implements HomeContract.View{
                 break;
         }
         return true;
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        mPresenter.onUnsubscribe();
     }
 }

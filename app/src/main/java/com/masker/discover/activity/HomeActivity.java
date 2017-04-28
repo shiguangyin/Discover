@@ -101,7 +101,7 @@ public class HomeActivity extends BaseActivity {
             case FRAGMENT_HOME:
                 if(mHomeFragment == null){
                     mHomeFragment = HomeFragment.newInstance();
-                    HomePresenter homePresenter = new HomePresenter(this,mHomeFragment);
+                    HomePresenter homePresenter = new HomePresenter(mHomeFragment);
                 }
                 return mHomeFragment;
 

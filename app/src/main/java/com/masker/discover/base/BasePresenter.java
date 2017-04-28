@@ -1,10 +1,12 @@
 package com.masker.discover.base;
 
 /**
- * Created by masker on 2017/4/26.
+ * CreatedBy: masker
+ * Date: 2017/4/28
+ * Description:
  */
 
+
 public interface BasePresenter {
-    void onSubscribe();
     void onUnsubscribe();
 }

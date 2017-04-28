@@ -1,6 +1,7 @@
 package com.masker.discover.adapter;
 
 import android.content.Context;
+import android.util.Log;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 
@@ -22,6 +23,7 @@ import de.hdodenhof.circleimageview.CircleImageView;
  */
 
 public class CollectionAdapter extends BaseAdpater<Collection>{
+
     public CollectionAdapter(List<Collection> datas, int layoutId, Context context) {
         super(datas, layoutId, context);
     }
@@ -48,7 +50,13 @@ public class CollectionAdapter extends BaseAdpater<Collection>{
         String name = data.getUser().getName();
         holder.setText(R.id.tv_name,name);
 
-        String title = data.getTitle();
+        String title = data.getTitle().toUpperCase();
         holder.setText(R.id.tv_title,title);
+
+        int num = data.getTotal_photos();
+        String strNum = num + " "+context.getString(R.string.photos);
+        holder.setText(R.id.tv_num,strNum);
+
+
     }
 }
