@@ -18,14 +18,16 @@ import rx.subscriptions.CompositeSubscription;
 import rx.subscriptions.Subscriptions;
 
 /**
- * Created by masker on 2017/4/26.
+ * CreatedBy: masker
+ * Date: 2017/4/28
+ * Description:
  */
 
+
 public class HomePresenter implements HomeContract.Presenter{
-    private static final String TAG = "HomePresenter";
-    
-    private final Context mContext;
-    private final HomeContract.View mView;
+
+    private  Context mContext;
+    private  HomeContract.View mView;
 
     private CompositeSubscription mSubscriptions;
 
@@ -45,11 +47,11 @@ public class HomePresenter implements HomeContract.Presenter{
     @Override
     public void onUnsubscribe() {
         mSubscriptions.clear();
+        mContext = null;
     }
 
     @Override
     public void loadPhotos(int page, int perPage, String orderBy) {
-        Log.i(TAG, "loadPhotos: ");
         Subscription subscription = PhotoRepository.getPhoto(page,perPage,orderBy)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
@@ -57,13 +59,11 @@ public class HomePresenter implements HomeContract.Presenter{
                     @Override
                     public void call(List<Photo> photos) {
                         mView.showPhotos(photos);
-                        Log.i(TAG, "call: success");
                     }
                 }, new Action1<Throwable>() {
                     @Override
                     public void call(Throwable throwable) {
                         mView.showError();
-                        Log.i(TAG, "call: error");
                     }
                 });
         mSubscriptions.add(subscription);

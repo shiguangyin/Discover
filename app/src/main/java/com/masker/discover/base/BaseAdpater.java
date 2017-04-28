@@ -2,18 +2,28 @@ package com.masker.discover.base;
 
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ProgressBar;
 
+
+import com.bumptech.glide.util.LogTime;
+import com.masker.discover.R;
 
 import java.util.List;
 
 /**
- * Created by masker on 2017/4/26.
+ * CreatedBy: masker
+ * Date: 2017/4/28
+ * Description:
  */
 
+
 public abstract class BaseAdpater<T> extends RecyclerView.Adapter<BaseViewHolder> {
+    private static final String TAG = "BaseAdpater";
+
     protected List<T> datas;
     protected int layoutId;
     protected Context context;
@@ -37,9 +47,9 @@ public abstract class BaseAdpater<T> extends RecyclerView.Adapter<BaseViewHolder
         if(viewType == TYPE_DATA){
             itemView = LayoutInflater.from(context).inflate(layoutId,parent,false);
         }
-        if(viewType == TYPE_FOOTER && enableLoadMore == true){
+        else if(viewType == TYPE_FOOTER && enableLoadMore){
             if(loadMoreView == null){
-                loadMoreView = LayoutInflater.from(context).inflate(layoutId,parent,false);
+                loadMoreView = LayoutInflater.from(context).inflate(R.layout.layout_load_more,parent,false);
             }
             itemView = loadMoreView;
         }
@@ -52,7 +62,8 @@ public abstract class BaseAdpater<T> extends RecyclerView.Adapter<BaseViewHolder
             convert(holder,position,datas.get(position));
         }
         if(holder.getItemViewType() == TYPE_FOOTER){
-            if(enableLoadMore == true && !datas.isEmpty()){
+            if(enableLoadMore  && !datas.isEmpty()){
+                holder.getItemView().setVisibility(View.VISIBLE);
                 if(listener != null){
                     listener.onLoadMore();
                 }

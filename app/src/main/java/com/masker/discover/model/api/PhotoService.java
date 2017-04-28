@@ -10,8 +10,11 @@ import retrofit2.http.Query;
 import rx.Observable;
 
 /**
- * Created by masker on 2017/4/26.
+ * CreatedBy: masker
+ * Date: 2017/4/28
+ * Description:
  */
+
 
 public interface PhotoService {
     String LATEST = "latest";
@@ -22,14 +25,6 @@ public interface PhotoService {
     Observable<List<Photo>> getPhotos(@Query("page")int page,
                                       @Query("per_page") int perPage,
                                       @Query("order_by") String orderBy);
-
-
-    @GET("/photos")
-    Observable<List<Photo>> getPhotos(@Query("page")int page,
-                                      @Query("order_by")String orderBy);
-
-    @GET("/photos")
-    Observable<List<Photo>> getPhotos(@Query("page")int page);
 
 
 }
