@@ -4,23 +4,26 @@
     android:id="@+id/drawer"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:fitsSystemWindows="true"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:openDrawer="start">
     <android.support.design.widget.CoordinatorLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+       >
         <android.support.design.widget.AppBarLayout
             android:id="@+id/app_bar"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:background="@color/colorPrimary"
             >
             <android.support.v7.widget.Toolbar
                 android:id="@+id/tool_bar"
                 android:layout_width="match_parent"
-                android:layout_height="?attr/actionBarSize"
+                android:layout_height="wrap_content"
                 android:background="@color/colorPrimary"
-                app:layout_scrollFlags="scroll|enterAlways">
+                android:paddingTop="@dimen/status_bar_height"
+                app:layout_scrollFlags="scroll|enterAlways"
+               >
             </android.support.v7.widget.Toolbar>
 
             <android.support.design.widget.TabLayout
@@ -44,7 +47,6 @@
     </android.support.design.widget.CoordinatorLayout>
 
     <android.support.design.widget.NavigationView
-        android:fitsSystemWindows="true"
         android:id="@+id/nv_main"
         android:layout_width="@dimen/nav_width"
         android:layout_height="match_parent"

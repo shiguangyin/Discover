@@ -1,11 +1,13 @@
 package com.masker.discover.model.api;
 
 import com.masker.discover.model.entity.Photo;
+import com.masker.discover.model.entity.PhotoInfo;
 
 import java.util.List;
 
 
 import retrofit2.http.GET;
+import retrofit2.http.Path;
 import retrofit2.http.Query;
 import rx.Observable;
 
@@ -26,5 +28,8 @@ public interface PhotoService {
                                       @Query("per_page") int perPage,
                                       @Query("order_by") String orderBy);
 
+    @GET("/photos/{id}/info")
+
+    Observable<PhotoInfo> getPhotoInfo(@Path("id")String id);
 
 }

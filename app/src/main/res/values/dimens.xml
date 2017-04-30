@@ -2,4 +2,6 @@
 
     <dimen name="nav_header_height">180dp</dimen>
     <dimen name="nav_width">280dp</dimen>
+
+    <dimen name="status_bar_height">24dp</dimen>
 </resources>

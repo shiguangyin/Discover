@@ -2,14 +2,11 @@ package com.masker.discover.base;
 
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ProgressBar;
 
 
-import com.bumptech.glide.util.LogTime;
 import com.masker.discover.R;
 
 import java.util.List;
@@ -22,14 +19,14 @@ import java.util.List;
 
 
 public abstract class BaseAdpater<T> extends RecyclerView.Adapter<BaseViewHolder> {
-    private static final String TAG = "BaseAdpater";
 
     protected List<T> datas;
     protected int layoutId;
     protected Context context;
     protected View loadMoreView;
     protected boolean enableLoadMore = true;
-    protected LoadMoreListener listener;
+    protected LoadMoreListener loadMoreListener;
+    protected OnItemClickListener onItemClickListener;
 
 
     protected static final int TYPE_DATA = 0;
@@ -57,15 +54,23 @@ public abstract class BaseAdpater<T> extends RecyclerView.Adapter<BaseViewHolder
     }
 
     @Override
-    public void onBindViewHolder(BaseViewHolder holder, int position) {
+    public void onBindViewHolder(BaseViewHolder holder, final int position) {
         if(holder.getItemViewType() == TYPE_DATA){
             convert(holder,position,datas.get(position));
+            if(onItemClickListener != null){
+                holder.getItemView().setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        onItemClickListener.onClick(v,position);
+                    }
+                });
+            }
         }
         if(holder.getItemViewType() == TYPE_FOOTER){
             if(enableLoadMore  && !datas.isEmpty()){
                 holder.getItemView().setVisibility(View.VISIBLE);
-                if(listener != null){
-                    listener.onLoadMore();
+                if(loadMoreListener != null){
+                    loadMoreListener.onLoadMore();
                 }
             }
             else{
@@ -89,9 +94,6 @@ public abstract class BaseAdpater<T> extends RecyclerView.Adapter<BaseViewHolder
 
     public abstract void convert(BaseViewHolder holder, int position, T data);
 
-    public void setLoadMoreView(View view){
-        loadMoreView = view;
-    }
 
     public void enableLoadMore(boolean loadMore){
         enableLoadMore = loadMore;
@@ -102,8 +104,15 @@ public abstract class BaseAdpater<T> extends RecyclerView.Adapter<BaseViewHolder
     }
 
     public void setLoadMoreListener(LoadMoreListener listener){
-        this.listener = listener;
+        this.loadMoreListener = listener;
     }
 
+    public interface OnItemClickListener{
+        void onClick(View view,int position);
+    }
+
+    public void setOnItemClickListener(OnItemClickListener listener){
+        this.onItemClickListener = listener;
+    }
 }
 

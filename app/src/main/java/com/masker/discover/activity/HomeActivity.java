@@ -1,6 +1,9 @@
 package com.masker.discover.activity;
 
+import android.os.Bundle;
+import android.os.PersistableBundle;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.NavigationView;
 import android.support.design.widget.TabLayout;
@@ -43,6 +46,10 @@ public class HomeActivity extends BaseActivity {
     private CollectionFragment mCollectionFragment;
     private TagFragment mTagFragment;
 
+    @Override
+    protected void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+    }
 
     @Override
     protected int getLayoutId() {
@@ -87,6 +94,11 @@ public class HomeActivity extends BaseActivity {
         });
 
         switchFragment(FRAGMENT_HOME);
+    }
+
+    @Override
+    protected void initDatas() {
+
     }
 
     public void switchFragment(int id){

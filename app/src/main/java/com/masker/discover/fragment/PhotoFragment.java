@@ -12,6 +12,7 @@ import android.view.MenuItem;
 import android.view.View;
 
 import com.masker.discover.R;
+import com.masker.discover.activity.PhotoInfoActivity;
 import com.masker.discover.adapter.PhotoAdapter;
 import com.masker.discover.base.BaseAdpater;
 import com.masker.discover.base.BaseFragment;
@@ -31,7 +32,6 @@ import java.util.List;
 
 public class PhotoFragment extends BaseFragment implements HomeContract.View{
 
-    private static final String TAG = "PhotoFragment";
     private static final int START_PAGE = 1;
 
 
@@ -77,6 +77,17 @@ public class PhotoFragment extends BaseFragment implements HomeContract.View{
             @Override
             public void onLoadMore() {
                 mPresenter.loadPhotos(mPage,mPerPage,mOrder);
+            }
+        });
+        mPhotoAdapter.setOnItemClickListener(new BaseAdpater.OnItemClickListener() {
+            @Override
+            public void onClick(View view, int position) {
+                Photo photo = mPhotos.get(position);
+                String id = photo.getId();
+                String imgUrl = photo.getUrls().getRegular();
+                int width = photo.getWidth();
+                int height = photo.getHeight();
+                PhotoInfoActivity.start(getContext(),id,imgUrl,width,height);
             }
         });
         mRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
