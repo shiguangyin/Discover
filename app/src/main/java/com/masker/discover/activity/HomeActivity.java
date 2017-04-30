@@ -1,16 +1,18 @@
 package com.masker.discover.activity;
 
 import android.support.annotation.NonNull;
+import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.NavigationView;
+import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 
 import com.masker.discover.R;
 import com.masker.discover.base.BaseActivity;
@@ -22,9 +24,10 @@ import com.masker.discover.presenter.TagPresenter;
 
 public class HomeActivity extends BaseActivity {
 
-    private static final String TAG = "HomeActivity";
 
     private Toolbar mToolbar;
+    private AppBarLayout mAppBar;
+    private TabLayout mTabLayout;
     private NavigationView mNavView;
     private DrawerLayout mDrawer;
     private ActionBarDrawerToggle mDrawerToggle;
@@ -50,6 +53,8 @@ public class HomeActivity extends BaseActivity {
     protected void initViews() {
         mToolbar = getViewById(R.id.tool_bar);
         setSupportActionBar(mToolbar);
+        mAppBar = getViewById(R.id.app_bar);
+        mTabLayout = getViewById(R.id.tab_layout);
         mDrawer = getViewById(R.id.drawer);
         mDrawerToggle = new ActionBarDrawerToggle(HomeActivity.this,mDrawer,mToolbar,
                 R.string.open,R.string.close);
@@ -138,4 +143,9 @@ public class HomeActivity extends BaseActivity {
     public void setTitle(String title){
         mToolbar.setTitle(title);
     }
+
+    public TabLayout getTabLayout(){
+        return mTabLayout;
+    }
+
 }

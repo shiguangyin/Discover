@@ -1,10 +1,12 @@
 package com.masker.discover.fragment;
 
+import android.app.Activity;
 import android.support.design.widget.TabLayout;
 import android.support.v4.view.ViewPager;
 import android.view.View;
 
 import com.masker.discover.R;
+import com.masker.discover.activity.HomeActivity;
 import com.masker.discover.adapter.CollectionFragmentAdapter;
 import com.masker.discover.base.BaseFragment;
 
@@ -27,7 +29,10 @@ public class CollectionFragment extends BaseFragment {
 
     @Override
     protected void initViews(View contentView) {
-        mTabLayout = getViewById(R.id.tl_collection);
+        mTabLayout = ((HomeActivity)getActivity()).getTabLayout();
+        if(mTabLayout != null){
+            mTabLayout.setVisibility(View.VISIBLE);
+        }
         mViewPager = getViewById(R.id.vp_collection);
         mAdapter = new CollectionFragmentAdapter(getChildFragmentManager(),getContext());
         mViewPager.setAdapter(mAdapter);
@@ -41,5 +46,20 @@ public class CollectionFragment extends BaseFragment {
 
     public static CollectionFragment newInstance(){
         return new CollectionFragment();
+    }
+
+    @Override
+    public void onHiddenChanged(boolean hidden) {
+        super.onHiddenChanged(hidden);
+        if(hidden){
+            if(mTabLayout != null){
+                mTabLayout.setVisibility(View.GONE);
+            }
+        }
+        else{
+            if(mTabLayout != null){
+                mTabLayout.setVisibility(View.VISIBLE);
+            }
+        }
     }
 }
