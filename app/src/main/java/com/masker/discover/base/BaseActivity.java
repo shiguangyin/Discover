@@ -17,6 +17,7 @@ import android.view.View;
 public abstract class BaseActivity extends AppCompatActivity{
 
     protected int mLayoutId;
+    protected String TAG = getClass().getSimpleName();
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {

@@ -8,12 +8,16 @@ import android.view.View;
 import android.view.ViewGroup;
 
 /**
- * Created by masker on 2017/4/26.
+ * CreatedBy: masker
+ * Date: 2017/4/30
+ * Description: base fragment
  */
+
 
 public abstract class BaseFragment extends Fragment{
 
     protected View mContentView;
+    protected String TAG = getClass().getSimpleName();
 
     @Nullable
     @Override

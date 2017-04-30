@@ -22,7 +22,7 @@ import de.hdodenhof.circleimageview.CircleImageView;
 /**
  * CreatedBy: masker
  * Date: 2017/4/28
- * Description:
+ * Description: adapter for photo recyclerview
  */
 
 

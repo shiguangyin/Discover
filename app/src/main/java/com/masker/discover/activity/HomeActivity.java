@@ -1,9 +1,6 @@
 package com.masker.discover.activity;
 
-import android.os.Bundle;
-import android.os.PersistableBundle;
 import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -18,8 +15,10 @@ import android.view.MenuItem;
 import com.masker.discover.R;
 import com.masker.discover.base.BaseActivity;
 import com.masker.discover.fragment.CollectionFragment;
-import com.masker.discover.fragment.HomeFragment;
+import com.masker.discover.fragment.PhotoFragment;
+import com.masker.discover.fragment.TagFragment;
 import com.masker.discover.presenter.HomePresenter;
+import com.masker.discover.presenter.TagPresenter;
 
 public class HomeActivity extends BaseActivity {
 
@@ -33,11 +32,13 @@ public class HomeActivity extends BaseActivity {
 
     public static final int FRAGMENT_HOME = 0;
     public static final int FRAGMENT_COLLECTION = 1;
+    public static final int FRAGMENT_TAG = 2;
 
     private int currentId = -1;
 
-    private HomeFragment mHomeFragment;
+    private PhotoFragment mPhotoFragment;
     private CollectionFragment mCollectionFragment;
+    private TagFragment mTagFragment;
 
 
     @Override
@@ -62,9 +63,15 @@ public class HomeActivity extends BaseActivity {
                 switch (item.getItemId()){
                     case R.id.item_home:
                         switchFragment(FRAGMENT_HOME);
+                        setTitle(R.string.item_home);
                         break;
                     case R.id.item_collections:
                         switchFragment(FRAGMENT_COLLECTION);
+                        setTitle(R.string.item_collections);
+                        break;
+                    case R.id.item_tags:
+                        switchFragment(FRAGMENT_TAG);
+                        setTitle(R.string.item_tags);
                         break;
                     default:
                         break;
@@ -78,7 +85,6 @@ public class HomeActivity extends BaseActivity {
     }
 
     public void switchFragment(int id){
-        Log.i(TAG, "switchFragment: "+id);
         FragmentManager fm = getSupportFragmentManager();
         FragmentTransaction ft = fm.beginTransaction();
         if(currentId != id){
@@ -99,17 +105,24 @@ public class HomeActivity extends BaseActivity {
     private Fragment getFragment(int id){
         switch (id){
             case FRAGMENT_HOME:
-                if(mHomeFragment == null){
-                    mHomeFragment = HomeFragment.newInstance();
-                    HomePresenter homePresenter = new HomePresenter(mHomeFragment);
+                if(mPhotoFragment == null){
+                    mPhotoFragment = PhotoFragment.newInstance();
+                    HomePresenter homePresenter = new HomePresenter(mPhotoFragment);
                 }
-                return mHomeFragment;
+                return mPhotoFragment;
 
             case FRAGMENT_COLLECTION:
                 if(mCollectionFragment == null){
                     mCollectionFragment = CollectionFragment.newInstance();
                 }
                 return mCollectionFragment;
+
+            case FRAGMENT_TAG:
+                if(mTagFragment == null){
+                    mTagFragment = TagFragment.newInstance();
+                    TagPresenter tagPresenter = new TagPresenter(mTagFragment,this);
+                }
+                return mTagFragment;
             default:
                 break;
         }
@@ -122,5 +135,7 @@ public class HomeActivity extends BaseActivity {
         return true;
     }
 
-
+    public void setTitle(String title){
+        mToolbar.setTitle(title);
+    }
 }

@@ -40,6 +40,7 @@ public class HomePresenter implements HomeContract.Presenter{
 
     @Override
     public void onUnsubscribe() {
+        mView = null;
         mSubscriptions.clear();
     }
 

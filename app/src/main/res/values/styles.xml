@@ -11,7 +11,7 @@
     
 
 
-    <style name="FullScreenTheme" parent="AppTheme">
+    <style name="SplashTheme" parent="AppTheme">
         <item name="android:windowFullscreen">true</item>
     </style>
 

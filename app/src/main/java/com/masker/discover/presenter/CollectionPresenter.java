@@ -37,6 +37,7 @@ public class CollectionPresenter implements CollectionContract.Presenter{
 
     @Override
     public void onUnsubscribe() {
+        mView = null;
         mCompositeSubscription.clear();
     }
 

@@ -76,7 +76,7 @@ public abstract class BaseAdpater<T> extends RecyclerView.Adapter<BaseViewHolder
 
     @Override
     public int getItemCount() {
-        return datas.size()+1;
+        return enableLoadMore?(datas.size()+1):(datas.size());
     }
 
     @Override

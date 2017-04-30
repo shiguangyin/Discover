@@ -29,9 +29,9 @@ import java.util.List;
  */
 
 
-public class HomeFragment extends BaseFragment implements HomeContract.View{
+public class PhotoFragment extends BaseFragment implements HomeContract.View{
 
-    private static final String TAG = "HomeFragment";
+    private static final String TAG = "PhotoFragment";
     private static final int START_PAGE = 1;
 
 
@@ -49,7 +49,7 @@ public class HomeFragment extends BaseFragment implements HomeContract.View{
 
     @Override
     protected int getLayoutId() {
-        return R.layout.fragment_home;
+        return R.layout.fragment_photo;
     }
 
     @Override
@@ -114,8 +114,8 @@ public class HomeFragment extends BaseFragment implements HomeContract.View{
 
     }
 
-    public static HomeFragment newInstance(){
-        return new HomeFragment();
+    public static PhotoFragment newInstance(){
+        return new PhotoFragment();
     }
 
     @Override

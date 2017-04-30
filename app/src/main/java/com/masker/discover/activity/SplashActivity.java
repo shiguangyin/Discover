@@ -6,6 +6,7 @@ import android.view.WindowManager;
 import android.view.animation.AlphaAnimation;
 import android.view.animation.Animation;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 
 import com.masker.discover.R;
 import com.masker.discover.base.BaseActivity;
@@ -18,6 +19,7 @@ import com.masker.discover.base.BaseActivity;
 
 public class SplashActivity extends BaseActivity{
 
+    private RelativeLayout mRlContent;
     private ImageView mIvSplash;
 
     @Override
@@ -42,7 +44,7 @@ public class SplashActivity extends BaseActivity{
 
             }
         });
-        mIvSplash.startAnimation(animation);
+        mRlContent.startAnimation(animation);
     }
 
     @Override
@@ -53,5 +55,6 @@ public class SplashActivity extends BaseActivity{
     @Override
     protected void initViews() {
         mIvSplash = getViewById(R.id.iv_splash);
+        mRlContent = getViewById(R.id.content);
     }
 }
