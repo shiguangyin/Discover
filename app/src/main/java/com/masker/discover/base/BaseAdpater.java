@@ -1,6 +1,7 @@
 package com.masker.discover.base;
 
 import android.content.Context;
+import android.support.v4.util.SparseArrayCompat;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -31,6 +32,7 @@ public abstract class BaseAdpater<T> extends RecyclerView.Adapter<BaseViewHolder
 
     protected static final int TYPE_DATA = 0;
     protected static final int TYPE_FOOTER = 1;
+
 
     public BaseAdpater(List<T> datas,int layoutId,Context context){
         this.datas = datas;
@@ -114,5 +116,7 @@ public abstract class BaseAdpater<T> extends RecyclerView.Adapter<BaseViewHolder
     public void setOnItemClickListener(OnItemClickListener listener){
         this.onItemClickListener = listener;
     }
+
+
 }
 
