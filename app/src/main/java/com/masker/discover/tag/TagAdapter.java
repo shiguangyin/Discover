@@ -1,4 +1,4 @@
-package com.masker.discover.adapter;
+package com.masker.discover.tag;
 
 import android.content.Context;
 import android.widget.ImageView;

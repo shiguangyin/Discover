@@ -2,7 +2,6 @@ package com.masker.discover.activity;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.view.WindowManager;
 import android.view.animation.AlphaAnimation;
 import android.view.animation.Animation;
 import android.widget.ImageView;

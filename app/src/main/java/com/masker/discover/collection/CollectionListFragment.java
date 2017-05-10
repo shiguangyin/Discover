@@ -1,4 +1,4 @@
-package com.masker.discover.fragment;
+package com.masker.discover.collection;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -8,12 +8,9 @@ import android.support.v7.widget.RecyclerView;
 import android.view.View;
 
 import com.masker.discover.R;
-import com.masker.discover.adapter.CollectionAdapter;
 import com.masker.discover.base.BaseAdpater;
 import com.masker.discover.base.BaseFragment;
-import com.masker.discover.contract.CollectionContract;
 import com.masker.discover.model.entity.Collection;
-import com.masker.discover.presenter.CollectionPresenter;
 
 import java.util.ArrayList;
 import java.util.List;

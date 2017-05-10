@@ -1,9 +1,7 @@
-package com.masker.discover.presenter;
+package com.masker.discover.tag;
 
 import android.content.Context;
-import android.util.Log;
 
-import com.masker.discover.contract.TagContract;
 import com.masker.discover.model.entity.Tag;
 
 import org.json.JSONArray;

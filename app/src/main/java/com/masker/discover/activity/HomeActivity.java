@@ -1,7 +1,6 @@
 package com.masker.discover.activity;
 
 import android.os.Bundle;
-import android.os.PersistableBundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.AppBarLayout;
@@ -15,15 +14,14 @@ import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
 
 import com.masker.discover.R;
 import com.masker.discover.base.BaseActivity;
-import com.masker.discover.fragment.CollectionFragment;
-import com.masker.discover.fragment.PhotoFragment;
-import com.masker.discover.fragment.TagFragment;
-import com.masker.discover.presenter.HomePresenter;
-import com.masker.discover.presenter.TagPresenter;
+import com.masker.discover.collection.CollectionFragment;
+import com.masker.discover.tag.TagFragment;
+import com.masker.discover.photo.PhotoPresenter;
+import com.masker.discover.photo.PhotoFragment;
+import com.masker.discover.tag.TagPresenter;
 
 public class HomeActivity extends BaseActivity {
 
@@ -124,7 +122,7 @@ public class HomeActivity extends BaseActivity {
             case FRAGMENT_HOME:
                 if(mPhotoFragment == null){
                     mPhotoFragment = PhotoFragment.newInstance();
-                    HomePresenter homePresenter = new HomePresenter(mPhotoFragment);
+                    PhotoPresenter homePresenter = new PhotoPresenter(mPhotoFragment);
                 }
                 return mPhotoFragment;
 

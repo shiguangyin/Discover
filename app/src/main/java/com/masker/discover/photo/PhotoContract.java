@@ -1,4 +1,4 @@
-package com.masker.discover.contract;
+package com.masker.discover.photo;
 
 import com.masker.discover.base.BasePresenter;
 import com.masker.discover.base.BaseView;
@@ -7,10 +7,13 @@ import com.masker.discover.model.entity.Photo;
 import java.util.List;
 
 /**
- * Created by masker on 2017/4/26.
+ * CreatedBy: masker
+ * Date: 2017/5/10
+ * Description:
  */
 
-public interface HomeContract {
+
+public interface PhotoContract {
     interface View extends BaseView<Presenter> {
         void showPhotos(List<Photo> photos);
         void showError();

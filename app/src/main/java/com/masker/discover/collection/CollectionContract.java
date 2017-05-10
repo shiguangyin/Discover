@@ -1,4 +1,4 @@
-package com.masker.discover.contract;
+package com.masker.discover.collection;
 
 import com.masker.discover.base.BasePresenter;
 import com.masker.discover.base.BaseView;

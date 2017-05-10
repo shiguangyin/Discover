@@ -1,4 +1,4 @@
-package com.masker.discover.adapter;
+package com.masker.discover.collection;
 
 import android.content.Context;
 import android.util.Log;

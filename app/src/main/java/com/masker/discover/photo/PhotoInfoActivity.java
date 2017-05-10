@@ -1,10 +1,9 @@
-package com.masker.discover.activity;
+package com.masker.discover.photo;
 
 import android.content.Context;
 import android.content.Intent;
 import android.support.v7.app.ActionBar;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
@@ -14,12 +13,8 @@ import android.widget.TextView;
 import com.bumptech.glide.Glide;
 import com.masker.discover.R;
 import com.masker.discover.base.BaseActivity;
-import com.masker.discover.contract.PhotoInfoContract;
 import com.masker.discover.model.entity.PhotoInfo;
-import com.masker.discover.presenter.PhotoInfoPresenter;
 import com.masker.discover.utils.ScreenUtils;
-
-import org.w3c.dom.Text;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 

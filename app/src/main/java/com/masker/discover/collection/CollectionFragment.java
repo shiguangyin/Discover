@@ -1,13 +1,11 @@
-package com.masker.discover.fragment;
+package com.masker.discover.collection;
 
-import android.app.Activity;
 import android.support.design.widget.TabLayout;
 import android.support.v4.view.ViewPager;
 import android.view.View;
 
 import com.masker.discover.R;
 import com.masker.discover.activity.HomeActivity;
-import com.masker.discover.adapter.CollectionFragmentAdapter;
 import com.masker.discover.base.BaseFragment;
 
 /**

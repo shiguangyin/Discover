@@ -1,22 +1,24 @@
-package com.masker.discover.contract;
+package com.masker.discover.tag;
 
 import com.masker.discover.base.BasePresenter;
 import com.masker.discover.base.BaseView;
-import com.masker.discover.model.entity.PhotoInfo;
+import com.masker.discover.model.entity.Tag;
+
+import java.util.List;
 
 /**
  * CreatedBy: masker
  * Date: 2017/4/30
- * Description:
+ * Description:for tag fragment
  */
 
-public interface PhotoInfoContract {
+public interface TagContract {
     interface View extends BaseView<Presenter>{
-        void showPhotoInfo(PhotoInfo info);
+        void showTags(List<Tag> tags);
         void showError();
     }
 
     interface Presenter extends BasePresenter{
-        void loadPhotoInfo(String id);
+        void loadTags();
     }
 }

@@ -1,9 +1,7 @@
-package com.masker.discover.presenter;
+package com.masker.discover.photo;
 
-import android.text.LoginFilter;
 import android.util.Log;
 
-import com.masker.discover.contract.PhotoInfoContract;
 import com.masker.discover.model.entity.PhotoInfo;
 import com.masker.discover.model.repository.PhotoRepository;
 

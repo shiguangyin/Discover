@@ -1,4 +1,4 @@
-package com.masker.discover.fragment;
+package com.masker.discover.photo;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -12,11 +12,8 @@ import android.view.MenuItem;
 import android.view.View;
 
 import com.masker.discover.R;
-import com.masker.discover.activity.PhotoInfoActivity;
-import com.masker.discover.adapter.PhotoAdapter;
 import com.masker.discover.base.BaseAdpater;
 import com.masker.discover.base.BaseFragment;
-import com.masker.discover.contract.HomeContract;
 import com.masker.discover.model.api.PhotoService;
 import com.masker.discover.model.entity.Photo;
 
@@ -30,7 +27,7 @@ import java.util.List;
  */
 
 
-public class PhotoFragment extends BaseFragment implements HomeContract.View{
+public class PhotoFragment extends BaseFragment implements PhotoContract.View{
 
     private static final int START_PAGE = 1;
 
@@ -45,7 +42,7 @@ public class PhotoFragment extends BaseFragment implements HomeContract.View{
     private String mOrder = PhotoService.LATEST;
 
 
-    private HomeContract.Presenter mPresenter;
+    private PhotoContract.Presenter mPresenter;
 
     @Override
     protected int getLayoutId() {
@@ -107,7 +104,7 @@ public class PhotoFragment extends BaseFragment implements HomeContract.View{
     }
 
     @Override
-    public void setPresenter(HomeContract.Presenter presenter) {
+    public void setPresenter(PhotoContract.Presenter presenter) {
         this.mPresenter = presenter;
     }
 

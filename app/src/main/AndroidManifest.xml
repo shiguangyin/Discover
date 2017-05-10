@@ -24,7 +24,7 @@
             </intent-filter>
         </activity>
 
-        <activity android:name=".activity.PhotoInfoActivity"
+        <activity android:name=".photo.PhotoInfoActivity"
             android:parentActivityName=".activity.HomeActivity">
 
         </activity>

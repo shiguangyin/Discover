@@ -1,4 +1,4 @@
-package com.masker.discover.adapter;
+package com.masker.discover.photo;
 
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;

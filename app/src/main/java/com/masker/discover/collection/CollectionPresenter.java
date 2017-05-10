@@ -1,6 +1,6 @@
-package com.masker.discover.presenter;
+package com.masker.discover.collection;
 
-import com.masker.discover.contract.CollectionContract;
+import com.masker.discover.collection.CollectionContract;
 import com.masker.discover.model.entity.Collection;
 import com.masker.discover.model.repository.CollectionRepository;
 

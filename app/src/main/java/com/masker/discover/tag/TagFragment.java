@@ -1,20 +1,12 @@
-package com.masker.discover.fragment;
+package com.masker.discover.tag;
 
-import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.View;
-import android.widget.Adapter;
 
 import com.masker.discover.R;
-import com.masker.discover.adapter.TagAdapter;
 import com.masker.discover.base.BaseFragment;
-import com.masker.discover.contract.HomeContract;
-import com.masker.discover.contract.TagContract;
-import com.masker.discover.model.entity.Photo;
 import com.masker.discover.model.entity.Tag;
-import com.masker.discover.presenter.TagPresenter;
 
 import java.util.ArrayList;
 import java.util.List;

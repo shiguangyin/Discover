@@ -1,4 +1,4 @@
-package com.masker.discover.adapter;
+package com.masker.discover.collection;
 
 import android.content.Context;
 import android.support.v4.app.Fragment;
@@ -6,8 +6,7 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 
 import com.masker.discover.R;
-import com.masker.discover.fragment.CollectionFragment;
-import com.masker.discover.fragment.CollectionListFragment;
+import com.masker.discover.collection.CollectionListFragment;
 
 /**
  * CreatedBy: masker

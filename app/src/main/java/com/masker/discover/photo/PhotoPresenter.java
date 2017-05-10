@@ -1,10 +1,5 @@
-package com.masker.discover.presenter;
+package com.masker.discover.photo;
 
-import android.content.Context;
-import android.util.EventLogTags;
-import android.util.Log;
-
-import com.masker.discover.contract.HomeContract;
 import com.masker.discover.model.entity.Photo;
 import com.masker.discover.model.repository.PhotoRepository;
 
@@ -15,7 +10,6 @@ import rx.android.schedulers.AndroidSchedulers;
 import rx.functions.Action1;
 import rx.schedulers.Schedulers;
 import rx.subscriptions.CompositeSubscription;
-import rx.subscriptions.Subscriptions;
 
 /**
  * CreatedBy: masker
@@ -24,14 +18,14 @@ import rx.subscriptions.Subscriptions;
  */
 
 
-public class HomePresenter implements HomeContract.Presenter{
+public class PhotoPresenter implements PhotoContract.Presenter{
 
-    private  HomeContract.View mView;
+    private  PhotoContract.View mView;
 
     private CompositeSubscription mSubscriptions;
 
 
-    public HomePresenter(HomeContract.View view){
+    public PhotoPresenter(PhotoContract.View view){
         mView = view;
         mSubscriptions = new CompositeSubscription();
         mView.setPresenter(this);
