@@ -45,9 +45,9 @@
                 android:layout_height="wrap_content"
                 android:text="Views"
                 android:gravity="center"
-                android:textSize="26sp"
+                android:textSize="20sp"
                 android:layout_gravity="center_horizontal"
-                android:drawableLeft="@drawable/ic_views_white_24dp"
+                android:drawableLeft="@drawable/ic_views_white_20dp"
                 android:textColor="@color/color_text_white"/>
 
             <TextView
@@ -55,7 +55,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:gravity="center"
-                android:textSize="30sp"
+                android:textSize="24sp"
                 android:layout_gravity="center_horizontal"
                 android:textColor="@color/color_text_white"
                 />
@@ -70,11 +70,11 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Views"
+                android:text="Downloads"
                 android:gravity="center"
-                android:textSize="26sp"
+                android:textSize="20sp"
                 android:layout_gravity="center_horizontal"
-                android:drawableLeft="@drawable/ic_file_download_black_24dp"
+                android:drawableLeft="@drawable/ic_download_white_20dp"
                 android:textColor="@color/color_text_white"/>
 
             <TextView
@@ -82,7 +82,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:gravity="center"
-                android:textSize="30sp"
+                android:textSize="24sp"
                 android:layout_gravity="center_horizontal"
                 android:textColor="@color/color_text_white"
                 />
@@ -96,9 +96,9 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Views"
+                android:text="Likes"
                 android:gravity="center"
-                android:textSize="26sp"
+                android:textSize="20sp"
                 android:layout_gravity="center_horizontal"
                 android:drawableLeft="@drawable/ic_like_fill_white_24dp"
                 android:textColor="@color/color_text_white"/>
@@ -108,7 +108,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:gravity="center"
-                android:textSize="30sp"
+                android:textSize="24sp"
                 android:layout_gravity="center_horizontal"
                 android:textColor="@color/color_text_white"
                 />
