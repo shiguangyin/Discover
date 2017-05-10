@@ -55,7 +55,7 @@ public class PhotoInfo {
     private UserBeanXX user;
     private List<?> current_user_collections;
     private List<CategoriesBeanX> categories;
-    private List<TagsBean> tags;
+    private List<Tag> tags;
 
     public String getId() {
         return id;
@@ -209,11 +209,11 @@ public class PhotoInfo {
         this.categories = categories;
     }
 
-    public List<TagsBean> getTags() {
+    public List<Tag> getTags() {
         return tags;
     }
 
-    public void setTags(List<TagsBean> tags) {
+    public void setTags(List<Tag> tags) {
         this.tags = tags;
     }
 
@@ -1776,29 +1776,5 @@ public class PhotoInfo {
         }
     }
 
-    public static class TagsBean {
-        /**
-         * title : touch
-         * url : https://images.unsplash.com/reserve/wi9yf7kTQxCNeY72cCY6_Images%20of%20Jenny%20Lace%20Plasticity%20Publish%20(4%20of%2025).jpg
-         */
 
-        private String title;
-        private String url;
-
-        public String getTitle() {
-            return title;
-        }
-
-        public void setTitle(String title) {
-            this.title = title;
-        }
-
-        public String getUrl() {
-            return url;
-        }
-
-        public void setUrl(String url) {
-            this.url = url;
-        }
-    }
 }

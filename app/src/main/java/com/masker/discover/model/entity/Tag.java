@@ -7,12 +7,15 @@ package com.masker.discover.model.entity;
  */
 
 public class Tag {
-    public String getTag() {
-        return tag;
+    private String title;
+    private String url;
+
+    public String getTitle() {
+        return title;
     }
 
-    public void setTag(String tag) {
-        this.tag = tag;
+    public void setTitle(String title) {
+        this.title = title;
     }
 
     public String getUrl() {
@@ -22,7 +25,4 @@ public class Tag {
     public void setUrl(String url) {
         this.url = url;
     }
-
-    private String tag;
-    private String url;
 }

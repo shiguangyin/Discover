@@ -49,7 +49,7 @@ public class PhotoInfoAdapter extends RecyclerView.Adapter<BaseViewHolder>{
 
     @Override
     public BaseViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View itemView;
+        View itemView = null;
         if(viewType == TYPE_HEADER){
             itemView = mInflater.inflate(R.layout.rv_item_photoinfo_header,parent,false);
         }
@@ -59,7 +59,7 @@ public class PhotoInfoAdapter extends RecyclerView.Adapter<BaseViewHolder>{
         else if(viewType == TYPE_COLLECTION){
             itemView = mInflater.inflate(R.layout.rv_item_collection,parent,false);
         }
-        else{
+        else if(viewType == TYPE_TAG){
             itemView = mInflater.inflate(R.layout.rv_item_tag,parent,false);
         }
         return new BaseViewHolder(itemView);
@@ -117,7 +117,13 @@ public class PhotoInfoAdapter extends RecyclerView.Adapter<BaseViewHolder>{
             holder.setText(R.id.tv_num,strNum);
         }
         else if(holder.getItemViewType() == TYPE_TAG){
+            Tag data = (Tag) mDatas.get(position);
+            String url = data.getUrl();
+            ImageView ivCover = holder.getView(R.id.iv_cover);
+            Glide.with(mContext).load(url).centerCrop().into(ivCover);
 
+            String tag = data.getTitle().toUpperCase();
+            holder.setText(R.id.tv_tag,tag);
         }
 
     }
@@ -138,8 +144,9 @@ public class PhotoInfoAdapter extends RecyclerView.Adapter<BaseViewHolder>{
         else if(mDatas.get(position) instanceof PhotoInfo.RelatedCollectionsBean.ResultsBean){
             return TYPE_COLLECTION;
         }
-        else{
+        else if(mDatas.get(position) instanceof Tag){
             return TYPE_TAG;
         }
+        return TYPE_TITLE;
     }
 }

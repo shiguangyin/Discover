@@ -28,7 +28,7 @@ public class TagAdapter extends BaseAdpater<Tag>{
         ImageView ivCover = holder.getView(R.id.iv_cover);
         Glide.with(context).load(url).centerCrop().into(ivCover);
 
-        String tag = data.getTag().toUpperCase();
+        String tag = data.getTitle().toUpperCase();
         holder.setText(R.id.tv_tag,tag);
     }
 }

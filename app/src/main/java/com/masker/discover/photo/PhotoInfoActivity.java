@@ -6,6 +6,7 @@ import android.support.v7.app.ActionBar;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
@@ -16,6 +17,7 @@ import com.bumptech.glide.Glide;
 import com.masker.discover.R;
 import com.masker.discover.base.BaseActivity;
 import com.masker.discover.model.entity.PhotoInfo;
+import com.masker.discover.model.entity.Tag;
 import com.masker.discover.utils.ScreenUtils;
 
 import java.util.ArrayList;
@@ -130,6 +132,12 @@ public class PhotoInfoActivity extends BaseActivity implements PhotoInfoContract
         List<PhotoInfo.RelatedCollectionsBean.ResultsBean> collections
                 = info.getRelated_collections().getResults();
         mDatas.addAll(collections);
+
+        String titleTag = "Related Tags";
+        mDatas.add(titleTag);
+        List<Tag> tags = info.getTags();
+        mDatas.addAll(tags);
+        Log.i(TAG, "showPhotoInfo: "+tags.size());
         mAdapter.notifyDataSetChanged();
     }
 

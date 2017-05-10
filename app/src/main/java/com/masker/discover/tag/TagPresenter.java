@@ -70,7 +70,7 @@ public class TagPresenter implements TagContract.Presenter{
                             for (int i = 0; i < array.length(); i++) {
                                 JSONObject obj = array.getJSONObject(i);
                                 Tag tag = new Tag();
-                                tag.setTag(obj.getString("tag"));
+                                tag.setTitle(obj.getString("title"));
                                 tag.setUrl(obj.getString("url"));
                                 tags.add(tag);
                             }
