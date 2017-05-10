@@ -27,7 +27,6 @@ import de.hdodenhof.circleimageview.CircleImageView;
 
 
 public class PhotoAdapter extends BaseAdpater<Photo>{
-    private static final String TAG = "PhotoAdapter";
 
     public PhotoAdapter(List<Photo> datas, int layoutId, Context context) {
         super(datas, layoutId, context);
@@ -45,8 +44,7 @@ public class PhotoAdapter extends BaseAdpater<Photo>{
         lp.height = height;
         ivPhoto.setLayoutParams(lp);
         String url = data.getUrls().getRegular();
-        ColorDrawable placeHolder = getPlaceHolder();
-        Glide.with(context).load(url).placeholder(placeHolder).crossFade().into(ivPhoto);
+        Glide.with(context).load(url).crossFade().into(ivPhoto);
 
         String avatorUrl = data.getUser().getProfile_image().getLarge();
         CircleImageView ivAvator = holder.getView(R.id.iv_avator);
@@ -60,19 +58,5 @@ public class PhotoAdapter extends BaseAdpater<Photo>{
 
     }
 
-    private ColorDrawable getPlaceHolder(){
-        int index = (int) (Math.random()*5);
-        switch (index){
-            case 0:
-                return new ColorDrawable(ContextCompat.getColor(context,R.color.place_holder_0));
-            case 1:
-                return new ColorDrawable(ContextCompat.getColor(context,R.color.place_holder_1));
-            case 2:
-                return new ColorDrawable(ContextCompat.getColor(context,R.color.place_holder_2));
-            case 3:
-                return new ColorDrawable(ContextCompat.getColor(context,R.color.place_holder_3));
-            default:
-                return new ColorDrawable(ContextCompat.getColor(context,R.color.place_holder_4));
-        }
-    }
+
 }

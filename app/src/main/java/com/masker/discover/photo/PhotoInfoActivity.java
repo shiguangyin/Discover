@@ -3,6 +3,8 @@ package com.masker.discover.photo;
 import android.content.Context;
 import android.content.Intent;
 import android.support.v7.app.ActionBar;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,6 +17,9 @@ import com.masker.discover.R;
 import com.masker.discover.base.BaseActivity;
 import com.masker.discover.model.entity.PhotoInfo;
 import com.masker.discover.utils.ScreenUtils;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
@@ -39,9 +44,9 @@ public class PhotoInfoActivity extends BaseActivity implements PhotoInfoContract
     private Toolbar mToolbar;
     private ImageView mIvPhoto;
     private ProgressBar mProgressBar;
-    private CircleImageView mIvAvator;
-    private TextView mTvUser;
-    private TextView mTvCreatedAt;
+    private RecyclerView mRecyclerView;
+    private List<Object> mDatas;
+    private PhotoInfoAdapter mAdapter;
 
     private PhotoInfoContract.Presenter mPresenter;
 
@@ -66,16 +71,18 @@ public class PhotoInfoActivity extends BaseActivity implements PhotoInfoContract
         ActionBar ab = getSupportActionBar();
         if(ab != null){
             ab.setDisplayHomeAsUpEnabled(true);
+            ab.setDisplayShowTitleEnabled(false);
         }
         mIvPhoto = getViewById(R.id.iv_photo);
         resetSize();
         Glide.with(this).load(mImgUrl).into(mIvPhoto);
 
         mProgressBar = getViewById(R.id.progress_bar);
-        mIvAvator = getViewById(R.id.iv_avator);
-        mTvUser = getViewById(R.id.tv_user);
-        mTvCreatedAt = getViewById(R.id.tv_create_at);
-
+        mRecyclerView = getViewById(R.id.recycler_view);
+        mDatas = new ArrayList<>();
+        mAdapter = new PhotoInfoAdapter(this,mDatas);
+        mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
+        mRecyclerView.setAdapter(mAdapter);
     }
 
     @Override
@@ -114,14 +121,16 @@ public class PhotoInfoActivity extends BaseActivity implements PhotoInfoContract
     @Override
     public void showPhotoInfo(PhotoInfo info) {
         mProgressBar.setVisibility(View.GONE);
-        String avatorUrl = info.getUser().getProfile_image().getLarge();
-        Glide.with(this).load(avatorUrl).into(mIvAvator);
 
-        String user = info.getUser().getName();
-        mTvUser.setText(user);
-
-        String createdAt = info.getCreated_at();
-        mTvCreatedAt.setText(createdAt);
+        mRecyclerView.setVisibility(View.VISIBLE);
+        mDatas.add(info);
+        int total = info.getRelated_collections().getTotal();
+        String titleCollection = "Featured in "+total+" collections";
+        mDatas.add(titleCollection);
+        List<PhotoInfo.RelatedCollectionsBean.ResultsBean> collections
+                = info.getRelated_collections().getResults();
+        mDatas.addAll(collections);
+        mAdapter.notifyDataSetChanged();
     }
 
     @Override

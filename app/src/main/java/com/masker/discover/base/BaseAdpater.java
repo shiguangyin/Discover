@@ -20,6 +20,7 @@ import java.util.List;
 
 
 public abstract class BaseAdpater<T> extends RecyclerView.Adapter<BaseViewHolder> {
+    protected String TAG = getClass().getSimpleName();
 
     protected List<T> datas;
     protected int layoutId;
