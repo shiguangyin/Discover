@@ -9,6 +9,7 @@ import android.widget.RelativeLayout;
 
 import com.masker.discover.R;
 import com.masker.discover.base.BaseActivity;
+import com.masker.discover.home.HomeActivity;
 
 /**
  * Author: masker.

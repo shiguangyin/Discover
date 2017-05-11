@@ -1,4 +1,4 @@
-package com.masker.discover.activity;
+package com.masker.discover.home;
 
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -14,24 +14,34 @@ import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.TextView;
 
 import com.masker.discover.R;
+import com.masker.discover.activity.LoginActivity;
 import com.masker.discover.base.BaseActivity;
 import com.masker.discover.collection.CollectionFragment;
 import com.masker.discover.tag.TagFragment;
-import com.masker.discover.photo.PhotoPresenter;
 import com.masker.discover.photo.PhotoFragment;
-import com.masker.discover.tag.TagPresenter;
+
+import de.hdodenhof.circleimageview.CircleImageView;
 
 public class HomeActivity extends BaseActivity {
+
 
 
     private Toolbar mToolbar;
     private AppBarLayout mAppBar;
     private TabLayout mTabLayout;
     private NavigationView mNavView;
+    private View mNavHeader;
     private DrawerLayout mDrawer;
     private ActionBarDrawerToggle mDrawerToggle;
+
+    //header view
+    private CircleImageView mIvAvatar;
+    private TextView mTvLogin;
+
 
 
     public static final int FRAGMENT_HOME = 0;
@@ -90,8 +100,22 @@ public class HomeActivity extends BaseActivity {
                 return true;
             }
         });
+        mNavHeader = mNavView.getHeaderView(0);
+        mTvLogin = (TextView) mNavHeader.findViewById(R.id.tv_login);
+        mTvLogin.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                invokeActivity(HomeActivity.this,LoginActivity.class);
+            }
+        });
 
         switchFragment(FRAGMENT_HOME);
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+
     }
 
     @Override

@@ -5,7 +5,7 @@ import android.support.v4.view.ViewPager;
 import android.view.View;
 
 import com.masker.discover.R;
-import com.masker.discover.activity.HomeActivity;
+import com.masker.discover.home.HomeActivity;
 import com.masker.discover.base.BaseFragment;
 
 /**

@@ -42,7 +42,7 @@
         android:layout_alignParentBottom="true"
         android:background="#1feceff1">
         <de.hdodenhof.circleimageview.CircleImageView
-            android:id="@+id/iv_avator"
+            android:id="@+id/iv_avatar"
             android:layout_width="30dp"
             android:layout_height="30dp"
             android:layout_centerVertical="true"
@@ -58,7 +58,7 @@
             android:textColor="@color/color_text_white"
             android:layout_margin="5dp"
             android:gravity="center_vertical"
-            android:layout_toEndOf="@id/iv_avator"/>
+            android:layout_toEndOf="@id/iv_avatar"/>
 
 
     </RelativeLayout>

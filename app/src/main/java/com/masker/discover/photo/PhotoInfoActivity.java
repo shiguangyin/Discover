@@ -161,6 +161,7 @@ public class PhotoInfoActivity extends BaseActivity implements PhotoInfoContract
     @Override
     protected void onDestroy() {
         super.onDestroy();
+        Log.i(TAG, "onDestroy: ");
         if(mPresenter != null){
             mPresenter.onUnsubscribe();
         }

@@ -70,9 +70,9 @@ public class PhotoInfoAdapter extends RecyclerView.Adapter<BaseViewHolder>{
         if(holder.getItemViewType() == TYPE_HEADER){
             PhotoInfo info = (PhotoInfo) mDatas.get(position);
 
-            CircleImageView ivAvator = holder.getView(R.id.iv_avator);
-            String avatorUrl = info.getUser().getProfile_image().getLarge();
-            Glide.with(mContext).load(avatorUrl).into(ivAvator);
+            CircleImageView ivAvatar = holder.getView(R.id.iv_avatar);
+            String avatarUrl = info.getUser().getProfile_image().getLarge();
+            Glide.with(mContext).load(avatarUrl).into(ivAvatar);
 
             holder.setText(R.id.tv_name,info.getUser().getName());
             holder.setText(R.id.tv_time, DateUtils.transform(info.getUpdated_at()));
@@ -102,9 +102,9 @@ public class PhotoInfoAdapter extends RecyclerView.Adapter<BaseViewHolder>{
             String url = data.getCover_photo().getUrls().getRegular();
             Glide.with(mContext).load(url).into(ivPhoto);
 
-            CircleImageView ivAvator = holder.getView(R.id.iv_avator);
-            String avatorUrl = data.getUser().getProfile_image().getLarge();
-            Glide.with(mContext).load(avatorUrl).into(ivAvator);
+            CircleImageView ivAvatar = holder.getView(R.id.iv_avatar);
+            String avatarUrl = data.getUser().getProfile_image().getLarge();
+            Glide.with(mContext).load(avatarUrl).into(ivAvatar);
 
             String name = data.getUser().getName();
             holder.setText(R.id.tv_name,name);

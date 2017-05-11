@@ -43,9 +43,9 @@ public class CollectionAdapter extends BaseAdpater<Collection>{
         String url = data.getCover_photo().getUrls().getRegular();
         Glide.with(context).load(url).into(ivPhoto);
 
-        CircleImageView ivAvator = holder.getView(R.id.iv_avator);
+        CircleImageView ivAvatar = holder.getView(R.id.iv_avatar);
         String avatorUrl = data.getUser().getProfile_image().getLarge();
-        Glide.with(context).load(avatorUrl).into(ivAvator);
+        Glide.with(context).load(avatorUrl).into(ivAvatar);
 
         String name = data.getUser().getName();
         holder.setText(R.id.tv_name,name);

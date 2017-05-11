@@ -12,7 +12,7 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity
-            android:name=".activity.HomeActivity"
+            android:name=".home.HomeActivity"
             android:launchMode="singleTask" />
         <activity
             android:name=".activity.SplashActivity"
@@ -25,9 +25,12 @@
         </activity>
 
         <activity android:name=".photo.PhotoInfoActivity"
-            android:parentActivityName=".activity.HomeActivity">
-
+            android:launchMode="singleTop"
+            android:parentActivityName=".home.HomeActivity">
         </activity>
+
+        <activity android:name=".activity.LoginActivity"
+            android:launchMode="singleTop"></activity>
     </application>
 
 </manifest>
