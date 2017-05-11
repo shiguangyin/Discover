@@ -4,6 +4,7 @@ import android.content.Context;
 import android.graphics.drawable.ColorDrawable;
 import android.support.v4.content.ContextCompat;
 
+import android.util.Log;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 

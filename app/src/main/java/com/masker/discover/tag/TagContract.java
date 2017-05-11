@@ -13,9 +13,8 @@ import java.util.List;
  */
 
 public interface TagContract {
-    interface View extends BaseView<Presenter>{
+    interface View extends BaseView{
         void showTags(List<Tag> tags);
-        void showError();
     }
 
     interface Presenter extends BasePresenter{

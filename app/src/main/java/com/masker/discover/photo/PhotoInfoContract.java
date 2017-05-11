@@ -11,9 +11,8 @@ import com.masker.discover.model.entity.PhotoInfo;
  */
 
 public interface PhotoInfoContract {
-    interface View extends BaseView<Presenter>{
+    interface View extends BaseView{
         void showPhotoInfo(PhotoInfo info);
-        void showError();
     }
 
     interface Presenter extends BasePresenter{

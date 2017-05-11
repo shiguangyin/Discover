@@ -28,7 +28,6 @@ public class PhotoPresenter implements PhotoContract.Presenter{
     public PhotoPresenter(PhotoContract.View view){
         mView = view;
         mSubscriptions = new CompositeSubscription();
-        mView.setPresenter(this);
     }
 
 

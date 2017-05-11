@@ -14,9 +14,8 @@ import java.util.List;
 
 
 public interface PhotoContract {
-    interface View extends BaseView<Presenter> {
+    interface View extends BaseView {
         void showPhotos(List<Photo> photos);
-        void showError();
     }
 
     interface Presenter extends BasePresenter{

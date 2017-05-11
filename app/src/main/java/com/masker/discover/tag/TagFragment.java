@@ -1,5 +1,7 @@
 package com.masker.discover.tag;
 
+import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
@@ -30,6 +32,12 @@ public class TagFragment extends BaseFragment implements TagContract.View{
     }
 
     @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+
+    }
+
+    @Override
     protected void initViews(View contentView) {
         mRecyclerView = getViewById(R.id.recycler_view);
         mTags = new ArrayList<>();
@@ -41,6 +49,7 @@ public class TagFragment extends BaseFragment implements TagContract.View{
 
     @Override
     protected void initData() {
+        mPresenter = new TagPresenter(this,getContext());
         mPresenter.loadTags();
     }
 
@@ -58,9 +67,10 @@ public class TagFragment extends BaseFragment implements TagContract.View{
     }
 
     @Override
-    public void setPresenter(TagContract.Presenter presenter) {
-        mPresenter = presenter;
+    public void showEmpty() {
+
     }
+
 
     public static TagFragment newInstance(){
 

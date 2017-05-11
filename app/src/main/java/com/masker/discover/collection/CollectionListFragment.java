@@ -49,6 +49,7 @@ public class CollectionListFragment extends BaseFragment
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         mType = getArguments().getInt(TYPE);
+
     }
 
 
@@ -85,6 +86,7 @@ public class CollectionListFragment extends BaseFragment
 
     @Override
     protected void initData() {
+        mPresenter = new CollectionPresenter(this);
         mRefreshLayout.post(new Runnable() {
             @Override
             public void run() {
@@ -96,17 +98,12 @@ public class CollectionListFragment extends BaseFragment
 
     public static CollectionListFragment newInstance(int type){
         CollectionListFragment fragment = new CollectionListFragment();
-        CollectionPresenter presenter = new CollectionPresenter(fragment);
         Bundle bundle = new Bundle();
         bundle.putInt(TYPE,type);
         fragment.setArguments(bundle);
         return fragment;
     }
 
-    @Override
-    public void setPresenter(CollectionContract.Presenter presenter) {
-        mPresenter = presenter;
-    }
 
     @Override
     public void showCollections(List<Collection> collections) {
@@ -121,8 +118,15 @@ public class CollectionListFragment extends BaseFragment
     }
 
     @Override
+    public void showEmpty() {
+
+    }
+
+    @Override
     public void onDestroy() {
         super.onDestroy();
-        mPresenter.onUnsubscribe();
+        if(mPresenter != null){
+            mPresenter.onUnsubscribe();
+        }
     }
 }

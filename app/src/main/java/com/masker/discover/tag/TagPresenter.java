@@ -36,7 +36,6 @@ public class TagPresenter implements TagContract.Presenter{
 
     public TagPresenter(TagContract.View view, Context context){
         mView = view;
-        mView.setPresenter(this);
         mContext = context;
     }
 

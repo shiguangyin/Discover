@@ -1,9 +1,13 @@
 package com.masker.discover.base;
 
 /**
- * Created by masker on 2017/4/26.
+ * CreatedBy: masker
+ * Date: 2017/5/11
+ * Description:
  */
 
-public interface BaseView<T extends BasePresenter> {
-    void setPresenter(T presenter);
+
+public interface BaseView {
+    void showError();
+    void showEmpty();
 }

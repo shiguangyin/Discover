@@ -29,7 +29,6 @@ public class CollectionPresenter implements CollectionContract.Presenter{
 
     public CollectionPresenter(CollectionContract.View view){
         mView = view;
-        mView.setPresenter(this);
         mCompositeSubscription = new CompositeSubscription();
     }
 

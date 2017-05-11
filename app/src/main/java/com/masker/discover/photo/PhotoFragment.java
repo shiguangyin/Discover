@@ -93,6 +93,7 @@ public class PhotoFragment extends BaseFragment implements PhotoContract.View{
 
     @Override
     protected void initData() {
+        mPresenter = new PhotoPresenter(this);
         // auto refresh
         mRefreshLayout.post(new Runnable() {
             @Override
@@ -103,10 +104,6 @@ public class PhotoFragment extends BaseFragment implements PhotoContract.View{
         mRefreshListener.onRefresh();
     }
 
-    @Override
-    public void setPresenter(PhotoContract.Presenter presenter) {
-        this.mPresenter = presenter;
-    }
 
 
     @Override
@@ -119,6 +116,11 @@ public class PhotoFragment extends BaseFragment implements PhotoContract.View{
 
     @Override
     public void showError() {
+
+    }
+
+    @Override
+    public void showEmpty() {
 
     }
 

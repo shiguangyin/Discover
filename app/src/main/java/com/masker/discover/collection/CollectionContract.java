@@ -14,9 +14,8 @@ import java.util.List;
 
 public interface CollectionContract {
 
-    interface View extends BaseView<Presenter>{
+    interface View extends BaseView{
         void showCollections(List<Collection> collections);
-        void showError();
     }
 
     interface Presenter extends BasePresenter{

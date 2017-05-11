@@ -25,7 +25,6 @@ public class PhotoInfoPresenter implements PhotoInfoContract.Presenter {
 
     public PhotoInfoPresenter(PhotoInfoContract.View view){
         mView = view;
-        view.setPresenter(this);
         mCompositeSubscription = new CompositeSubscription();
     }
 
@@ -36,7 +35,6 @@ public class PhotoInfoPresenter implements PhotoInfoContract.Presenter {
 
     @Override
     public void loadPhotoInfo(String id) {
-        Log.i(TAG, "loadPhotoInfo: "+id);
         Subscription subscription = PhotoRepository.getPhotoInfo(id)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())

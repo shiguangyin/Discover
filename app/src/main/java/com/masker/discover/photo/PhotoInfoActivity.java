@@ -2,6 +2,8 @@ package com.masker.discover.photo;
 
 import android.content.Context;
 import android.content.Intent;
+import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.support.v7.app.ActionBar;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -53,6 +55,11 @@ public class PhotoInfoActivity extends BaseActivity implements PhotoInfoContract
     private PhotoInfoContract.Presenter mPresenter;
 
     @Override
+    protected void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+    }
+
+    @Override
     protected void handleIntent() {
         Intent intent = getIntent();
         mId = intent.getStringExtra(ID);
@@ -89,7 +96,7 @@ public class PhotoInfoActivity extends BaseActivity implements PhotoInfoContract
 
     @Override
     protected void initDatas() {
-        new PhotoInfoPresenter(this);
+        mPresenter = new PhotoInfoPresenter(this);
         mPresenter.loadPhotoInfo(mId);
     }
 
@@ -115,10 +122,6 @@ public class PhotoInfoActivity extends BaseActivity implements PhotoInfoContract
         mIvPhoto.setLayoutParams(lp);
     }
 
-    @Override
-    public void setPresenter(PhotoInfoContract.Presenter presenter) {
-        mPresenter = presenter;
-    }
 
     @Override
     public void showPhotoInfo(PhotoInfo info) {
@@ -126,23 +129,40 @@ public class PhotoInfoActivity extends BaseActivity implements PhotoInfoContract
 
         mRecyclerView.setVisibility(View.VISIBLE);
         mDatas.add(info);
-        int total = info.getRelated_collections().getTotal();
-        String titleCollection = "Featured in "+total+" collections";
-        mDatas.add(titleCollection);
+
         List<PhotoInfo.RelatedCollectionsBean.ResultsBean> collections
                 = info.getRelated_collections().getResults();
-        mDatas.addAll(collections);
+        if(collections != null && collections.size()>0){
+            int total = info.getRelated_collections().getTotal();
+            String titleCollection = "Featured in "+total+" collections";
+            mDatas.add(titleCollection);
+            mDatas.addAll(collections);
+        }
 
-        String titleTag = "Related Tags";
-        mDatas.add(titleTag);
         List<Tag> tags = info.getTags();
-        mDatas.addAll(tags);
-        Log.i(TAG, "showPhotoInfo: "+tags.size());
+        if(tags != null && tags.size() > 0){
+            String titleTag = "Related Tags";
+            mDatas.add(titleTag);
+            mDatas.addAll(tags);
+        }
         mAdapter.notifyDataSetChanged();
     }
 
     @Override
     public void showError() {
 
+    }
+
+    @Override
+    public void showEmpty() {
+
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        if(mPresenter != null){
+            mPresenter.onUnsubscribe();
+        }
     }
 }

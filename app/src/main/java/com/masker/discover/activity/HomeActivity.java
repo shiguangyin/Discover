@@ -122,7 +122,6 @@ public class HomeActivity extends BaseActivity {
             case FRAGMENT_HOME:
                 if(mPhotoFragment == null){
                     mPhotoFragment = PhotoFragment.newInstance();
-                    PhotoPresenter homePresenter = new PhotoPresenter(mPhotoFragment);
                 }
                 return mPhotoFragment;
 
@@ -135,7 +134,6 @@ public class HomeActivity extends BaseActivity {
             case FRAGMENT_TAG:
                 if(mTagFragment == null){
                     mTagFragment = TagFragment.newInstance();
-                    TagPresenter tagPresenter = new TagPresenter(mTagFragment,this);
                 }
                 return mTagFragment;
             default:
