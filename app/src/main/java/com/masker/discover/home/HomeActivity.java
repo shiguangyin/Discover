@@ -12,23 +12,33 @@ import android.support.v4.app.FragmentTransaction;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.widget.Toolbar;
+import android.text.TextUtils;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
+import com.masker.discover.App;
 import com.masker.discover.R;
 import com.masker.discover.activity.LoginActivity;
 import com.masker.discover.base.BaseActivity;
 import com.masker.discover.collection.CollectionFragment;
+import com.masker.discover.model.entity.MyInfo;
 import com.masker.discover.tag.TagFragment;
 import com.masker.discover.photo.PhotoFragment;
+import com.masker.discover.utils.SpUtils;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
-public class HomeActivity extends BaseActivity {
+public class HomeActivity extends BaseActivity implements HomeContract.View{
 
 
+    public static final int FRAGMENT_HOME = 0;
+    public static final int FRAGMENT_COLLECTION = 1;
+    public static final int FRAGMENT_TAG = 2;
+
+    private int currentId = -1;
 
     private Toolbar mToolbar;
     private AppBarLayout mAppBar;
@@ -41,21 +51,21 @@ public class HomeActivity extends BaseActivity {
     //header view
     private CircleImageView mIvAvatar;
     private TextView mTvLogin;
+    private TextView mTvBio;
+    private TextView mTvName;
+    private TextView mTvEmail;
 
 
-
-    public static final int FRAGMENT_HOME = 0;
-    public static final int FRAGMENT_COLLECTION = 1;
-    public static final int FRAGMENT_TAG = 2;
-
-    private int currentId = -1;
 
     private PhotoFragment mPhotoFragment;
     private CollectionFragment mCollectionFragment;
     private TagFragment mTagFragment;
 
+    private HomeContract.Presenter mPrensenter;
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
+        mPrensenter = new HomePresenter(this);
         super.onCreate(savedInstanceState);
     }
 
@@ -108,7 +118,10 @@ public class HomeActivity extends BaseActivity {
                 invokeActivity(HomeActivity.this,LoginActivity.class);
             }
         });
-
+        mTvBio = (TextView) mNavHeader.findViewById(R.id.tv_bio);
+        mTvName = (TextView) mNavHeader.findViewById(R.id.tv_name);
+        mTvEmail = (TextView) mNavHeader.findViewById(R.id.tv_email);
+        mIvAvatar = (CircleImageView) mNavHeader.findViewById(R.id.iv_avatar);
         switchFragment(FRAGMENT_HOME);
     }
 
@@ -120,7 +133,9 @@ public class HomeActivity extends BaseActivity {
 
     @Override
     protected void initDatas() {
-
+        if(App.isLogin()){
+            mPrensenter.getMyInfo();
+        }
     }
 
     public void switchFragment(int id){
@@ -172,12 +187,56 @@ public class HomeActivity extends BaseActivity {
         return true;
     }
 
+    /*
+     * set title for toolbar
+     */
     public void setTitle(String title){
         mToolbar.setTitle(title);
     }
 
+    /*
+     * get TabLayout for collection fragment
+     */
     public TabLayout getTabLayout(){
         return mTabLayout;
     }
 
+
+
+    @Override
+    public void showError() {
+
+    }
+
+    @Override
+    public void showEmpty() {
+
+    }
+
+    @Override
+    public void updateMyInfo(MyInfo info) {
+        mTvLogin.setVisibility(View.GONE);
+
+        mTvName.setVisibility(View.VISIBLE);
+        mTvName.setText(info.getUsername());
+
+        mTvEmail.setVisibility(View.VISIBLE);
+        mTvEmail.setText(info.getEmail());
+
+        mTvBio.setVisibility(View.VISIBLE);
+        mTvBio.setText(info.getBio());
+
+        Glide.with(this).load(info.getProfile_image()
+                .getLarge()).dontAnimate()
+                .into(mIvAvatar);
+
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        if(mPrensenter != null){
+            mPrensenter.onUnsubscribe();
+        }
+    }
 }

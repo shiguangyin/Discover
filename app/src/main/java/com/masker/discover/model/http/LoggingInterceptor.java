@@ -4,6 +4,7 @@ import android.util.Log;
 
 import com.google.gson.Gson;
 import com.masker.discover.model.entity.Token;
+import com.orhanobut.logger.Logger;
 
 import java.io.IOException;
 import java.nio.charset.Charset;
@@ -37,12 +38,12 @@ public class LoggingInterceptor implements Interceptor{
         Log.i(TAG, "intercept: "+response.code());
 
         //print response;
-//        ResponseBody responseBody = response.body();
-//        BufferedSource source = responseBody.source();
-//        source.request(Long.MAX_VALUE); // Buffer the entire body.
-//        Buffer buffer = source.buffer();
-//        String strRes = buffer.clone().readString(Charset.forName("UTF-8"));
-//        Log.i(TAG, "intercept: "+"response:" + strRes);
+        ResponseBody responseBody = response.body();
+        BufferedSource source = responseBody.source();
+        source.request(Long.MAX_VALUE); // Buffer the entire body.
+        Buffer buffer = source.buffer();
+        String strRes = buffer.clone().readString(Charset.forName("UTF-8"));
+        Logger.json(strRes);
 
 
 //        long t2 = System.nanoTime();

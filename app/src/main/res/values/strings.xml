@@ -34,4 +34,6 @@
 
     <string name="photos">Photos</string>
 
+    <string name="to_login">LOGIN</string>
+
 </resources>

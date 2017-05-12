@@ -2,6 +2,9 @@ package com.masker.discover;
 
 import android.app.Application;
 import android.content.Context;
+import android.text.TextUtils;
+
+import com.masker.discover.utils.SpUtils;
 
 /**
  * CreatedBy: masker
@@ -20,5 +23,10 @@ public class App extends Application{
     public void onCreate() {
         super.onCreate();
         mApp = this;
+    }
+
+    public static boolean isLogin(){
+        String token = SpUtils.getUser(mApp,SpUtils.TOKEN);
+        return !TextUtils.isEmpty(token);
     }
 }
