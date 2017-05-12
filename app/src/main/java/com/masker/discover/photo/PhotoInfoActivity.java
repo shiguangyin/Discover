@@ -112,6 +112,18 @@ public class PhotoInfoActivity extends BaseActivity implements PhotoInfoContract
         context.startActivity(intent);
     }
 
+    public static void start(Context context,Bundle bundle,String id,String imgUrl,int width,int height){
+        Intent intent = new Intent(context,PhotoInfoActivity.class);
+        intent.putExtra(ID,id);
+        intent.putExtra(IMG_URL,imgUrl);
+        intent.putExtra(WIDTH,width);
+        intent.putExtra(HEIGHT,height);
+        context.startActivity(intent,bundle);
+    }
+
+
+
+
     /*
     * reset size of imageview
      */
@@ -161,7 +173,6 @@ public class PhotoInfoActivity extends BaseActivity implements PhotoInfoContract
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        Log.i(TAG, "onDestroy: ");
         if(mPresenter != null){
             mPresenter.onUnsubscribe();
         }

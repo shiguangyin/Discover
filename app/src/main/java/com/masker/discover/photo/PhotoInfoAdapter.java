@@ -2,7 +2,6 @@ package com.masker.discover.photo;
 
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
-import android.text.Layout;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -10,12 +9,12 @@ import android.widget.ImageView;
 import android.widget.RelativeLayout;
 
 import com.bumptech.glide.Glide;
+import com.masker.discover.AppConstants;
 import com.masker.discover.R;
 import com.masker.discover.base.BaseViewHolder;
-import com.masker.discover.model.entity.Photo;
 import com.masker.discover.model.entity.PhotoInfo;
 import com.masker.discover.model.entity.Tag;
-import com.masker.discover.utils.DateUtils;
+import com.masker.discover.utils.FormatUtils;
 import com.masker.discover.utils.ScreenUtils;
 
 import java.util.List;
@@ -75,11 +74,11 @@ public class PhotoInfoAdapter extends RecyclerView.Adapter<BaseViewHolder>{
             Glide.with(mContext).load(avatarUrl).into(ivAvatar);
 
             holder.setText(R.id.tv_name,info.getUser().getName());
-            holder.setText(R.id.tv_time, DateUtils.transform(info.getUpdated_at()));
+            holder.setText(R.id.tv_time, FormatUtils.transform(info.getUpdated_at()));
 
-            holder.setText(R.id.tv_views_num, String.valueOf(info.getViews()));
-            holder.setText(R.id.tv_download_num,String.valueOf(info.getDownloads()));
-            holder.setText(R.id.tv_likes_num,String.valueOf(info.getLikes()));
+            holder.setText(R.id.tv_views_num,FormatUtils.getNum(info.getViews()));
+            holder.setText(R.id.tv_download_num,FormatUtils.getNum(info.getDownloads()));
+            holder.setText(R.id.tv_likes_num,FormatUtils.getNum(info.getLikes()));
         }
 
         else if(holder.getItemViewType() == TYPE_TITLE){
@@ -118,7 +117,7 @@ public class PhotoInfoAdapter extends RecyclerView.Adapter<BaseViewHolder>{
         }
         else if(holder.getItemViewType() == TYPE_TAG){
             Tag data = (Tag) mDatas.get(position);
-            String url = data.getUrl();
+            String url = data.getUrl()+ AppConstants.TAG_SUFFIX;
             ImageView ivCover = holder.getView(R.id.iv_cover);
             Glide.with(mContext).load(url).centerCrop().into(ivCover);
 

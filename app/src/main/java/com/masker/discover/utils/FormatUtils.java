@@ -6,7 +6,7 @@ package com.masker.discover.utils;
  * Description: date utils
  */
 
-public class DateUtils {
+public class FormatUtils {
     /**
      *
      * @param origin 2014-06-02T14:57:23-04:00
@@ -14,6 +14,13 @@ public class DateUtils {
      */
     public static String transform(String origin){
         return origin.substring(0,origin.indexOf("T"));
+    }
+
+    public static String getNum(int num){
+        if(num > 1000){
+            return String.valueOf(num/1000)+"K";
+        }
+        return String.valueOf(num);
     }
 
 }

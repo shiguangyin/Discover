@@ -2,6 +2,8 @@ package com.masker.discover.photo;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v4.app.ActivityOptionsCompat;
+import android.support.v4.util.Pair;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -10,6 +12,7 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.ImageView;
 
 import com.masker.discover.R;
 import com.masker.discover.base.BaseAdpater;
@@ -19,6 +22,8 @@ import com.masker.discover.model.entity.Photo;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import de.hdodenhof.circleimageview.CircleImageView;
 
 /**
  * CreatedBy: masker
@@ -84,7 +89,12 @@ public class PhotoFragment extends BaseFragment implements PhotoContract.View{
                 String imgUrl = photo.getUrls().getRegular();
                 int width = photo.getWidth();
                 int height = photo.getHeight();
-                PhotoInfoActivity.start(getContext(),id,imgUrl,width,height);
+
+                ImageView ivPhoto = (ImageView) view.findViewById(R.id.iv_photo);
+                ActivityOptionsCompat options = ActivityOptionsCompat
+                        .makeSceneTransitionAnimation(getActivity(),ivPhoto,"photo");
+                PhotoInfoActivity.start(getContext(),options.toBundle(),
+                        id,imgUrl,width,height);
             }
         });
         mRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));

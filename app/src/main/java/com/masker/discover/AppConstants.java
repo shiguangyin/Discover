@@ -21,4 +21,7 @@ public class AppConstants {
             +"&response_type=code"
             +"&scope=public+read_user+write_user+read_photos+write_photos"
             +"+write_likes+write_followers+read_collections+write_collections";
+
+    public static final String TAG_SUFFIX = "?dpr=2&auto=compress,format&crop=entropy&fit=crop&w=376&h=251&q=80&cs=tinysrgb";
+
 }

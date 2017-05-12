@@ -7,6 +7,7 @@
         android:id="@+id/iv_photo"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:transitionName="photo"
         android:scaleType="fitXY"/>
 
     <RelativeLayout
@@ -19,7 +20,8 @@
             android:layout_width="30dp"
             android:layout_height="30dp"
             android:layout_centerVertical="true"
-            android:layout_margin="5dp" />
+            android:layout_margin="5dp"
+            />
 
         <TextView
             android:id="@+id/tv_name"
