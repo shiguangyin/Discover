@@ -8,7 +8,7 @@ import java.util.List;
  * Description: myinfo bean for /me
  */
 
-public class MyInfo {
+public class MyInfoBean {
 
     private String uid;
     private String id;

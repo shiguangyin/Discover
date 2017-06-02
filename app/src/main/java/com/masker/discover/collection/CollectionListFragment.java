@@ -10,7 +10,8 @@ import android.view.View;
 import com.masker.discover.R;
 import com.masker.discover.base.BaseAdpater;
 import com.masker.discover.base.BaseFragment;
-import com.masker.discover.model.entity.Collection;
+import com.masker.discover.base.BaseMvpFragment;
+import com.masker.discover.model.entity.CollectionListBean;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -21,8 +22,8 @@ import java.util.List;
  * Description: the fragment to show collection list
  */
 
-public class CollectionListFragment extends BaseFragment
-        implements CollectionContract.View{
+public class CollectionListFragment extends BaseMvpFragment
+        implements CollectionListContract.View{
 
     public static final String TYPE = "type";
 
@@ -39,17 +40,16 @@ public class CollectionListFragment extends BaseFragment
     private RecyclerView mRecyclerView;
     private SwipeRefreshLayout mRefreshLayout;
     private SwipeRefreshLayout.OnRefreshListener mListener;
-    private CollectionAdapter mAdapter;
-    private List<Collection> mCollections;
+    private CollectionListAdapter mAdapter;
+    private List<CollectionListBean> mCollections;
 
-    private CollectionContract.Presenter mPresenter;
+    private CollectionListContract.Presenter mPresenter;
     private int mPage = START_PAGE;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         mType = getArguments().getInt(TYPE);
-
     }
 
 
@@ -72,7 +72,7 @@ public class CollectionListFragment extends BaseFragment
         mRefreshLayout.setOnRefreshListener(mListener);
         mRecyclerView = getViewById(R.id.recycler_view);
         mCollections = new ArrayList<>();
-        mAdapter = new CollectionAdapter(mCollections,R.layout.rv_item_collection,getContext());
+        mAdapter = new CollectionListAdapter(mCollections,R.layout.rv_item_collection,getContext());
         mAdapter.setLoadMoreListener(new BaseAdpater.LoadMoreListener() {
             @Override
             public void onLoadMore() {
@@ -86,7 +86,6 @@ public class CollectionListFragment extends BaseFragment
 
     @Override
     protected void initData() {
-        mPresenter = new CollectionPresenter(this);
         mRefreshLayout.post(new Runnable() {
             @Override
             public void run() {
@@ -106,7 +105,7 @@ public class CollectionListFragment extends BaseFragment
 
 
     @Override
-    public void showCollections(List<Collection> collections) {
+    public void showCollections(List<CollectionListBean> collections) {
         mRefreshLayout.setRefreshing(false);
         mCollections.addAll(collections);
         mAdapter.notifyDataSetChanged();
@@ -122,9 +121,14 @@ public class CollectionListFragment extends BaseFragment
 
     }
 
+
     @Override
-    public void onDestroy() {
-        super.onDestroy();
+    protected void attach() {
+        mPresenter = new CollectionListPresenter(this);
+    }
+
+    @Override
+    protected void detach() {
         if(mPresenter != null){
             mPresenter.onUnsubscribe();
         }

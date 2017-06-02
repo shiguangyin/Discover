@@ -2,7 +2,7 @@ package com.masker.discover.tag;
 
 import com.masker.discover.base.BasePresenter;
 import com.masker.discover.base.BaseView;
-import com.masker.discover.model.entity.Tag;
+import com.masker.discover.model.entity.TagBean;
 
 import java.util.List;
 
@@ -12,9 +12,9 @@ import java.util.List;
  * Description:for tag fragment
  */
 
-public interface TagContract {
+public interface TagListContract {
     interface View extends BaseView{
-        void showTags(List<Tag> tags);
+        void showTags(List<TagBean> tags);
     }
 
     interface Presenter extends BasePresenter{

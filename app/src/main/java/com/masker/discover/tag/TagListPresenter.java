@@ -2,7 +2,7 @@ package com.masker.discover.tag;
 
 import android.content.Context;
 
-import com.masker.discover.model.entity.Tag;
+import com.masker.discover.model.entity.TagBean;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -27,14 +27,14 @@ import rx.schedulers.Schedulers;
  * Description:
  */
 
-public class TagPresenter implements TagContract.Presenter{
+public class TagListPresenter implements TagListContract.Presenter{
 
-    private static final String TAG = "TagPresenter";
+    private static final String TAG = "TagListPresenter";
 
-    private TagContract.View mView;
+    private TagListContract.View mView;
     private Context mContext;
 
-    public TagPresenter(TagContract.View view, Context context){
+    public TagListPresenter(TagListContract.View view, Context context){
         mView = view;
         mContext = context;
     }
@@ -49,12 +49,12 @@ public class TagPresenter implements TagContract.Presenter{
     public void loadTags() {
         final String path = "tags.json";
         Observable.just(path)
-                .map(new Func1<String, List<Tag>>() {
+                .map(new Func1<String, List<TagBean>>() {
                     @Override
-                    public List<Tag> call(String s) {
+                    public List<TagBean> call(String s) {
                         InputStream is ;
                         BufferedReader reader;
-                        List<Tag> tags = new ArrayList<>();
+                        List<TagBean> tags = new ArrayList<>();
                         StringBuilder sb = new StringBuilder();
                         String content;
                         try {
@@ -68,7 +68,7 @@ public class TagPresenter implements TagContract.Presenter{
                             JSONArray array = new JSONArray(content);
                             for (int i = 0; i < array.length(); i++) {
                                 JSONObject obj = array.getJSONObject(i);
-                                Tag tag = new Tag();
+                                TagBean tag = new TagBean();
                                 tag.setTitle(obj.getString("title"));
                                 tag.setUrl(obj.getString("url"));
                                 tags.add(tag);
@@ -83,9 +83,9 @@ public class TagPresenter implements TagContract.Presenter{
                 })
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Action1<List<Tag>>() {
+                .subscribe(new Action1<List<TagBean>>() {
                     @Override
-                    public void call(List<Tag> tags) {
+                    public void call(List<TagBean> tags) {
                         mView.showTags(tags);
                     }
                 }, new Action1<Throwable>() {

@@ -1,6 +1,6 @@
 package com.masker.discover.model.api;
 
-import com.masker.discover.model.entity.MyInfo;
+import com.masker.discover.model.entity.MyInfoBean;
 
 import retrofit2.http.GET;
 import rx.Observable;
@@ -14,5 +14,5 @@ import rx.Observable;
 public interface UserService {
 
     @GET("/me")
-    Observable<MyInfo> getMyInfo();
+    Observable<MyInfoBean> getMyInfo();
 }

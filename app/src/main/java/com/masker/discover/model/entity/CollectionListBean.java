@@ -10,7 +10,7 @@ import java.util.List;
  * Description:
  */
 
-public class Collection {
+public class CollectionListBean {
 
     /**
      * id : 296

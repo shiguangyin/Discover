@@ -1,8 +1,8 @@
 package com.masker.discover.model.api;
 
-import com.masker.discover.model.entity.Photo;
-import com.masker.discover.model.entity.PhotoInfo;
-import com.masker.discover.model.entity.PhotoStats;
+import com.masker.discover.model.entity.PhotoListBean;
+import com.masker.discover.model.entity.PhotoBean;
+import com.masker.discover.model.entity.PhotoStatsBean;
 
 import java.util.List;
 
@@ -25,15 +25,15 @@ public interface PhotoService {
     String POPULAR = "popular";
 
     @GET("/photos")
-    Observable<List<Photo>> getPhotos(@Query("page")int page,
-                                      @Query("per_page") int perPage,
-                                      @Query("order_by") String orderBy);
+    Observable<List<PhotoListBean>> getPhotos(@Query("page")int page,
+                                              @Query("per_page") int perPage,
+                                              @Query("order_by") String orderBy);
 
     @GET("/photos/{id}/info")
-    Observable<PhotoInfo> getPhotoInfo(@Path("id")String id);
+    Observable<PhotoBean> getPhotoInfo(@Path("id")String id);
 
     @GET("/photos/{id}/stats")
-    Observable<PhotoStats> getPhotoStats(@Path("id")String id);
+    Observable<PhotoStatsBean> getPhotoStats(@Path("id")String id);
 
     @GET("/photos/{id}/download")
     Observable<String> getPhotoDownloadUrl(@Path("id")String id);

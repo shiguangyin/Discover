@@ -2,8 +2,6 @@ package com.masker.discover.model.http;
 
 import android.util.Log;
 
-import com.google.gson.Gson;
-import com.masker.discover.model.entity.Token;
 import com.orhanobut.logger.Logger;
 
 import java.io.IOException;

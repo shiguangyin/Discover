@@ -10,7 +10,7 @@ import java.util.List;
  * Description:  photo detail infomation
  */
 
-public class PhotoInfo {
+public class PhotoBean {
 
 
     /**
@@ -55,7 +55,7 @@ public class PhotoInfo {
     private UserBeanXX user;
     private List<?> current_user_collections;
     private List<CategoriesBeanX> categories;
-    private List<Tag> tags;
+    private List<TagBean> tags;
 
     public String getId() {
         return id;
@@ -209,11 +209,11 @@ public class PhotoInfo {
         this.categories = categories;
     }
 
-    public List<Tag> getTags() {
+    public List<TagBean> getTags() {
         return tags;
     }
 
-    public void setTags(List<Tag> tags) {
+    public void setTags(List<TagBean> tags) {
         this.tags = tags;
     }
 

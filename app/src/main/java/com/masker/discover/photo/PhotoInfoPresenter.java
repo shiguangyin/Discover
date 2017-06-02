@@ -1,8 +1,6 @@
 package com.masker.discover.photo;
 
-import android.util.Log;
-
-import com.masker.discover.model.entity.PhotoInfo;
+import com.masker.discover.model.entity.PhotoBean;
 import com.masker.discover.model.repository.PhotoRepository;
 
 import rx.Subscription;
@@ -38,9 +36,9 @@ public class PhotoInfoPresenter implements PhotoInfoContract.Presenter {
         Subscription subscription = PhotoRepository.getPhotoInfo(id)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Action1<PhotoInfo>() {
+                .subscribe(new Action1<PhotoBean>() {
                     @Override
-                    public void call(PhotoInfo info) {
+                    public void call(PhotoBean info) {
                         mView.showPhotoInfo(info);
                     }
                 }, new Action1<Throwable>() {

@@ -1,7 +1,6 @@
 package com.masker.discover.collection;
 
-import com.masker.discover.collection.CollectionContract;
-import com.masker.discover.model.entity.Collection;
+import com.masker.discover.model.entity.CollectionListBean;
 import com.masker.discover.model.repository.CollectionRepository;
 
 import java.util.List;
@@ -20,14 +19,14 @@ import rx.subscriptions.CompositeSubscription;
  * Description:
  */
 
-public class CollectionPresenter implements CollectionContract.Presenter{
+public class CollectionListPresenter implements CollectionListContract.Presenter{
 
-    private CollectionContract.View mView;
+    private CollectionListContract.View mView;
 
     private CompositeSubscription mCompositeSubscription;
 
 
-    public CollectionPresenter(CollectionContract.View view){
+    public CollectionListPresenter(CollectionListContract.View view){
         mView = view;
         mCompositeSubscription = new CompositeSubscription();
     }
@@ -42,24 +41,24 @@ public class CollectionPresenter implements CollectionContract.Presenter{
 
     @Override
     public void loadCollections(int page, int perPage, int type) {
-        Subscription subscription = CollectionRepository.getCollections(page,perPage,type)
+        Subscription subscription = CollectionRepository.getCollectionList(page,perPage,type)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Action1<List<Collection>>() {
+                .subscribe(new Action1<List<CollectionListBean>>() {
                     @Override
-                    public void call(List<Collection> collections) {
+                    public void call(List<CollectionListBean> collections) {
                         //filter
                         Observable.from(collections)
-                                .filter(new Func1<Collection, Boolean>() {
+                                .filter(new Func1<CollectionListBean, Boolean>() {
                                     @Override
-                                    public Boolean call(Collection collection) {
+                                    public Boolean call(CollectionListBean collection) {
                                         return collection.getCover_photo() != null;
                                     }
                                 })
                                 .toList()
-                                .subscribe(new Action1<List<Collection>>() {
+                                .subscribe(new Action1<List<CollectionListBean>>() {
                                     @Override
-                                    public void call(List<Collection> collections) {
+                                    public void call(List<CollectionListBean> collections) {
                                         mView.showCollections(collections);
                                     }
                                 });

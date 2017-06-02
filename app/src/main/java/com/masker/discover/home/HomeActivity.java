@@ -1,8 +1,6 @@
 package com.masker.discover.home;
 
-import android.os.Bundle;
 import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
 import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.NavigationView;
 import android.support.design.widget.TabLayout;
@@ -12,7 +10,6 @@ import android.support.v4.app.FragmentTransaction;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.widget.Toolbar;
-import android.text.TextUtils;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -22,16 +19,15 @@ import com.bumptech.glide.Glide;
 import com.masker.discover.App;
 import com.masker.discover.R;
 import com.masker.discover.activity.LoginActivity;
-import com.masker.discover.base.BaseActivity;
+import com.masker.discover.base.BaseMvpActivity;
 import com.masker.discover.collection.CollectionFragment;
-import com.masker.discover.model.entity.MyInfo;
-import com.masker.discover.tag.TagFragment;
+import com.masker.discover.model.entity.MyInfoBean;
+import com.masker.discover.tag.TagListFragment;
 import com.masker.discover.photo.PhotoFragment;
-import com.masker.discover.utils.SpUtils;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
-public class HomeActivity extends BaseActivity implements HomeContract.View{
+public class HomeActivity extends BaseMvpActivity implements HomeContract.View{
 
 
     public static final int FRAGMENT_HOME = 0;
@@ -59,15 +55,10 @@ public class HomeActivity extends BaseActivity implements HomeContract.View{
 
     private PhotoFragment mPhotoFragment;
     private CollectionFragment mCollectionFragment;
-    private TagFragment mTagFragment;
+    private TagListFragment mTagFragment;
 
     private HomeContract.Presenter mPrensenter;
 
-    @Override
-    protected void onCreate(@Nullable Bundle savedInstanceState) {
-        mPrensenter = new HomePresenter(this);
-        super.onCreate(savedInstanceState);
-    }
 
     @Override
     protected int getLayoutId() {
@@ -172,7 +163,7 @@ public class HomeActivity extends BaseActivity implements HomeContract.View{
 
             case FRAGMENT_TAG:
                 if(mTagFragment == null){
-                    mTagFragment = TagFragment.newInstance();
+                    mTagFragment = TagListFragment.newInstance();
                 }
                 return mTagFragment;
             default:
@@ -214,7 +205,7 @@ public class HomeActivity extends BaseActivity implements HomeContract.View{
     }
 
     @Override
-    public void updateMyInfo(MyInfo info) {
+    public void updateMyInfo(MyInfoBean info) {
         mTvLogin.setVisibility(View.GONE);
 
         mTvName.setVisibility(View.VISIBLE);
@@ -232,11 +223,18 @@ public class HomeActivity extends BaseActivity implements HomeContract.View{
 
     }
 
+
+
     @Override
-    protected void onDestroy() {
-        super.onDestroy();
+    protected void attach() {
+        mPrensenter = new HomePresenter(this);
+    }
+
+    @Override
+    protected void detach() {
         if(mPrensenter != null){
             mPrensenter.onUnsubscribe();
+            mPrensenter = null;
         }
     }
 }

@@ -8,7 +8,8 @@ import android.view.View;
 
 import com.masker.discover.R;
 import com.masker.discover.base.BaseFragment;
-import com.masker.discover.model.entity.Tag;
+import com.masker.discover.base.BaseMvpFragment;
+import com.masker.discover.model.entity.TagBean;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -19,29 +20,25 @@ import java.util.List;
  * Description:tag fragment
  */
 
-public class TagFragment extends BaseFragment implements TagContract.View{
+public class TagListFragment extends BaseMvpFragment implements TagListContract.View{
     private RecyclerView mRecyclerView;
-    private TagAdapter mAdapter;
-    private List<Tag> mTags;
+    private TagListAdapter mAdapter;
+    private List<TagBean> mTags;
 
-    private TagContract.Presenter mPresenter;
+    private TagListContract.Presenter mPresenter;
 
     @Override
     protected int getLayoutId() {
         return R.layout.fragment_tag;
     }
 
-    @Override
-    public void onCreate(@Nullable Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
 
-    }
 
     @Override
     protected void initViews(View contentView) {
         mRecyclerView = getViewById(R.id.recycler_view);
         mTags = new ArrayList<>();
-        mAdapter = new TagAdapter(mTags,R.layout.rv_item_tag,getContext());
+        mAdapter = new TagListAdapter(mTags,R.layout.rv_item_tag,getContext());
         mAdapter.enableLoadMore(false);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         mRecyclerView.setAdapter(mAdapter);
@@ -49,14 +46,13 @@ public class TagFragment extends BaseFragment implements TagContract.View{
 
     @Override
     protected void initData() {
-        mPresenter = new TagPresenter(this,getContext());
         mPresenter.loadTags();
     }
 
 
 
     @Override
-    public void showTags(List<Tag> tags) {
+    public void showTags(List<TagBean> tags) {
         mTags.addAll(tags);
         mAdapter.notifyDataSetChanged();
     }
@@ -72,8 +68,23 @@ public class TagFragment extends BaseFragment implements TagContract.View{
     }
 
 
-    public static TagFragment newInstance(){
+    public static TagListFragment newInstance(){
 
-        return new TagFragment();
+        return new TagListFragment();
+    }
+
+
+
+    @Override
+    protected void attach() {
+        mPresenter = new TagListPresenter(this,getContext());
+    }
+
+    @Override
+    protected void detach() {
+        if(mPresenter != null){
+            mPresenter.onUnsubscribe();
+            mPresenter = null;
+        }
     }
 }

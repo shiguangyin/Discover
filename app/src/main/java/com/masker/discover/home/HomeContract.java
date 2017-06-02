@@ -2,7 +2,7 @@ package com.masker.discover.home;
 
 import com.masker.discover.base.BasePresenter;
 import com.masker.discover.base.BaseView;
-import com.masker.discover.model.entity.MyInfo;
+import com.masker.discover.model.entity.MyInfoBean;
 
 /**
  * CreatedBy: masker
@@ -12,7 +12,7 @@ import com.masker.discover.model.entity.MyInfo;
 
 public interface HomeContract {
     interface View extends BaseView {
-        void updateMyInfo(MyInfo info);
+        void updateMyInfo(MyInfoBean info);
     }
 
     interface Presenter extends BasePresenter {

@@ -6,7 +6,7 @@ package com.masker.discover.model.entity;
  * Description:
  */
 
-public class Tag {
+public class TagBean {
     private String title;
     private String url;
 

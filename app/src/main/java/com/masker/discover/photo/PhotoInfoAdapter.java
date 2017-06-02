@@ -12,8 +12,8 @@ import com.bumptech.glide.Glide;
 import com.masker.discover.AppConstants;
 import com.masker.discover.R;
 import com.masker.discover.base.BaseViewHolder;
-import com.masker.discover.model.entity.PhotoInfo;
-import com.masker.discover.model.entity.Tag;
+import com.masker.discover.model.entity.PhotoBean;
+import com.masker.discover.model.entity.TagBean;
 import com.masker.discover.utils.FormatUtils;
 import com.masker.discover.utils.ScreenUtils;
 
@@ -67,7 +67,7 @@ public class PhotoInfoAdapter extends RecyclerView.Adapter<BaseViewHolder>{
     @Override
     public void onBindViewHolder(BaseViewHolder holder, int position) {
         if(holder.getItemViewType() == TYPE_HEADER){
-            PhotoInfo info = (PhotoInfo) mDatas.get(position);
+            PhotoBean info = (PhotoBean) mDatas.get(position);
 
             CircleImageView ivAvatar = holder.getView(R.id.iv_avatar);
             String avatarUrl = info.getUser().getProfile_image().getLarge();
@@ -86,8 +86,8 @@ public class PhotoInfoAdapter extends RecyclerView.Adapter<BaseViewHolder>{
             holder.setText(R.id.tv_title,title);
         }
         else if(holder.getItemViewType() == TYPE_COLLECTION){
-            PhotoInfo.RelatedCollectionsBean.ResultsBean data
-                    = (PhotoInfo.RelatedCollectionsBean.ResultsBean) mDatas.get(position);
+            PhotoBean.RelatedCollectionsBean.ResultsBean data
+                    = (PhotoBean.RelatedCollectionsBean.ResultsBean) mDatas.get(position);
             ImageView ivPhoto = holder.getView(R.id.iv_photo);
             int width = ScreenUtils.getScreenWidth(mContext);
             int picWidth = data.getCover_photo().getWidth();
@@ -116,7 +116,7 @@ public class PhotoInfoAdapter extends RecyclerView.Adapter<BaseViewHolder>{
             holder.setText(R.id.tv_num,strNum);
         }
         else if(holder.getItemViewType() == TYPE_TAG){
-            Tag data = (Tag) mDatas.get(position);
+            TagBean data = (TagBean) mDatas.get(position);
             String url = data.getUrl()+ AppConstants.TAG_SUFFIX;
             ImageView ivCover = holder.getView(R.id.iv_cover);
             Glide.with(mContext).load(url).centerCrop().into(ivCover);
@@ -134,16 +134,16 @@ public class PhotoInfoAdapter extends RecyclerView.Adapter<BaseViewHolder>{
 
     @Override
     public int getItemViewType(int position) {
-        if(mDatas.get(position) instanceof PhotoInfo){
+        if(mDatas.get(position) instanceof PhotoBean){
             return TYPE_HEADER;
         }
         else if(mDatas.get(position) instanceof String){
             return TYPE_TITLE;
         }
-        else if(mDatas.get(position) instanceof PhotoInfo.RelatedCollectionsBean.ResultsBean){
+        else if(mDatas.get(position) instanceof PhotoBean.RelatedCollectionsBean.ResultsBean){
             return TYPE_COLLECTION;
         }
-        else if(mDatas.get(position) instanceof Tag){
+        else if(mDatas.get(position) instanceof TagBean){
             return TYPE_TAG;
         }
         return TYPE_TITLE;

@@ -1,6 +1,6 @@
 package com.masker.discover.model.api;
 
-import com.masker.discover.model.entity.Token;
+import com.masker.discover.model.entity.TokenBean;
 
 import retrofit2.http.Field;
 import retrofit2.http.FormUrlEncoded;
@@ -17,9 +17,9 @@ public interface TokenService {
 
     @FormUrlEncoded
     @POST("https://unsplash.com/oauth/token")
-    Observable<Token> getToken(@Field("client_id") String clientId,
-                               @Field("client_secret")String secret,
-                               @Field("redirect_uri")String redirectUri,
-                               @Field("code") String code,
-                               @Field("grant_type")String grantType);
+    Observable<TokenBean> getToken(@Field("client_id") String clientId,
+                                   @Field("client_secret")String secret,
+                                   @Field("redirect_uri")String redirectUri,
+                                   @Field("code") String code,
+                                   @Field("grant_type")String grantType);
 }

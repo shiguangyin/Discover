@@ -6,7 +6,7 @@ package com.masker.discover.model.entity;
  * Description: a photo statistics
  */
 
-public class PhotoStats {
+public class PhotoStatsBean {
 
     /**
      * downloads : 16450

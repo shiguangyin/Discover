@@ -3,7 +3,6 @@ package com.masker.discover.photo;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.ActivityOptionsCompat;
-import android.support.v4.util.Pair;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -18,12 +17,10 @@ import com.masker.discover.R;
 import com.masker.discover.base.BaseAdpater;
 import com.masker.discover.base.BaseFragment;
 import com.masker.discover.model.api.PhotoService;
-import com.masker.discover.model.entity.Photo;
+import com.masker.discover.model.entity.PhotoListBean;
 
 import java.util.ArrayList;
 import java.util.List;
-
-import de.hdodenhof.circleimageview.CircleImageView;
 
 /**
  * CreatedBy: masker
@@ -40,8 +37,8 @@ public class PhotoFragment extends BaseFragment implements PhotoContract.View{
     private SwipeRefreshLayout mRefreshLayout;
     private SwipeRefreshLayout.OnRefreshListener mRefreshListener;
     private RecyclerView mRecyclerView;
-    private List<Photo> mPhotos;
-    private PhotoAdapter mPhotoAdapter;
+    private List<PhotoListBean> mPhotos;
+    private PhotoListAdapter mPhotoAdapter;
     private int mPage = START_PAGE;
     private int mPerPage = 20;
     private String mOrder = PhotoService.LATEST;
@@ -74,7 +71,7 @@ public class PhotoFragment extends BaseFragment implements PhotoContract.View{
         mRefreshLayout.setOnRefreshListener(mRefreshListener);
         mRecyclerView = getViewById(R.id.recycler_view);
         mPhotos = new ArrayList<>();
-        mPhotoAdapter = new PhotoAdapter(mPhotos,R.layout.rv_item_photo,getContext());
+        mPhotoAdapter = new PhotoListAdapter(mPhotos,R.layout.rv_item_photo,getContext());
         mPhotoAdapter.setLoadMoreListener(new BaseAdpater.LoadMoreListener() {
             @Override
             public void onLoadMore() {
@@ -84,7 +81,7 @@ public class PhotoFragment extends BaseFragment implements PhotoContract.View{
         mPhotoAdapter.setOnItemClickListener(new BaseAdpater.OnItemClickListener() {
             @Override
             public void onClick(View view, int position) {
-                Photo photo = mPhotos.get(position);
+                PhotoListBean photo = mPhotos.get(position);
                 String id = photo.getId();
                 String imgUrl = photo.getUrls().getRegular();
                 int width = photo.getWidth();
@@ -117,7 +114,7 @@ public class PhotoFragment extends BaseFragment implements PhotoContract.View{
 
 
     @Override
-    public void showPhotos(List<Photo> photos) {
+    public void showPhotos(List<PhotoListBean> photos) {
         mRefreshLayout.setRefreshing(false);
         mPage ++;
         mPhotos.addAll(photos);

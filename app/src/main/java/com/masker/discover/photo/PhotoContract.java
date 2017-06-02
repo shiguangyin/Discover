@@ -2,7 +2,7 @@ package com.masker.discover.photo;
 
 import com.masker.discover.base.BasePresenter;
 import com.masker.discover.base.BaseView;
-import com.masker.discover.model.entity.Photo;
+import com.masker.discover.model.entity.PhotoListBean;
 
 import java.util.List;
 
@@ -15,7 +15,7 @@ import java.util.List;
 
 public interface PhotoContract {
     interface View extends BaseView {
-        void showPhotos(List<Photo> photos);
+        void showPhotos(List<PhotoListBean> photos);
     }
 
     interface Presenter extends BasePresenter{

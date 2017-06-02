@@ -12,7 +12,7 @@ import com.bumptech.glide.Glide;
 import com.masker.discover.R;
 import com.masker.discover.base.BaseAdpater;
 import com.masker.discover.base.BaseViewHolder;
-import com.masker.discover.model.entity.Photo;
+import com.masker.discover.model.entity.PhotoListBean;
 import com.masker.discover.utils.ScreenUtils;
 
 import java.util.List;
@@ -26,14 +26,14 @@ import de.hdodenhof.circleimageview.CircleImageView;
  */
 
 
-public class PhotoAdapter extends BaseAdpater<Photo>{
+public class PhotoListAdapter extends BaseAdpater<PhotoListBean>{
 
-    public PhotoAdapter(List<Photo> datas, int layoutId, Context context) {
+    public PhotoListAdapter(List<PhotoListBean> datas, int layoutId, Context context) {
         super(datas, layoutId, context);
     }
 
     @Override
-    public void convert(BaseViewHolder holder, int position, Photo data) {
+    public void convert(BaseViewHolder holder, int position, PhotoListBean data) {
         ImageView ivPhoto = holder.getView(R.id.iv_photo);
         int width = ScreenUtils.getScreenWidth(context);
         int picWidth = data.getWidth();

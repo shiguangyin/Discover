@@ -1,7 +1,6 @@
 package com.masker.discover.collection;
 
 import android.content.Context;
-import android.util.Log;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 
@@ -9,7 +8,7 @@ import com.bumptech.glide.Glide;
 import com.masker.discover.R;
 import com.masker.discover.base.BaseAdpater;
 import com.masker.discover.base.BaseViewHolder;
-import com.masker.discover.model.entity.Collection;
+import com.masker.discover.model.entity.CollectionListBean;
 import com.masker.discover.utils.ScreenUtils;
 
 import java.util.List;
@@ -22,14 +21,14 @@ import de.hdodenhof.circleimageview.CircleImageView;
  * Description: collection recylcerview adapter
  */
 
-public class CollectionAdapter extends BaseAdpater<Collection>{
+public class CollectionListAdapter extends BaseAdpater<CollectionListBean>{
 
-    public CollectionAdapter(List<Collection> datas, int layoutId, Context context) {
+    public CollectionListAdapter(List<CollectionListBean> datas, int layoutId, Context context) {
         super(datas, layoutId, context);
     }
 
     @Override
-    public void convert(BaseViewHolder holder, int position, Collection data) {
+    public void convert(BaseViewHolder holder, int position, CollectionListBean data) {
         ImageView ivPhoto = holder.getView(R.id.iv_photo);
         int width = ScreenUtils.getScreenWidth(context);
         int picWidth = data.getCover_photo().getWidth();

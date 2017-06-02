@@ -6,7 +6,7 @@ package com.masker.discover.model.entity;
  * Description:acess token
  */
 
-public class Token {
+public class TokenBean {
 
 
     /**

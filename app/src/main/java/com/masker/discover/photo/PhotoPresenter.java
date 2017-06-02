@@ -1,6 +1,6 @@
 package com.masker.discover.photo;
 
-import com.masker.discover.model.entity.Photo;
+import com.masker.discover.model.entity.PhotoListBean;
 import com.masker.discover.model.repository.PhotoRepository;
 
 import java.util.List;
@@ -42,9 +42,9 @@ public class PhotoPresenter implements PhotoContract.Presenter{
         Subscription subscription = PhotoRepository.getPhoto(page,perPage,orderBy)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Action1<List<Photo>>() {
+                .subscribe(new Action1<List<PhotoListBean>>() {
                     @Override
-                    public void call(List<Photo> photos) {
+                    public void call(List<PhotoListBean> photos) {
                         mView.showPhotos(photos);
                     }
                 }, new Action1<Throwable>() {

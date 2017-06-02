@@ -1,7 +1,9 @@
 package com.masker.discover.model.repository;
 
 import com.masker.discover.model.api.CollectionService;
-import com.masker.discover.model.entity.Collection;
+import com.masker.discover.model.entity.CollectionBean;
+import com.masker.discover.model.entity.CollectionListBean;
+import com.masker.discover.model.entity.PhotoListBean;
 import com.masker.discover.model.http.ApiClient;
 
 import java.util.List;
@@ -15,30 +17,55 @@ import rx.Observable;
  */
 
 public class CollectionRepository {
+
+    public static final int ALL = 0;
+    public static final int CURATED = 1;
+    public static final int FEATURED = 2;
+
+
     /*
-    * generate an observable
+     * get a collection list
      */
-    public static Observable<List<Collection>> getCollections(int page,int perPage,int type){
-        Observable<List<Collection>> observable = null;
+    public static Observable<List<CollectionListBean>> getCollectionList(int page, int perPage, int type){
+        Observable<List<CollectionListBean>> observable = null;
         switch (type){
             //all
-            case CollectionService.ALL:
+            case ALL:
                 return ApiClient.getClient()
                         .create(CollectionService.class)
-                        .getCollections(page,perPage);
+                        .getCollectionList(page,perPage);
             //curated
-            case CollectionService.CURATED:
+            case CURATED:
                 return ApiClient.getClient()
                         .create(CollectionService.class)
-                        .getCuratedCollections(page,perPage);
+                        .getCuratedCollectionList(page,perPage);
             //featured
-            case CollectionService.FEATURED:
+            case FEATURED:
                 return ApiClient.getClient()
                         .create(CollectionService.class)
-                        .getFeaturedCollections(page,perPage);
+                        .getFeaturedCollectionList(page,perPage);
             default:
                 break;
         }
         return observable;
     }
+
+    /*
+     * get a collection
+     */
+    public static Observable<CollectionBean> getCollection(int id){
+        return ApiClient.getClient().create(CollectionService.class)
+                .getCollection(id);
+    }
+
+
+
+    /*
+     * get photos from the collection
+     */
+    public static Observable<List<PhotoListBean>> getCollectionPhotos(int id,int page,int perPage){
+        return ApiClient.getClient().create(CollectionService.class)
+                .getCollectionPhotos(id,page,perPage);
+    }
+
 }

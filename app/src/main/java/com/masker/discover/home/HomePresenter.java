@@ -2,7 +2,7 @@ package com.masker.discover.home;
 
 import android.util.Log;
 
-import com.masker.discover.model.entity.MyInfo;
+import com.masker.discover.model.entity.MyInfoBean;
 import com.masker.discover.model.repository.UserRepository;
 
 import rx.Subscription;
@@ -40,9 +40,9 @@ public class HomePresenter implements HomeContract.Presenter{
         Subscription subscription = UserRepository.getMyInfo()
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Action1<MyInfo>() {
+                .subscribe(new Action1<MyInfoBean>() {
                     @Override
-                    public void call(MyInfo myInfo) {
+                    public void call(MyInfoBean myInfo) {
                         mView.updateMyInfo(myInfo);
                     }
                 }, new Action1<Throwable>() {

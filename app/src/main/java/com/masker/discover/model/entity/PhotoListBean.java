@@ -6,7 +6,7 @@ import java.util.List;
  * Created by masker on 2017/4/26.
  */
 
-public class Photo {
+public class PhotoListBean {
 
     /**
      * id : LBI7cgq3pbM

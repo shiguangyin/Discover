@@ -1,28 +1,21 @@
 package com.masker.discover.activity;
 
-import android.app.Dialog;
-import android.app.ProgressDialog;
-import android.net.Uri;
-import android.support.annotation.Nullable;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
 import android.webkit.WebChromeClient;
-import android.webkit.WebResourceRequest;
 import android.webkit.WebResourceResponse;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.ProgressBar;
 
-import com.google.gson.Gson;
-import com.masker.discover.App;
 import com.masker.discover.AppConstants;
 import com.masker.discover.R;
 import com.masker.discover.base.BaseActivity;
 import com.masker.discover.model.api.TokenService;
-import com.masker.discover.model.entity.Token;
+import com.masker.discover.model.entity.TokenBean;
 import com.masker.discover.model.http.ApiClient;
 import com.masker.discover.utils.SpUtils;
 
@@ -112,9 +105,9 @@ public class LoginActivity extends BaseActivity{
                         AppConstants.GRANT_TYPE)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Action1<Token>() {
+                .subscribe(new Action1<TokenBean>() {
                     @Override
-                    public void call(Token token) {
+                    public void call(TokenBean token) {
                         SpUtils.putUser(LoginActivity.this,SpUtils.TOKEN
                                 ,token.getAccess_token());
                         if(mDialog != null ){

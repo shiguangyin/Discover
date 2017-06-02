@@ -2,7 +2,7 @@ package com.masker.discover.photo;
 
 import com.masker.discover.base.BasePresenter;
 import com.masker.discover.base.BaseView;
-import com.masker.discover.model.entity.PhotoInfo;
+import com.masker.discover.model.entity.PhotoBean;
 
 /**
  * CreatedBy: masker
@@ -12,7 +12,7 @@ import com.masker.discover.model.entity.PhotoInfo;
 
 public interface PhotoInfoContract {
     interface View extends BaseView{
-        void showPhotoInfo(PhotoInfo info);
+        void showPhotoInfo(PhotoBean info);
     }
 
     interface Presenter extends BasePresenter{
