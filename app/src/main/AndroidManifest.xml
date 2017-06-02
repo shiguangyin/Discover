@@ -23,14 +23,14 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-
-        <activity android:name=".photo.PhotoInfoActivity"
+        <activity
+            android:name=".photo.PhotoInfoActivity"
             android:launchMode="singleTop"
-            android:parentActivityName=".home.HomeActivity">
-        </activity>
-
-        <activity android:name=".activity.LoginActivity"
-            android:launchMode="singleTop"></activity>
+            android:parentActivityName=".home.HomeActivity"></activity>
+        <activity
+            android:name=".activity.LoginActivity"
+            android:launchMode="singleTop" />
+        <activity android:name=".collection.CollectionContentActivity"></activity>
     </application>
 
 </manifest>
