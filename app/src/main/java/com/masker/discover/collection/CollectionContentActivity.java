@@ -1,5 +1,7 @@
 package com.masker.discover.collection;
 
+import android.content.Context;
+import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 
@@ -12,6 +14,8 @@ import java.util.List;
 
 public class CollectionContentActivity extends BaseMvpActivity
         implements CollectionContentContract.View{
+
+    public static final String ID = "id";
 
 
     private CollectionContentContract.Presenter mPresenter;
@@ -63,6 +67,14 @@ public class CollectionContentActivity extends BaseMvpActivity
             mPresenter.onUnsubscribe();
             mPresenter = null;
         }
+    }
+
+
+
+    public static void start(Context context,int id){
+        Intent intent = new Intent(context,CollectionContentActivity.class);
+        intent.putExtra(ID,id);
+        context.startActivity(intent);
     }
 
 

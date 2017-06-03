@@ -34,6 +34,11 @@
 
     <string name="photos">Photos</string>
 
-    <string name="to_login">LOGIN</string>
+
+    <!--login activity-->
+    <string name="login">LOGIN</string>
+    <string name="join">JOIN</string>
+
+
 
 </resources>

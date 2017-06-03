@@ -22,7 +22,7 @@
         android:textSize="20sp"
         android:gravity="center"
         android:textStyle="bold"
-        android:text="@string/to_login"
+        android:text="@string/login"
        />
 
     <TextView

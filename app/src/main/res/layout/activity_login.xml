@@ -1,24 +1,35 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
      android:layout_width="match_parent"
     android:layout_height="match_parent">
-    <android.support.v7.widget.Toolbar
-        android:id="@+id/tool_bar"
-        android:layout_width="match_parent"
+
+    <ImageButton
+        android:id="@+id/btn_close"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:paddingTop="@dimen/status_bar_height">
+        android:src="@drawable/ic_close_white_24dp"
+        android:background="@color/transparent"
+        android:layout_marginStart="20dp"
+        android:layout_marginTop="40dp"/>
 
-    </android.support.v7.widget.Toolbar>
 
-    <ProgressBar
-        android:id="@+id/progress_bar"
-        android:layout_width="match_parent"
-        android:layout_height="2dp"
-        style="@style/Widget.AppCompat.ProgressBar.Horizontal"
-        android:max="100"/>
-    <WebView
-        android:id="@+id/wv_login"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"/>
-</LinearLayout>
+        <Button
+            android:id="@+id/btn_login"
+            android:layout_width="200dp"
+            android:layout_height="50dp"
+            android:text="@string/login"
+            android:layout_centerInParent="true"
+            android:background="@color/color_bg_black"/>
+
+        <Button
+            android:id="@+id/btn_join"
+            android:layout_width="200dp"
+            android:layout_height="50dp"
+            android:text="@string/join"
+            android:layout_below="@+id/btn_login"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="10dp"
+            android:background="@color/color_bg_black"/>
+
+
+</RelativeLayout>

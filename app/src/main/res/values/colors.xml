@@ -5,7 +5,10 @@
     <color name="colorAccent">#FFFFFF</color>
 
 
+    <color name="transparent">#0000</color>
+
     <color name="color_text_white">#FFFFFF</color>
+    <color name="color_bg_black">#000000</color>
 
     <color name="place_holder_0">#AFEEEE</color>
     <color name="place_holder_1">#FFFAF0</color>
