@@ -2,10 +2,10 @@ package com.masker.discover.model.http;
 
 
 import android.text.TextUtils;
-import android.util.Log;
 
-import com.masker.discover.App;
 import com.masker.discover.AppConstants;
+import com.masker.discover.model.UserManager;
+import com.masker.discover.model.entity.User;
 import com.masker.discover.utils.SpUtils;
 
 import java.io.IOException;
@@ -28,7 +28,7 @@ public class HeaderInterceptor implements Interceptor{
         Request originRequest = chain.request();
         Request.Builder newBuilder = originRequest.newBuilder();
 
-        String token = SpUtils.getUser(SpUtils.TOKEN);
+        String token = UserManager.getInstance().getToken();
         if(!TextUtils.isEmpty(token)){
             String val = "Bearer "+token;
             newBuilder.addHeader("Authorization",val);

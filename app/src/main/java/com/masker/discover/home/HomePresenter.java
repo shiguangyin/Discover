@@ -2,8 +2,11 @@ package com.masker.discover.home;
 
 import android.util.Log;
 
+import com.masker.discover.model.UserManager;
 import com.masker.discover.model.entity.MyInfoBean;
+import com.masker.discover.model.entity.User;
 import com.masker.discover.model.repository.UserRepository;
+import com.orhanobut.logger.Logger;
 
 import rx.Subscription;
 import rx.android.schedulers.AndroidSchedulers;
@@ -43,7 +46,10 @@ public class HomePresenter implements HomeContract.Presenter{
                 .subscribe(new Action1<MyInfoBean>() {
                     @Override
                     public void call(MyInfoBean myInfo) {
-                        mView.updateMyInfo(myInfo);
+                        Logger.i("get my info");
+                        UserManager.getInstance().writeMyInfo(myInfo);
+                        User user = UserManager.getInstance().getUser();
+                        mView.updateMyInfo(user);
                     }
                 }, new Action1<Throwable>() {
                     @Override

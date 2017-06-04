@@ -4,7 +4,6 @@ import android.content.Intent;
 import android.net.Uri;
 import android.support.design.widget.Snackbar;
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageButton;
@@ -17,10 +16,10 @@ import com.masker.discover.AppConstants;
 import com.masker.discover.R;
 import com.masker.discover.base.BaseActivity;
 import com.masker.discover.home.HomeActivity;
+import com.masker.discover.model.UserManager;
 import com.masker.discover.model.api.TokenService;
 import com.masker.discover.model.entity.TokenBean;
 import com.masker.discover.model.http.ApiClient;
-import com.masker.discover.rxbus.RxBus;
 import com.masker.discover.utils.SpUtils;
 import com.orhanobut.logger.Logger;
 
@@ -93,11 +92,10 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener{
                 .subscribe(new Action1<TokenBean>() {
                     @Override
                     public void call(TokenBean token) {
-                        SpUtils.putUser(SpUtils.TOKEN
-                                ,token.getAccess_token());
+                        UserManager.getInstance().setToken(token.getAccess_token());
                         mProgressBar.setVisibility(View.GONE);
                         Intent intent = new Intent(LoginActivity.this, HomeActivity.class);
-                        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP|Intent.FLAG_ACTIVITY_SINGLE_TOP);
+                        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                         startActivity(intent);
                         finish();
                     }

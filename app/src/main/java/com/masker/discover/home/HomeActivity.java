@@ -2,7 +2,9 @@ package com.masker.discover.home;
 
 import android.content.Context;
 import android.content.Intent;
+import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.NavigationView;
 import android.support.design.widget.TabLayout;
@@ -23,7 +25,9 @@ import com.masker.discover.R;
 import com.masker.discover.activity.LoginActivity;
 import com.masker.discover.base.BaseMvpActivity;
 import com.masker.discover.collection.CollectionFragment;
+import com.masker.discover.model.UserManager;
 import com.masker.discover.model.entity.MyInfoBean;
+import com.masker.discover.model.entity.User;
 import com.masker.discover.tag.TagListFragment;
 import com.masker.discover.photo.PhotoFragment;
 import com.orhanobut.logger.Logger;
@@ -53,7 +57,6 @@ public class HomeActivity extends BaseMvpActivity implements HomeContract.View{
     private TextView mTvBio;
     private TextView mTvName;
     private TextView mTvEmail;
-
 
 
     private PhotoFragment mPhotoFragment;
@@ -127,8 +130,12 @@ public class HomeActivity extends BaseMvpActivity implements HomeContract.View{
 
     @Override
     protected void initDatas() {
-        if(App.isLogin()){
-
+        if(UserManager.getInstance().isLogin()){
+            Logger.i("get my info");
+            User user = UserManager.getInstance().getUser();
+            if(user != null){
+                updateMyInfo(user);
+            }
             mPrensenter.getMyInfo();
         }
     }
@@ -208,24 +215,6 @@ public class HomeActivity extends BaseMvpActivity implements HomeContract.View{
 
     }
 
-    @Override
-    public void updateMyInfo(MyInfoBean info) {
-        mTvLogin.setVisibility(View.GONE);
-
-        mTvName.setVisibility(View.VISIBLE);
-        mTvName.setText(info.getUsername());
-
-        mTvEmail.setVisibility(View.VISIBLE);
-        mTvEmail.setText(info.getEmail());
-
-        mTvBio.setVisibility(View.VISIBLE);
-        mTvBio.setText(info.getBio());
-
-        Glide.with(this).load(info.getProfile_image()
-                .getLarge()).dontAnimate()
-                .into(mIvAvatar);
-
-    }
 
 
 
@@ -242,4 +231,51 @@ public class HomeActivity extends BaseMvpActivity implements HomeContract.View{
         }
     }
 
+
+    @Override
+    public void updateMyInfo(User user) {
+        mTvLogin.setVisibility(View.GONE);
+
+        mTvName.setVisibility(View.VISIBLE);
+        mTvName.setText(user.getUserName());
+
+        mTvEmail.setVisibility(View.VISIBLE);
+        mTvEmail.setText(user.getEmail());
+
+        mTvBio.setVisibility(View.VISIBLE);
+        mTvBio.setText(user.getBio());
+
+        Glide.with(this).load(user.getAvatorUrl()).dontAnimate()
+                .into(mIvAvatar);
+    }
+
+    @Override
+    protected void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        Logger.i("oncreate");
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        Logger.i("destroy");
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        Logger.i("onStart");
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        Logger.i("onStop");
+    }
+
+    @Override
+    protected void onNewIntent(Intent intent) {
+        super.onNewIntent(intent);
+        Logger.i("onNew");
+    }
 }

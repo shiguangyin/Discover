@@ -25,8 +25,5 @@ public class App extends Application{
         mApp = this;
     }
 
-    public static boolean isLogin(){
-        String token = SpUtils.getUser(SpUtils.TOKEN);
-        return !TextUtils.isEmpty(token);
-    }
+
 }
