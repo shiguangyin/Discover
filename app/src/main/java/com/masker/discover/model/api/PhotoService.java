@@ -1,5 +1,6 @@
 package com.masker.discover.model.api;
 
+import com.masker.discover.model.entity.LikeResponseBean;
 import com.masker.discover.model.entity.PhotoListBean;
 import com.masker.discover.model.entity.PhotoBean;
 import com.masker.discover.model.entity.PhotoStatsBean;
@@ -7,7 +8,9 @@ import com.masker.discover.model.entity.PhotoStatsBean;
 import java.util.List;
 
 
+import retrofit2.http.DELETE;
 import retrofit2.http.GET;
+import retrofit2.http.POST;
 import retrofit2.http.Path;
 import retrofit2.http.Query;
 import rx.Observable;
@@ -38,5 +41,11 @@ public interface PhotoService {
     @GET("/photos/{id}/download")
     Observable<String> getPhotoDownloadUrl(@Path("id")String id);
 
+
+    @POST("/photos/{id}/like")
+    Observable<LikeResponseBean> likePhoto(@Path("id")String id);
+
+    @DELETE("/photos/{id}/like")
+    Observable<LikeResponseBean> unlikePhoto(@Path("id")String id);
 
 }

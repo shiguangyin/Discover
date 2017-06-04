@@ -1,6 +1,7 @@
 package com.masker.discover.model.repository;
 
 import com.masker.discover.model.api.PhotoService;
+import com.masker.discover.model.entity.LikeResponseBean;
 import com.masker.discover.model.entity.PhotoListBean;
 import com.masker.discover.model.entity.PhotoBean;
 import com.masker.discover.model.http.ApiClient;
@@ -28,5 +29,18 @@ public class PhotoRepository {
         return ApiClient.getClient()
                 .create(PhotoService.class)
                 .getPhotoInfo(id);
+    }
+
+
+    public static Observable<LikeResponseBean> likePhoto(String id){
+        return ApiClient.getClient()
+                .create(PhotoService.class)
+                .likePhoto(id);
+    }
+
+    public static Observable<LikeResponseBean> unlikePhoto(String id){
+        return ApiClient.getClient()
+                .create(PhotoService.class)
+                .unlikePhoto(id);
     }
 }

@@ -1,6 +1,5 @@
 package com.masker.discover.home;
 
-import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -20,16 +19,14 @@ import android.view.View;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
-import com.masker.discover.App;
 import com.masker.discover.R;
 import com.masker.discover.activity.LoginActivity;
 import com.masker.discover.base.BaseMvpActivity;
 import com.masker.discover.collection.CollectionFragment;
 import com.masker.discover.model.UserManager;
-import com.masker.discover.model.entity.MyInfoBean;
 import com.masker.discover.model.entity.User;
 import com.masker.discover.tag.TagListFragment;
-import com.masker.discover.photo.PhotoFragment;
+import com.masker.discover.photo.PhotoListFragment;
 import com.orhanobut.logger.Logger;
 
 import de.hdodenhof.circleimageview.CircleImageView;
@@ -59,7 +56,7 @@ public class HomeActivity extends BaseMvpActivity implements HomeContract.View{
     private TextView mTvEmail;
 
 
-    private PhotoFragment mPhotoFragment;
+    private PhotoListFragment mPhotoFragment;
     private CollectionFragment mCollectionFragment;
     private TagListFragment mTagFragment;
 
@@ -162,7 +159,7 @@ public class HomeActivity extends BaseMvpActivity implements HomeContract.View{
         switch (id){
             case FRAGMENT_HOME:
                 if(mPhotoFragment == null){
-                    mPhotoFragment = PhotoFragment.newInstance();
+                    mPhotoFragment = PhotoListFragment.newInstance();
                 }
                 return mPhotoFragment;
 
@@ -249,33 +246,5 @@ public class HomeActivity extends BaseMvpActivity implements HomeContract.View{
                 .into(mIvAvatar);
     }
 
-    @Override
-    protected void onCreate(@Nullable Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        Logger.i("oncreate");
-    }
 
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-        Logger.i("destroy");
-    }
-
-    @Override
-    protected void onStart() {
-        super.onStart();
-        Logger.i("onStart");
-    }
-
-    @Override
-    protected void onStop() {
-        super.onStop();
-        Logger.i("onStop");
-    }
-
-    @Override
-    protected void onNewIntent(Intent intent) {
-        super.onNewIntent(intent);
-        Logger.i("onNew");
-    }
 }

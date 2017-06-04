@@ -4,6 +4,7 @@ import android.content.Context;
 import android.graphics.drawable.Drawable;
 import android.support.v4.content.ContextCompat;
 
+import android.view.View;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 
@@ -33,7 +34,7 @@ public class PhotoListAdapter extends BaseAdpater<PhotoListBean>{
     }
 
     @Override
-    public void convert(BaseViewHolder holder, int position, PhotoListBean data) {
+    public void convert(BaseViewHolder holder, final int position, PhotoListBean data) {
         ImageView ivPhoto = holder.getView(R.id.iv_photo);
         int width = ScreenUtils.getScreenWidth(context);
         int picWidth = data.getWidth();
@@ -65,8 +66,25 @@ public class PhotoListAdapter extends BaseAdpater<PhotoListBean>{
             Drawable drawable = ContextCompat.getDrawable(context,R.drawable.ic_like_white_24dp);
             ivLikes.setImageDrawable(drawable);
         }
+        ivLikes.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(mLikeListener != null){
+                    mLikeListener.onLike(v,position);
+                }
+            }
+        });
 
     }
 
+    public interface OnLikeListener{
+        void onLike(View view,int postion);
+    }
+
+    private OnLikeListener mLikeListener;
+
+    public void setOnLikeListener(OnLikeListener listener){
+        mLikeListener = listener;
+    }
 
 }

@@ -1,5 +1,6 @@
 package com.masker.discover.photo;
 
+import com.masker.discover.model.entity.LikeResponseBean;
 import com.masker.discover.model.entity.PhotoListBean;
 import com.masker.discover.model.repository.PhotoRepository;
 
@@ -18,14 +19,14 @@ import rx.subscriptions.CompositeSubscription;
  */
 
 
-public class PhotoPresenter implements PhotoContract.Presenter{
+public class PhotoListPresenter implements PhotoListContract.Presenter{
 
-    private  PhotoContract.View mView;
+    private  PhotoListContract.View mView;
 
     private CompositeSubscription mSubscriptions;
 
 
-    public PhotoPresenter(PhotoContract.View view){
+    public PhotoListPresenter(PhotoListContract.View view){
         mView = view;
         mSubscriptions = new CompositeSubscription();
     }
@@ -55,4 +56,24 @@ public class PhotoPresenter implements PhotoContract.Presenter{
                 });
         mSubscriptions.add(subscription);
     }
+
+    @Override
+    public void likePhoto(String id) {
+        Subscription subscription = PhotoRepository.likePhoto(id)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Action1<LikeResponseBean>() {
+                    @Override
+                    public void call(LikeResponseBean bean) {
+                        mView.updatePhoto(bean);
+                    }
+                }, new Action1<Throwable>() {
+                    @Override
+                    public void call(Throwable throwable) {
+
+                    }
+                });
+        mSubscriptions.add(subscription);
+    }
+
 }

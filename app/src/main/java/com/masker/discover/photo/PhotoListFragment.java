@@ -7,6 +7,7 @@ import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -17,7 +18,9 @@ import com.masker.discover.R;
 import com.masker.discover.base.BaseAdpater;
 import com.masker.discover.base.BaseFragment;
 import com.masker.discover.model.api.PhotoService;
+import com.masker.discover.model.entity.LikeResponseBean;
 import com.masker.discover.model.entity.PhotoListBean;
+import com.orhanobut.logger.Logger;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -29,7 +32,7 @@ import java.util.List;
  */
 
 
-public class PhotoFragment extends BaseFragment implements PhotoContract.View{
+public class PhotoListFragment extends BaseFragment implements PhotoListContract.View{
 
     private static final int START_PAGE = 1;
 
@@ -44,7 +47,7 @@ public class PhotoFragment extends BaseFragment implements PhotoContract.View{
     private String mOrder = PhotoService.LATEST;
 
 
-    private PhotoContract.Presenter mPresenter;
+    private PhotoListContract.Presenter mPresenter;
 
     @Override
     protected int getLayoutId() {
@@ -94,13 +97,19 @@ public class PhotoFragment extends BaseFragment implements PhotoContract.View{
                         id,imgUrl,width,height);
             }
         });
+        mPhotoAdapter.setOnLikeListener(new PhotoListAdapter.OnLikeListener() {
+            @Override
+            public void onLike(View view, int postion) {
+                mPresenter.likePhoto(mPhotos.get(postion).getId());
+            }
+        });
         mRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         mRecyclerView.setAdapter(mPhotoAdapter);
     }
 
     @Override
     protected void initData() {
-        mPresenter = new PhotoPresenter(this);
+        mPresenter = new PhotoListPresenter(this);
         // auto refresh
         mRefreshLayout.post(new Runnable() {
             @Override
@@ -122,6 +131,20 @@ public class PhotoFragment extends BaseFragment implements PhotoContract.View{
     }
 
     @Override
+    public void updatePhoto(LikeResponseBean bean) {
+        for (int i = 0; i < mPhotos.size(); i++) {
+            PhotoListBean photo = mPhotos.get(i);
+            if(photo.getId().equals(bean.getPhoto().getId())){
+                boolean like = bean.getPhoto().isLiked_by_user();
+                photo.setLiked_by_user(like);
+                mPhotoAdapter.notifyItemChanged(i);
+                Logger.i("like  ? = "+like);
+                break;
+            }
+        }
+    }
+
+    @Override
     public void showError() {
 
     }
@@ -131,8 +154,8 @@ public class PhotoFragment extends BaseFragment implements PhotoContract.View{
 
     }
 
-    public static PhotoFragment newInstance(){
-        return new PhotoFragment();
+    public static PhotoListFragment newInstance(){
+        return new PhotoListFragment();
     }
 
     @Override

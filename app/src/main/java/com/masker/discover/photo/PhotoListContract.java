@@ -2,6 +2,7 @@ package com.masker.discover.photo;
 
 import com.masker.discover.base.BasePresenter;
 import com.masker.discover.base.BaseView;
+import com.masker.discover.model.entity.LikeResponseBean;
 import com.masker.discover.model.entity.PhotoListBean;
 
 import java.util.List;
@@ -13,12 +14,14 @@ import java.util.List;
  */
 
 
-public interface PhotoContract {
+public interface PhotoListContract {
     interface View extends BaseView {
         void showPhotos(List<PhotoListBean> photos);
+        void updatePhoto(LikeResponseBean bean);
     }
 
     interface Presenter extends BasePresenter{
         void loadPhotos(int page,int perPage,String orderBy);
+        void likePhoto(String id);
     }
 }
