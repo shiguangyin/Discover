@@ -28,7 +28,7 @@ public class HeaderInterceptor implements Interceptor{
         Request originRequest = chain.request();
         Request.Builder newBuilder = originRequest.newBuilder();
 
-        String token = SpUtils.getUser(App.getAppContext(),SpUtils.TOKEN);
+        String token = SpUtils.getUser(SpUtils.TOKEN);
         if(!TextUtils.isEmpty(token)){
             String val = "Bearer "+token;
             newBuilder.addHeader("Authorization",val);

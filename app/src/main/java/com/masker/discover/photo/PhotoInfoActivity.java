@@ -3,7 +3,6 @@ package com.masker.discover.photo;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.annotation.Nullable;
 import android.support.v7.app.ActionBar;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -15,7 +14,6 @@ import android.widget.ProgressBar;
 
 import com.bumptech.glide.Glide;
 import com.masker.discover.R;
-import com.masker.discover.base.BaseActivity;
 import com.masker.discover.base.BaseMvpActivity;
 import com.masker.discover.model.entity.PhotoBean;
 import com.masker.discover.model.entity.TagBean;
@@ -68,19 +66,19 @@ public class PhotoInfoActivity extends BaseMvpActivity implements PhotoInfoContr
 
     @Override
     protected void initViews() {
-        mToolbar = getViewById(R.id.tool_bar);
+        mToolbar = $(R.id.tool_bar);
         setSupportActionBar(mToolbar);
         ActionBar ab = getSupportActionBar();
         if(ab != null){
             ab.setDisplayHomeAsUpEnabled(true);
             ab.setDisplayShowTitleEnabled(false);
         }
-        mIvPhoto = getViewById(R.id.iv_photo);
+        mIvPhoto = $(R.id.iv_photo);
         resetSize();
         Glide.with(this).load(mImgUrl).into(mIvPhoto);
 
-        mProgressBar = getViewById(R.id.progress_bar);
-        mRecyclerView = getViewById(R.id.recycler_view);
+        mProgressBar = $(R.id.progress_bar);
+        mRecyclerView = $(R.id.recycler_view);
         mDatas = new ArrayList<>();
         mAdapter = new PhotoInfoAdapter(this,mDatas);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(this));

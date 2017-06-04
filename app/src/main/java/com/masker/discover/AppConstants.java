@@ -9,9 +9,10 @@ package com.masker.discover;
 
 public class AppConstants {
     public static final String BASE_URL = "https://api.unsplash.com";
-    public static final String APP_ID = "e77b81b3f11fc632130ab341c1be232ab32d5f26a3c3076c4982a98d970627b2";
-    public static final String APP_SECRET = "ec5252b84c484e2d49f31449bd4d0743860ba16104199c0d41a7897803f5c240";
-    public static final String REDIRECT_URL = "http://shiguangyin.xyz/discover";
+    public static final String APP_ID = "8e0f33ff297a8c195959ba170b12151a9a781b4425425e9aa975017b7180398e";
+    public static final String APP_SECRET = "edf81bebe2116487c2b2c602a8db34de6cfd9d4ffac8d2697e693a3c3f4d5e32";
+    public static final String REDIRECT_URL = "discover://oauth.callback";
+    public static final String OATHU_HOST = "oauth.callback";
     public static final String GRANT_TYPE = "authorization_code";
 
 
@@ -21,6 +22,8 @@ public class AppConstants {
             +"&response_type=code"
             +"&scope=public+read_user+write_user+read_photos+write_photos"
             +"+write_likes+write_followers+read_collections+write_collections";
+
+    public static final String JOIN_URL = "https://unsplash.com/join";
 
     public static final String TAG_SUFFIX = "?dpr=2&auto=compress,format&crop=entropy&fit=crop&w=376&h=251&q=80&cs=tinysrgb";
 

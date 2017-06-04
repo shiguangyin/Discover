@@ -1,5 +1,7 @@
 package com.masker.discover.home;
 
+import android.content.Context;
+import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.NavigationView;
@@ -24,6 +26,7 @@ import com.masker.discover.collection.CollectionFragment;
 import com.masker.discover.model.entity.MyInfoBean;
 import com.masker.discover.tag.TagListFragment;
 import com.masker.discover.photo.PhotoFragment;
+import com.orhanobut.logger.Logger;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
@@ -67,17 +70,17 @@ public class HomeActivity extends BaseMvpActivity implements HomeContract.View{
 
     @Override
     protected void initViews() {
-        mToolbar = getViewById(R.id.tool_bar);
+        mToolbar = $(R.id.tool_bar);
         setSupportActionBar(mToolbar);
-        mAppBar = getViewById(R.id.app_bar);
-        mTabLayout = getViewById(R.id.tab_layout);
-        mDrawer = getViewById(R.id.drawer);
+        mAppBar = $(R.id.app_bar);
+        mTabLayout = $(R.id.tab_layout);
+        mDrawer = $(R.id.drawer);
         mDrawerToggle = new ActionBarDrawerToggle(HomeActivity.this,mDrawer,mToolbar,
                 R.string.open,R.string.close);
         mDrawer.addDrawerListener(mDrawerToggle);
         mDrawerToggle.syncState();
 
-        mNavView = getViewById(R.id.nv_main);
+        mNavView = $(R.id.nv_main);
         mNavView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
@@ -125,6 +128,7 @@ public class HomeActivity extends BaseMvpActivity implements HomeContract.View{
     @Override
     protected void initDatas() {
         if(App.isLogin()){
+
             mPrensenter.getMyInfo();
         }
     }
@@ -237,4 +241,5 @@ public class HomeActivity extends BaseMvpActivity implements HomeContract.View{
             mPrensenter = null;
         }
     }
+
 }

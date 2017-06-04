@@ -54,8 +54,8 @@ public class SplashActivity extends BaseActivity{
 
     @Override
     protected void initViews() {
-        mIvSplash = getViewById(R.id.iv_splash);
-        mRlContent = getViewById(R.id.content);
+        mIvSplash = $(R.id.iv_splash);
+        mRlContent = $(R.id.content);
     }
 
     @Override
