@@ -10,6 +10,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
+import android.widget.Toast;
 
 import com.masker.discover.R;
 
@@ -60,5 +61,8 @@ public abstract class BaseActivity extends AppCompatActivity{
 
     protected void handleIntent(){}
 
+    protected void shortToast(String msg){
+        Toast.makeText(this,msg,Toast.LENGTH_SHORT).show();
+    }
 
 }

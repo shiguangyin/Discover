@@ -22,12 +22,16 @@ import com.masker.discover.base.BaseFragment;
 import com.masker.discover.model.api.PhotoService;
 import com.masker.discover.model.entity.LikeResponseBean;
 import com.masker.discover.model.entity.PhotoListBean;
+import com.masker.discover.rxbus.ReOrderEvent;
+import com.masker.discover.rxbus.RxBus;
 import com.orhanobut.logger.Logger;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import okhttp3.internal.connection.RealConnection;
+import rx.Subscription;
+import rx.functions.Action1;
 
 /**
  * CreatedBy: masker
@@ -53,6 +57,7 @@ public class PhotoListFragment extends BaseFragment implements PhotoListContract
 
 
     private PhotoListContract.Presenter mPresenter;
+    private Subscription mSubcription;
 
     @Override
     protected int getLayoutId() {
@@ -62,7 +67,17 @@ public class PhotoListFragment extends BaseFragment implements PhotoListContract
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setHasOptionsMenu(true);
+        mSubcription = RxBus.toObservable(ReOrderEvent.class)
+                .subscribe(new Action1<ReOrderEvent>() {
+                    @Override
+                    public void call(ReOrderEvent reOrderEvent) {
+                        if(!mOrder.equals(reOrderEvent.getOrder())){
+                            mOrder = reOrderEvent.getOrder();
+                            initData();
+                        }
+                    }
+                });
+        //setHasOptionsMenu(true);
     }
 
     @Override
@@ -194,41 +209,44 @@ public class PhotoListFragment extends BaseFragment implements PhotoListContract
         return new PhotoListFragment();
     }
 
-    @Override
-    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-        inflater.inflate(R.menu.menu_home,menu);
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()){
-            case R.id.action_latest:
-                if(!mOrder.equals(PhotoService.LATEST)){
-                    mOrder = PhotoService.LATEST;
-                    initData();
-                }
-                break;
-            case R.id.action_oldest:
-                if(!mOrder.equals(PhotoService.OLDEST)){
-                    mOrder = PhotoService.OLDEST;
-                    initData();
-                }
-                break;
-            case R.id.action_popular:
-                if(!mOrder.equals(PhotoService.POPULAR)){
-                    mOrder = PhotoService.POPULAR;
-                    initData();
-                }
-                break;
-            default:
-                break;
-        }
-        return true;
-    }
+//    @Override
+//    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+//        inflater.inflate(R.menu.menu_home,menu);
+//    }
+//
+//    @Override
+//    public boolean onOptionsItemSelected(MenuItem item) {
+//        switch (item.getItemId()){
+//            case R.id.action_latest:
+//                if(!mOrder.equals(PhotoService.LATEST)){
+//                    mOrder = PhotoService.LATEST;
+//                    initData();
+//                }
+//                break;
+//            case R.id.action_oldest:
+//                if(!mOrder.equals(PhotoService.OLDEST)){
+//                    mOrder = PhotoService.OLDEST;
+//                    initData();
+//                }
+//                break;
+//            case R.id.action_popular:
+//                if(!mOrder.equals(PhotoService.POPULAR)){
+//                    mOrder = PhotoService.POPULAR;
+//                    initData();
+//                }
+//                break;
+//            default:
+//                break;
+//        }
+//        return true;
+//    }
 
     @Override
     public void onDestroy() {
         super.onDestroy();
         mPresenter.onUnsubscribe();
+        if(!mSubcription.isUnsubscribed()){
+            mSubcription.unsubscribe();
+        }
     }
 }

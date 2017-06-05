@@ -21,7 +21,10 @@ import com.masker.discover.activity.LoginActivity;
 import com.masker.discover.base.BaseMvpActivity;
 import com.masker.discover.collection.CollectionFragment;
 import com.masker.discover.model.UserManager;
+import com.masker.discover.model.api.PhotoService;
 import com.masker.discover.model.entity.User;
+import com.masker.discover.rxbus.ReOrderEvent;
+import com.masker.discover.rxbus.RxBus;
 import com.masker.discover.tag.TagListFragment;
 import com.masker.discover.photo.PhotoListFragment;
 import com.orhanobut.logger.Logger;
@@ -98,6 +101,7 @@ public class HomeActivity extends BaseMvpActivity implements HomeContract.View{
                         break;
                 }
                 mDrawer.closeDrawer(mNavView);
+                invalidateOptionsMenu();
                 return true;
             }
         });
@@ -116,22 +120,48 @@ public class HomeActivity extends BaseMvpActivity implements HomeContract.View{
         switchFragment(FRAGMENT_HOME);
     }
 
-    @Override
-    protected void onResume() {
-        super.onResume();
-
-    }
 
     @Override
     protected void initDatas() {
         if(UserManager.getInstance().isLogin()){
-            Logger.i("get my info");
             User user = UserManager.getInstance().getUser();
             if(user != null){
                 updateMyInfo(user);
             }
             mPrensenter.getMyInfo();
         }
+    }
+
+    @Override
+    public boolean onPrepareOptionsMenu(Menu menu) {
+        switch (currentId){
+            case FRAGMENT_HOME:
+                menu.findItem(R.id.action_reorder).setVisible(true);
+                break;
+            case FRAGMENT_COLLECTION:
+                menu.findItem(R.id.action_reorder).setVisible(false);
+                break;
+            case FRAGMENT_TAG:
+                menu.findItem(R.id.action_reorder).setVisible(false);
+                break;
+        }
+        return super.onPrepareOptionsMenu(menu);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()){
+            case R.id.action_latest:
+                RxBus.post(new ReOrderEvent(PhotoService.LATEST));
+                break;
+            case R.id.action_oldest:
+                RxBus.post(new ReOrderEvent(PhotoService.OLDEST));
+                break;
+            case R.id.action_popular:
+                RxBus.post(new ReOrderEvent(PhotoService.POPULAR));
+                break;
+        }
+        return super.onOptionsItemSelected(item);
     }
 
     public void switchFragment(int id){
@@ -183,6 +213,9 @@ public class HomeActivity extends BaseMvpActivity implements HomeContract.View{
         return true;
     }
 
+
+
+
     /*
      * set title for toolbar
      */
@@ -208,8 +241,6 @@ public class HomeActivity extends BaseMvpActivity implements HomeContract.View{
     public void showEmpty() {
 
     }
-
-
 
 
     @Override
