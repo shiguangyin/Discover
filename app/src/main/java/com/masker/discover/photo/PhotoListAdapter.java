@@ -14,6 +14,7 @@ import com.masker.discover.R;
 import com.masker.discover.base.BaseAdpater;
 import com.masker.discover.base.BaseViewHolder;
 import com.masker.discover.model.entity.PhotoListBean;
+import com.masker.discover.utils.ImgLoader;
 import com.masker.discover.utils.ScreenUtils;
 
 import java.util.List;
@@ -34,14 +35,19 @@ public class PhotoListAdapter extends BaseAdpater<PhotoListBean>{
 
 
 
-    public PhotoListAdapter(List<PhotoListBean> datas, int layoutId, Context context) {
-        super(datas, layoutId, context);
+    public PhotoListAdapter(List<PhotoListBean> datas, Context context) {
+        super(datas, context);
+    }
+
+    @Override
+    public int getmLayoutId() {
+        return R.layout.rv_item_photo;
     }
 
     @Override
     public void convert(BaseViewHolder holder, final int position, PhotoListBean data) {
         ImageView ivPhoto = holder.getView(R.id.iv_photo);
-        int width = ScreenUtils.getScreenWidth(context);
+        int width = ScreenUtils.getScreenWidth(mContext);
         int picWidth = data.getWidth();
         int picHeight = data.getHeight();
         int height = (width*picHeight)/picWidth;
@@ -50,11 +56,12 @@ public class PhotoListAdapter extends BaseAdpater<PhotoListBean>{
         lp.height = height;
         ivPhoto.setLayoutParams(lp);
         String url = data.getUrls().getRegular();
-        Glide.with(context).load(url).crossFade().into(ivPhoto);
+        String color = data.getColor();
+        ImgLoader.loadWithColor(mContext,url,ivPhoto,color);
 
         String avatarUrl = data.getUser().getProfile_image().getLarge();
         CircleImageView ivAvator = holder.getView(R.id.iv_avatar);
-        Glide.with(context).load(avatarUrl).into(ivAvator);
+        Glide.with(mContext).load(avatarUrl).into(ivAvator);
 
         String name = data.getUser().getName();
         holder.setText(R.id.tv_name,name);
@@ -64,11 +71,11 @@ public class PhotoListAdapter extends BaseAdpater<PhotoListBean>{
 
         ImageView ivLikes = holder.getView(R.id.iv_likes);
         if(data.isLiked_by_user()){
-            Drawable drawable = ContextCompat.getDrawable(context,R.drawable.ic_like_red_24dp);
+            Drawable drawable = ContextCompat.getDrawable(mContext,R.drawable.ic_like_red_24dp);
             ivLikes.setImageDrawable(drawable);
         }
         else{
-            Drawable drawable = ContextCompat.getDrawable(context,R.drawable.ic_like_white_24dp);
+            Drawable drawable = ContextCompat.getDrawable(mContext,R.drawable.ic_like_white_24dp);
             ivLikes.setImageDrawable(drawable);
         }
         ivLikes.setOnClickListener(new View.OnClickListener() {
@@ -96,13 +103,13 @@ public class PhotoListAdapter extends BaseAdpater<PhotoListBean>{
 
                     ImageView ivLikes = holder.getView(R.id.iv_likes);
                     ivLikes.setVisibility(View.VISIBLE);
-                    PhotoListBean data = datas.get(position);
+                    PhotoListBean data = mDatas.get(position);
                     if(data.isLiked_by_user()){
-                        Drawable drawable = ContextCompat.getDrawable(context,R.drawable.ic_like_red_24dp);
+                        Drawable drawable = ContextCompat.getDrawable(mContext,R.drawable.ic_like_red_24dp);
                         ivLikes.setImageDrawable(drawable);
                     }
                     else{
-                        Drawable drawable = ContextCompat.getDrawable(context,R.drawable.ic_like_white_24dp);
+                        Drawable drawable = ContextCompat.getDrawable(mContext,R.drawable.ic_like_white_24dp);
                         ivLikes.setImageDrawable(drawable);
                     }
                     String likes = String.valueOf(data.getLikes());

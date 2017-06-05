@@ -1,0 +1,22 @@
+package com.masker.discover.utils;
+
+import android.content.Context;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
+import android.widget.ImageView;
+
+import com.bumptech.glide.Glide;
+
+/**
+ * CreatedBy: masker
+ * Date: 2017/6/5
+ * Description:
+ */
+
+public class ImgLoader {
+    public static void loadWithColor(Context context, String url, ImageView iv,String color){
+        int col = Color.parseColor(color);
+        ColorDrawable placeHolder = new ColorDrawable(col);
+        Glide.with(context).load(url).placeholder(placeHolder).into(iv);
+    }
+}

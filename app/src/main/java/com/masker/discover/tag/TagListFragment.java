@@ -38,7 +38,7 @@ public class TagListFragment extends BaseMvpFragment implements TagListContract.
     protected void initViews(View contentView) {
         mRecyclerView = getViewById(R.id.recycler_view);
         mTags = new ArrayList<>();
-        mAdapter = new TagListAdapter(mTags,R.layout.rv_item_tag,getContext());
+        mAdapter = new TagListAdapter(mTags,getContext());
         mAdapter.enableLoadMore(false);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         mRecyclerView.setAdapter(mAdapter);

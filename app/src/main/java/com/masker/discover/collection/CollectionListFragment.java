@@ -72,7 +72,7 @@ public class CollectionListFragment extends BaseMvpFragment
         mRefreshLayout.setOnRefreshListener(mListener);
         mRecyclerView = getViewById(R.id.recycler_view);
         mCollections = new ArrayList<>();
-        mAdapter = new CollectionListAdapter(mCollections,R.layout.rv_item_collection,getContext());
+        mAdapter = new CollectionListAdapter(mCollections,getContext());
         mAdapter.setLoadMoreListener(new BaseAdpater.LoadMoreListener() {
             @Override
             public void onLoadMore() {

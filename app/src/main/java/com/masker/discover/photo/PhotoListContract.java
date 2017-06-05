@@ -18,7 +18,7 @@ public interface PhotoListContract {
     interface View extends BaseView {
         void showPhotos(List<PhotoListBean> photos);
         void updatePhoto(LikeResponseBean bean);
-        void showLikeError(String message);
+        void showLikeError(String message,String id);
     }
 
     interface Presenter extends BasePresenter{

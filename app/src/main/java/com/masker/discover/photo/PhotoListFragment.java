@@ -80,7 +80,7 @@ public class PhotoListFragment extends BaseFragment implements PhotoListContract
         mRefreshLayout.setOnRefreshListener(mRefreshListener);
         mRecyclerView = getViewById(R.id.recycler_view);
         mPhotos = new ArrayList<>();
-        mPhotoAdapter = new PhotoListAdapter(mPhotos,R.layout.rv_item_photo,getContext());
+        mPhotoAdapter = new PhotoListAdapter(mPhotos,getContext());
         mPhotoAdapter.setLoadMoreListener(new BaseAdpater.LoadMoreListener() {
             @Override
             public void onLoadMore() {
@@ -168,9 +168,17 @@ public class PhotoListFragment extends BaseFragment implements PhotoListContract
     }
 
     @Override
-    public void showLikeError(String message) {
+    public void showLikeError(String message, String id) {
         Snackbar.make(mRlContent,message,Snackbar.LENGTH_SHORT).show();
+        //stop progress
+        for (int i = 0; i < mPhotos.size(); i++) {
+            PhotoListBean bean = mPhotos.get(i);
+            if(bean.getId().equals(id)){
+                mPhotoAdapter.notifyItemChanged(i,PhotoListAdapter.STATE_NORMAL);
+            }
+        }
     }
+
 
     @Override
     public void showError() {

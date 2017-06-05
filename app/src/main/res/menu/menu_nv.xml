@@ -12,9 +12,6 @@
         android:title="@string/item_tags"
         android:icon="@drawable/ic_tag_24dp"/>
 
-    <item android:id="@+id/item_favorite"
-        android:title="@string/item_favorite"
-        android:icon="@drawable/ic_favorite_black_24dp"/>
 
     <item android:id="@+id/item_download"
         android:title="@string/item_download"

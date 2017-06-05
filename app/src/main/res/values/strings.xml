@@ -41,7 +41,7 @@
     <string name="join">JOIN</string>
     <string name="oauth_failed">Oauth Failed!</string>
 
-
+    <string name="no_more_data">NO MORE DATA</string>
 
 
 </resources>

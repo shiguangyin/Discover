@@ -6,6 +6,8 @@ import com.masker.discover.model.repository.PhotoRepository;
 
 import java.util.List;
 
+import rx.Observable;
+import rx.Subscriber;
 import rx.Subscription;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.functions.Action1;
@@ -58,7 +60,7 @@ public class PhotoListPresenter implements PhotoListContract.Presenter{
     }
 
     @Override
-    public void likePhoto(String id) {
+    public void likePhoto(final String id) {
         Subscription subscription = PhotoRepository.likePhoto(id)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
@@ -70,14 +72,14 @@ public class PhotoListPresenter implements PhotoListContract.Presenter{
                 }, new Action1<Throwable>() {
                     @Override
                     public void call(Throwable throwable) {
-                        mView.showLikeError(throwable.getMessage());
+                        mView.showLikeError(throwable.getMessage(),id);
                     }
                 });
         mSubscriptions.add(subscription);
     }
 
     @Override
-    public void unlikePhoto(String id) {
+    public void unlikePhoto(final String id) {
         Subscription subscription = PhotoRepository.unlikePhoto(id)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
@@ -89,10 +91,15 @@ public class PhotoListPresenter implements PhotoListContract.Presenter{
                 }, new Action1<Throwable>() {
                     @Override
                     public void call(Throwable throwable) {
-                        mView.showLikeError(throwable.getMessage());
+                        mView.showLikeError(throwable.getMessage(),id);
+
                     }
                 });
         mSubscriptions.add(subscription);
+
+
     }
+
+
 
 }

@@ -23,14 +23,19 @@ import de.hdodenhof.circleimageview.CircleImageView;
 
 public class CollectionListAdapter extends BaseAdpater<CollectionListBean>{
 
-    public CollectionListAdapter(List<CollectionListBean> datas, int layoutId, Context context) {
-        super(datas, layoutId, context);
+    public CollectionListAdapter(List<CollectionListBean> datas, Context context) {
+        super(datas, context);
+    }
+
+    @Override
+    public int getmLayoutId() {
+        return R.layout.rv_item_collection;
     }
 
     @Override
     public void convert(BaseViewHolder holder, int position, CollectionListBean data) {
         ImageView ivPhoto = holder.getView(R.id.iv_photo);
-        int width = ScreenUtils.getScreenWidth(context);
+        int width = ScreenUtils.getScreenWidth(mContext);
         int picWidth = data.getCover_photo().getWidth();
         int picHeight = data.getCover_photo().getHeight();
         int height = (width*picHeight)/picWidth;
@@ -40,11 +45,11 @@ public class CollectionListAdapter extends BaseAdpater<CollectionListBean>{
         ivPhoto.setLayoutParams(lp);
 
         String url = data.getCover_photo().getUrls().getRegular();
-        Glide.with(context).load(url).into(ivPhoto);
+        Glide.with(mContext).load(url).into(ivPhoto);
 
         CircleImageView ivAvatar = holder.getView(R.id.iv_avatar);
         String avatorUrl = data.getUser().getProfile_image().getLarge();
-        Glide.with(context).load(avatorUrl).into(ivAvatar);
+        Glide.with(mContext).load(avatorUrl).into(ivAvatar);
 
         String name = data.getUser().getName();
         holder.setText(R.id.tv_name,name);
@@ -53,7 +58,7 @@ public class CollectionListAdapter extends BaseAdpater<CollectionListBean>{
         holder.setText(R.id.tv_title,title);
 
         int num = data.getTotal_photos();
-        String strNum = num + " "+context.getString(R.string.photos);
+        String strNum = num + " "+ mContext.getString(R.string.photos);
         holder.setText(R.id.tv_num,strNum);
 
 
