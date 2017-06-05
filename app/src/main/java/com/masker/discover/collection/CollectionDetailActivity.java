@@ -10,9 +10,12 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
 import com.masker.discover.R;
 import com.masker.discover.base.BaseAdpater;
 import com.masker.discover.base.BaseMvpActivity;
@@ -20,22 +23,37 @@ import com.masker.discover.model.entity.CollectionBean;
 import com.masker.discover.model.entity.PhotoListBean;
 import com.masker.discover.photo.PhotoListAdapter;
 import com.masker.discover.utils.ImgLoader;
+import com.masker.discover.utils.ScreenUtils;
+import com.orhanobut.logger.Logger;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import de.hdodenhof.circleimageview.CircleImageView;
+import jp.wasabeef.glide.transformations.BlurTransformation;
 
 public class CollectionDetailActivity extends BaseMvpActivity
         implements CollectionDetailContract.View{
 
     public static final String ID = "id";
+    public static final String CURATED =  "curated";
+    public static final String TOTAL = "total";
+    public static final String HEIGHT = "height";
+    public static final String WIDTH = "width";
+    public static final String IMG_URL = "img_url";
+
     public static final int START_PAGE = 1;
     public static final int PER_PAGE = 20;
 
     private int mId;
+    private boolean mIsCurated;
+    private int mTotalCount;
+    private int mImgHeight;
+    private int mImgWidth;
+    private String mImgUrl;
 
     private Toolbar mToolbar;
+    private ImageView mIvCover;
     private TextView mTvTitle;
     private TextView mTvDesc;
     private CircleImageView mIvAvator;
@@ -68,6 +86,11 @@ public class CollectionDetailActivity extends BaseMvpActivity
             ab.setDisplayHomeAsUpEnabled(true);
         }
         mProgressBar = find(R.id.progress_bar);
+        mIvCover = find(R.id.iv_cover);
+//        resetSize();
+//        Glide.with(this).load(mImgUrl)
+//                .bitmapTransform(new BlurTransformation(this))
+//                .into(mIvCover);
 
         mRecyclerView = find(R.id.recycler_view);
         mPhotos = new ArrayList<>();
@@ -78,16 +101,38 @@ public class CollectionDetailActivity extends BaseMvpActivity
             @Override
             public void onLoadMore() {
                 mPage++;
-                mPresenter.loadCollectionPhotos(mId,mPage,PER_PAGE);
+                if(mIsCurated){
+                    mPresenter.loadCollectionPhotos(mId,mPage,PER_PAGE);
+                }
+                else{
+                    mPresenter.loadCollectionPhotos(mId,mPage,PER_PAGE);
+                }
             }
         });
     }
 
+    /*
+    * reset size of imageview
+     */
+    private void resetSize(){
+        ViewGroup.LayoutParams lp = mIvCover.getLayoutParams();
+        lp.width = ScreenUtils.getScreenWidth(this);
+        lp.height = (lp.width*mImgHeight)/mImgWidth;
+        mIvCover.setLayoutParams(lp);
+    }
+
+
     @Override
     protected void initDatas() {
         if(mId != -1){
-            mPresenter.loadCollection(mId);
-            mPresenter.loadCollectionPhotos(mId, mPage,PER_PAGE);
+            if(mIsCurated){
+                mPresenter.loadCuratedCollection(mId);
+                mPresenter.loadCuratedCollectionPhotos(mId,mPage,PER_PAGE);
+            }
+            else{
+                mPresenter.loadCollection(mId);
+                mPresenter.loadCollectionPhotos(mId, mPage,PER_PAGE);
+            }
         }
     }
 
@@ -120,6 +165,9 @@ public class CollectionDetailActivity extends BaseMvpActivity
         mRecyclerView.setVisibility(View.VISIBLE);
         mPhotos.addAll(photos);
         mAdapter.notifyDataSetChanged();
+        if(mPhotos.size() == mTotalCount){
+            mAdapter.enableLoadMore(false);
+        }
     }
 
     @Override
@@ -138,12 +186,24 @@ public class CollectionDetailActivity extends BaseMvpActivity
 
     @Override
     protected void handleIntent() {
-        mId = getIntent().getIntExtra(ID,-1);
+        Intent intent = getIntent();
+        mId = intent.getIntExtra(ID,-1);
+        mIsCurated = intent.getBooleanExtra(CURATED,false);
+        mTotalCount = intent.getIntExtra(TOTAL,0);
+        mImgHeight = intent.getIntExtra(HEIGHT,0);
+        mImgWidth = intent.getIntExtra(WIDTH,0);
+        mImgUrl = intent.getStringExtra(IMG_URL);
     }
 
-    public static void start(Context context, int id){
+    public static void start(Context context, int id,boolean curated,int total,
+                             int height,int width,String url){
         Intent intent = new Intent(context,CollectionDetailActivity.class);
         intent.putExtra(ID,id);
+        intent.putExtra(CURATED,curated);
+        intent.putExtra(TOTAL,total);
+        intent.putExtra(HEIGHT,height);
+        intent.putExtra(WIDTH,width);
+        intent.putExtra(IMG_URL,url);
         context.startActivity(intent);
     }
 

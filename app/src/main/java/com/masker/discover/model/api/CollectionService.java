@@ -40,4 +40,13 @@ public interface CollectionService {
     Observable<List<PhotoListBean>> getCollectionPhotos(@Path("id")int id,
                                                         @Query("page") int page,
                                                         @Query("per_page")int perPage);
+
+    @GET("/collections/curated/{id}")
+    Observable<CollectionBean> getCuratedCollection(@Path("id")int id);
+
+
+    @GET("/collections/curated/{id}/photos")
+    Observable<List<PhotoListBean>> getCuratedCollectionPhotos(@Path("id")int id,
+                                                        @Query("page") int page,
+                                                        @Query("per_page")int perPage);
 }

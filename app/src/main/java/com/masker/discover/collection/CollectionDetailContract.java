@@ -23,5 +23,7 @@ public interface CollectionDetailContract {
     interface Presenter extends BasePresenter{
         void loadCollection(int id);
         void loadCollectionPhotos(int id,int page,int perPage);
+        void loadCuratedCollection(int id);
+        void loadCuratedCollectionPhotos(int id,int page,int perPage);
     }
 }

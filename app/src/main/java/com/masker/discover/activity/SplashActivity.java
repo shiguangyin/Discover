@@ -44,7 +44,7 @@ public class SplashActivity extends BaseActivity{
 
             }
         });
-        mRlContent.startAnimation(animation);
+        mIvSplash.startAnimation(animation);
     }
 
     @Override

@@ -54,6 +54,7 @@ public class CollectionDetailPresenter implements CollectionDetailContract.Prese
                 }, new Action1<Throwable>() {
                     @Override
                     public void call(Throwable throwable) {
+                        Logger.i(throwable.getMessage());
                         mView.showError();
                     }
                 });
@@ -85,5 +86,59 @@ public class CollectionDetailPresenter implements CollectionDetailContract.Prese
                         mView.showError();
                     }
                 });
+        mSubsciptions.add(subscription);
+    }
+
+    @Override
+    public void loadCuratedCollection(int id) {
+        Subscription subscription = CollectionRepository.getCuratedCollection(id)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Action1<CollectionBean>() {
+                    @Override
+                    public void call(CollectionBean collectionBean) {
+                        if(collectionBean != null){
+                            mView.showCollection(collectionBean);
+                        }
+                        else{
+                            mView.showError();
+                        }
+                    }
+                }, new Action1<Throwable>() {
+                    @Override
+                    public void call(Throwable throwable) {
+                        Logger.i(throwable.getMessage());
+                        mView.showError();
+                    }
+                });
+        mSubsciptions.add(subscription);
+    }
+
+    @Override
+    public void loadCuratedCollectionPhotos(int id, int page, int perPage) {
+        Subscription subscription = CollectionRepository.getCuratedCollectionPhotos(id,page,perPage)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Action1<List<PhotoListBean>>() {
+                    @Override
+                    public void call(List<PhotoListBean> photoListBeen) {
+                        if(photoListBeen != null && photoListBeen.size() > 0){
+                            mView.showCollectionPhotos(photoListBeen);
+                        }
+                        else if(photoListBeen == null){
+                            mView.showError();
+                        }
+                        else{
+                            mView.showEmpty();
+                        }
+                    }
+                }, new Action1<Throwable>() {
+                    @Override
+                    public void call(Throwable throwable) {
+                        Logger.e(throwable.getMessage());
+                        mView.showError();
+                    }
+                });
+        mSubsciptions.add(subscription);
     }
 }

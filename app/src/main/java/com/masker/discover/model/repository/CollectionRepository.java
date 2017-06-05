@@ -68,4 +68,23 @@ public class CollectionRepository {
                 .getCollectionPhotos(id,page,perPage);
     }
 
+
+
+    /*
+    * get a curated collection
+    */
+    public static Observable<CollectionBean> getCuratedCollection(int id){
+        return ApiClient.getClient().create(CollectionService.class)
+                .getCuratedCollection(id);
+    }
+
+
+    /*
+    * get photos from the curated collection
+    */
+    public static Observable<List<PhotoListBean>> getCuratedCollectionPhotos(int id,int page,int perPage){
+        return ApiClient.getClient().create(CollectionService.class)
+                .getCuratedCollectionPhotos(id,page,perPage);
+    }
+
 }

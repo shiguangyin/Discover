@@ -11,6 +11,7 @@ import com.masker.discover.R;
 import com.masker.discover.base.BaseAdpater;
 import com.masker.discover.base.BaseMvpFragment;
 import com.masker.discover.model.entity.CollectionListBean;
+import com.orhanobut.logger.Logger;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -82,12 +83,22 @@ public class CollectionListFragment extends BaseMvpFragment
         mAdapter.setOnItemClickListener(new BaseAdpater.OnItemClickListener() {
             @Override
             public void onClick(View view, int position) {
-                int id = mCollections.get(position).getId();
-                CollectionDetailActivity.start(getContext(),id);
+                gotoDetail(position);
             }
         });
         mRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         mRecyclerView.setAdapter(mAdapter);
+    }
+
+    private void gotoDetail(int position){
+        CollectionListBean bean = mCollections.get(position);
+        int id = bean.getId();
+        boolean isCurated = (mType == CURATED);
+        int total = bean.getTotal_photos();
+        int height = bean.getCover_photo().getHeight();
+        int width = bean.getCover_photo().getWidth();
+        String url = bean.getCover_photo().getUrls().getRegular();
+        CollectionDetailActivity.start(getContext(),id,isCurated,total,height,width,url);
     }
 
     @Override
@@ -100,6 +111,7 @@ public class CollectionListFragment extends BaseMvpFragment
         });
         mListener.onRefresh();
     }
+
 
     public static CollectionListFragment newInstance(int type){
         CollectionListFragment fragment = new CollectionListFragment();

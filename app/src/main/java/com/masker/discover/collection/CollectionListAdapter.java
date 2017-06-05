@@ -9,6 +9,7 @@ import com.masker.discover.R;
 import com.masker.discover.base.BaseAdpater;
 import com.masker.discover.base.BaseViewHolder;
 import com.masker.discover.model.entity.CollectionListBean;
+import com.masker.discover.utils.ImgLoader;
 import com.masker.discover.utils.ScreenUtils;
 
 import java.util.List;
@@ -45,7 +46,8 @@ public class CollectionListAdapter extends BaseAdpater<CollectionListBean>{
         ivPhoto.setLayoutParams(lp);
 
         String url = data.getCover_photo().getUrls().getRegular();
-        Glide.with(mContext).load(url).into(ivPhoto);
+        String color = data.getCover_photo().getColor();
+        ImgLoader.loadWithColor(mContext,url,ivPhoto,color);
 
         CircleImageView ivAvatar = holder.getView(R.id.iv_avatar);
         String avatorUrl = data.getUser().getProfile_image().getLarge();
