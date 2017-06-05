@@ -1,9 +1,6 @@
 package com.masker.discover.home;
 
-import android.content.Intent;
-import android.os.Bundle;
 import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
 import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.NavigationView;
 import android.support.design.widget.TabLayout;
@@ -70,17 +67,17 @@ public class HomeActivity extends BaseMvpActivity implements HomeContract.View{
 
     @Override
     protected void initViews() {
-        mToolbar = $(R.id.tool_bar);
+        mToolbar = find(R.id.tool_bar);
         setSupportActionBar(mToolbar);
-        mAppBar = $(R.id.app_bar);
-        mTabLayout = $(R.id.tab_layout);
-        mDrawer = $(R.id.drawer);
+        mAppBar = find(R.id.app_bar);
+        mTabLayout = find(R.id.tab_layout);
+        mDrawer = find(R.id.drawer);
         mDrawerToggle = new ActionBarDrawerToggle(HomeActivity.this,mDrawer,mToolbar,
                 R.string.open,R.string.close);
         mDrawer.addDrawerListener(mDrawerToggle);
         mDrawerToggle.syncState();
 
-        mNavView = $(R.id.nv_main);
+        mNavView = find(R.id.nv_main);
         mNavView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {

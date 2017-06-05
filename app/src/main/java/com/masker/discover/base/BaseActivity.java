@@ -50,7 +50,7 @@ public abstract class BaseActivity extends AppCompatActivity{
     /*
     * find view by id
      */
-    protected <T extends View> T $(int resId){
+    protected <T extends View> T find(int resId){
         return (T) findViewById(resId);
     }
 

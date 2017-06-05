@@ -13,7 +13,7 @@ import java.util.List;
  * Description:
  */
 
-public interface CollectionContentContract {
+public interface CollectionDetailContract {
 
     interface View extends BaseView{
         void showCollection(CollectionBean bean);

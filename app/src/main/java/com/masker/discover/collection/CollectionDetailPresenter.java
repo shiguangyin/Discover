@@ -19,13 +19,13 @@ import rx.subscriptions.CompositeSubscription;
  * Description:
  */
 
-public class CollectionContentPresenter implements CollectionContentContract.Presenter {
+public class CollectionDetailPresenter implements CollectionDetailContract.Presenter {
 
 
-    private CollectionContentContract.View mView;
+    private CollectionDetailContract.View mView;
     private CompositeSubscription mSubsciptions;
 
-    public CollectionContentPresenter(CollectionContentContract.View view){
+    public CollectionDetailPresenter(CollectionDetailContract.View view){
         mView = view;
         mSubsciptions = new CompositeSubscription();
     }

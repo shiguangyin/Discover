@@ -9,7 +9,6 @@ import android.view.View;
 
 import com.masker.discover.R;
 import com.masker.discover.base.BaseAdpater;
-import com.masker.discover.base.BaseFragment;
 import com.masker.discover.base.BaseMvpFragment;
 import com.masker.discover.model.entity.CollectionListBean;
 
@@ -78,6 +77,13 @@ public class CollectionListFragment extends BaseMvpFragment
             public void onLoadMore() {
                 mPage++;
                 mPresenter.loadCollections(mPage,PER_PAGE,mType);
+            }
+        });
+        mAdapter.setOnItemClickListener(new BaseAdpater.OnItemClickListener() {
+            @Override
+            public void onClick(View view, int position) {
+                int id = mCollections.get(position).getId();
+                CollectionDetailActivity.start(getContext(),id);
             }
         });
         mRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));

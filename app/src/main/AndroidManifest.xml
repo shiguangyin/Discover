@@ -43,9 +43,8 @@
             </intent-filter>
         </activity>
 
-
-
-        <activity android:name=".collection.CollectionContentActivity">
+        <activity android:name=".collection.CollectionDetailActivity"
+            android:parentActivityName=".home.HomeActivity">
 
         </activity>
     </application>

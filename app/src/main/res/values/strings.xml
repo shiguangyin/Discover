@@ -43,5 +43,10 @@
 
     <string name="no_more_data">NO MORE DATA</string>
 
+    <!--photo info activity-->
+    <string name="action_share">Share</string>
 
+    <!--collection detail activity-->
+    <string name="from">From</string>
 </resources>
+

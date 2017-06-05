@@ -20,7 +20,6 @@ import com.masker.discover.model.UserManager;
 import com.masker.discover.model.api.TokenService;
 import com.masker.discover.model.entity.TokenBean;
 import com.masker.discover.model.http.ApiClient;
-import com.masker.discover.utils.SpUtils;
 import com.orhanobut.logger.Logger;
 
 
@@ -63,19 +62,19 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener{
 
     @Override
     protected void initViews() {
-        mIvBg = $(R.id.iv_bg);
+        mIvBg = find(R.id.iv_bg);
         Glide.with(this).load(R.drawable.bg_login)
                 .bitmapTransform(new BlurTransformation(this))
                 .into(mIvBg);
 
-        mProgressBar = $(R.id.progress_bar);
-        mRlContent = $(R.id.rl_content);
+        mProgressBar = find(R.id.progress_bar);
+        mRlContent = find(R.id.rl_content);
 
-        mBtnLogin = $(R.id.btn_login);
+        mBtnLogin = find(R.id.btn_login);
         mBtnLogin.setOnClickListener(this);
-        mBtnJoin = $(R.id.btn_join);
+        mBtnJoin = find(R.id.btn_join);
         mBtnJoin.setOnClickListener(this);
-        mBtnClose = $(R.id.btn_close);
+        mBtnClose = find(R.id.btn_close);
         mBtnClose.setOnClickListener(this);
     }
 

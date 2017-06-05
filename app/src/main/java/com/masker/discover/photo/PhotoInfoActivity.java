@@ -3,10 +3,13 @@ package com.masker.discover.photo;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.design.widget.Snackbar;
 import android.support.v7.app.ActionBar;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
@@ -66,19 +69,19 @@ public class PhotoInfoActivity extends BaseMvpActivity implements PhotoInfoContr
 
     @Override
     protected void initViews() {
-        mToolbar = $(R.id.tool_bar);
+        mToolbar = find(R.id.tool_bar);
         setSupportActionBar(mToolbar);
         ActionBar ab = getSupportActionBar();
         if(ab != null){
             ab.setDisplayHomeAsUpEnabled(true);
             ab.setDisplayShowTitleEnabled(false);
         }
-        mIvPhoto = $(R.id.iv_photo);
+        mIvPhoto = find(R.id.iv_photo);
         resetSize();
         Glide.with(this).load(mImgUrl).into(mIvPhoto);
 
-        mProgressBar = $(R.id.progress_bar);
-        mRecyclerView = $(R.id.recycler_view);
+        mProgressBar = find(R.id.progress_bar);
+        mRecyclerView = find(R.id.recycler_view);
         mDatas = new ArrayList<>();
         mAdapter = new PhotoInfoAdapter(this,mDatas);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
@@ -172,5 +175,19 @@ public class PhotoInfoActivity extends BaseMvpActivity implements PhotoInfoContr
             mPresenter.onUnsubscribe();
             mPresenter = null;
         }
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.menu_photo_info,menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        if(item.getItemId() == R.id.action_share){
+            Snackbar.make(mRecyclerView,"under developing",Snackbar.LENGTH_SHORT).show();
+        }
+        return super.onOptionsItemSelected(item);
     }
 }
