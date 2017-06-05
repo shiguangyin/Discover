@@ -29,6 +29,11 @@ import de.hdodenhof.circleimageview.CircleImageView;
 
 public class PhotoListAdapter extends BaseAdpater<PhotoListBean>{
 
+    public static final int STATE_NORMAL = 100000;
+    public static final int STATE_LOADING = 100001;
+
+
+
     public PhotoListAdapter(List<PhotoListBean> datas, int layoutId, Context context) {
         super(datas, layoutId, context);
     }
@@ -77,8 +82,42 @@ public class PhotoListAdapter extends BaseAdpater<PhotoListBean>{
 
     }
 
+    @Override
+    public void onBindViewHolder(BaseViewHolder holder, int position, List<Object> payloads) {
+        if(payloads == null ||payloads.size() == 0){
+            onBindViewHolder(holder,position);
+        }
+        else{
+            //local refresh
+            if(payloads.get(0) instanceof Integer){
+                int state = (int) payloads.get(0);
+                if(state == STATE_NORMAL){
+                    holder.getView(R.id.like_progress).setVisibility(View.GONE);
+
+                    ImageView ivLikes = holder.getView(R.id.iv_likes);
+                    ivLikes.setVisibility(View.VISIBLE);
+                    PhotoListBean data = datas.get(position);
+                    if(data.isLiked_by_user()){
+                        Drawable drawable = ContextCompat.getDrawable(context,R.drawable.ic_like_red_24dp);
+                        ivLikes.setImageDrawable(drawable);
+                    }
+                    else{
+                        Drawable drawable = ContextCompat.getDrawable(context,R.drawable.ic_like_white_24dp);
+                        ivLikes.setImageDrawable(drawable);
+                    }
+                    String likes = String.valueOf(data.getLikes());
+                    holder.setText(R.id.tv_likes,likes);
+                }
+                else if(state == STATE_LOADING){
+                    holder.getView(R.id.like_progress).setVisibility(View.VISIBLE);
+                    holder.getView(R.id.iv_likes).setVisibility(View.GONE);
+                }
+            }
+        }
+    }
+
     public interface OnLikeListener{
-        void onLike(View view,int postion);
+        void onLike(View view,int position);
     }
 
     private OnLikeListener mLikeListener;

@@ -18,10 +18,12 @@ public interface PhotoListContract {
     interface View extends BaseView {
         void showPhotos(List<PhotoListBean> photos);
         void updatePhoto(LikeResponseBean bean);
+        void showLikeError(String message);
     }
 
     interface Presenter extends BasePresenter{
         void loadPhotos(int page,int perPage,String orderBy);
         void likePhoto(String id);
+        void unlikePhoto(String id);
     }
 }

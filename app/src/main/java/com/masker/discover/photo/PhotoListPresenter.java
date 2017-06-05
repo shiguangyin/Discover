@@ -70,7 +70,26 @@ public class PhotoListPresenter implements PhotoListContract.Presenter{
                 }, new Action1<Throwable>() {
                     @Override
                     public void call(Throwable throwable) {
+                        mView.showLikeError(throwable.getMessage());
+                    }
+                });
+        mSubscriptions.add(subscription);
+    }
 
+    @Override
+    public void unlikePhoto(String id) {
+        Subscription subscription = PhotoRepository.unlikePhoto(id)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Action1<LikeResponseBean>() {
+                    @Override
+                    public void call(LikeResponseBean bean) {
+                        mView.updatePhoto(bean);
+                    }
+                }, new Action1<Throwable>() {
+                    @Override
+                    public void call(Throwable throwable) {
+                        mView.showLikeError(throwable.getMessage());
                     }
                 });
         mSubscriptions.add(subscription);

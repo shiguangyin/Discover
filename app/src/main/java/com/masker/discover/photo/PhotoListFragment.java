@@ -2,6 +2,7 @@ package com.masker.discover.photo;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.design.widget.Snackbar;
 import android.support.v4.app.ActivityOptionsCompat;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
@@ -13,6 +14,7 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 
 import com.masker.discover.R;
 import com.masker.discover.base.BaseAdpater;
@@ -24,6 +26,8 @@ import com.orhanobut.logger.Logger;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import okhttp3.internal.connection.RealConnection;
 
 /**
  * CreatedBy: masker
@@ -37,6 +41,7 @@ public class PhotoListFragment extends BaseFragment implements PhotoListContract
     private static final int START_PAGE = 1;
 
 
+    private RelativeLayout mRlContent;
     private SwipeRefreshLayout mRefreshLayout;
     private SwipeRefreshLayout.OnRefreshListener mRefreshListener;
     private RecyclerView mRecyclerView;
@@ -62,6 +67,7 @@ public class PhotoListFragment extends BaseFragment implements PhotoListContract
 
     @Override
     protected void initViews(View contentView) {
+        mRlContent = getViewById(R.id.rl_content);
         mRefreshLayout = getViewById(R.id.swipe_refresh_layout);
         mRefreshListener = new SwipeRefreshLayout.OnRefreshListener() {
             @Override
@@ -99,13 +105,30 @@ public class PhotoListFragment extends BaseFragment implements PhotoListContract
         });
         mPhotoAdapter.setOnLikeListener(new PhotoListAdapter.OnLikeListener() {
             @Override
-            public void onLike(View view, int postion) {
-                mPresenter.likePhoto(mPhotos.get(postion).getId());
+            public void onLike(View view, int position) {
+                onClickLike(position);
             }
         });
         mRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         mRecyclerView.setAdapter(mPhotoAdapter);
     }
+
+
+    /*
+     * on like button clicked
+     */
+    private void onClickLike(int position){
+        PhotoListBean photo = mPhotos.get(position);
+        boolean isLike = photo.isLiked_by_user();
+        mPhotoAdapter.notifyItemChanged(position,PhotoListAdapter.STATE_LOADING);
+        if(isLike){
+            mPresenter.unlikePhoto(photo.getId());
+        }
+        else{
+            mPresenter.likePhoto(photo.getId());
+        }
+    }
+
 
     @Override
     protected void initData() {
@@ -137,11 +160,16 @@ public class PhotoListFragment extends BaseFragment implements PhotoListContract
             if(photo.getId().equals(bean.getPhoto().getId())){
                 boolean like = bean.getPhoto().isLiked_by_user();
                 photo.setLiked_by_user(like);
-                mPhotoAdapter.notifyItemChanged(i);
-                Logger.i("like  ? = "+like);
+                photo.setLikes(bean.getPhoto().getLikes());
+                mPhotoAdapter.notifyItemChanged(i,PhotoListAdapter.STATE_NORMAL);
                 break;
             }
         }
+    }
+
+    @Override
+    public void showLikeError(String message) {
+        Snackbar.make(mRlContent,message,Snackbar.LENGTH_SHORT).show();
     }
 
     @Override
