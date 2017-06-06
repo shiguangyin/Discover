@@ -209,37 +209,7 @@ public class PhotoListFragment extends BaseFragment implements PhotoListContract
         return new PhotoListFragment();
     }
 
-//    @Override
-//    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-//        inflater.inflate(R.menu.menu_home,menu);
-//    }
-//
-//    @Override
-//    public boolean onOptionsItemSelected(MenuItem item) {
-//        switch (item.getItemId()){
-//            case R.id.action_latest:
-//                if(!mOrder.equals(PhotoService.LATEST)){
-//                    mOrder = PhotoService.LATEST;
-//                    initData();
-//                }
-//                break;
-//            case R.id.action_oldest:
-//                if(!mOrder.equals(PhotoService.OLDEST)){
-//                    mOrder = PhotoService.OLDEST;
-//                    initData();
-//                }
-//                break;
-//            case R.id.action_popular:
-//                if(!mOrder.equals(PhotoService.POPULAR)){
-//                    mOrder = PhotoService.POPULAR;
-//                    initData();
-//                }
-//                break;
-//            default:
-//                break;
-//        }
-//        return true;
-//    }
+
 
     @Override
     public void onDestroy() {

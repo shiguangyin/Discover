@@ -115,8 +115,6 @@ public class PhotoInfoActivity extends BaseMvpActivity implements PhotoInfoContr
     }
 
 
-
-
     /*
     * reset size of imageview
      */
