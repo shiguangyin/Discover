@@ -7,9 +7,12 @@
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorAccent</item>
         <item name="android:windowTranslucentStatus">true</item>
-
+N
     </style>
-    
+
+    <style name="NormalTheme" parent="AppTheme">
+        <item name="android:windowTranslucentStatus">false</item>
+    </style>
 
 
     <style name="SplashTheme" parent="AppTheme">
@@ -19,5 +22,6 @@
     <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
 
     <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
+
 
 </resources>

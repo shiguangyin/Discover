@@ -25,6 +25,7 @@ import com.masker.discover.model.api.PhotoService;
 import com.masker.discover.model.entity.User;
 import com.masker.discover.rxbus.ReOrderEvent;
 import com.masker.discover.rxbus.RxBus;
+import com.masker.discover.search.SearchActivity;
 import com.masker.discover.tag.TagListFragment;
 import com.masker.discover.photo.PhotoListFragment;
 import com.orhanobut.logger.Logger;
@@ -148,21 +149,7 @@ public class HomeActivity extends BaseMvpActivity implements HomeContract.View{
         return super.onPrepareOptionsMenu(menu);
     }
 
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()){
-            case R.id.action_latest:
-                RxBus.post(new ReOrderEvent(PhotoService.LATEST));
-                break;
-            case R.id.action_oldest:
-                RxBus.post(new ReOrderEvent(PhotoService.OLDEST));
-                break;
-            case R.id.action_popular:
-                RxBus.post(new ReOrderEvent(PhotoService.POPULAR));
-                break;
-        }
-        return super.onOptionsItemSelected(item);
-    }
+
 
     public void switchFragment(int id){
         FragmentManager fm = getSupportFragmentManager();
@@ -213,6 +200,24 @@ public class HomeActivity extends BaseMvpActivity implements HomeContract.View{
         return true;
     }
 
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()){
+            case R.id.action_latest:
+                RxBus.post(new ReOrderEvent(PhotoService.LATEST));
+                break;
+            case R.id.action_oldest:
+                RxBus.post(new ReOrderEvent(PhotoService.OLDEST));
+                break;
+            case R.id.action_popular:
+                RxBus.post(new ReOrderEvent(PhotoService.POPULAR));
+                break;
+            case R.id.action_search:
+                SearchActivity.start(this);
+                break;
+        }
+        return super.onOptionsItemSelected(item);
+    }
 
 
 

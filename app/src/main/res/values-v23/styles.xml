@@ -10,5 +10,16 @@
         <item name="android:windowTranslucentStatus">true</item>
         <!--<item name="android:statusBarColor">@android:color/transparent</item>-->
         <!--<item name="android:windowLightStatusBar">true</item>-->
+
     </style>
+
+    <style name="NormalTheme" parent="AppTheme">
+        <item name="android:windowTranslucentStatus">false</item>
+        <item name="searchViewStyle">@style/Widget.SearchView</item>
+    </style>
+
+    <style name="Widget.SearchView" parent="Widget.AppCompat.SearchView" >
+        <item name="searchHintIcon">@null</item>
+    </style>
+
 </resources>

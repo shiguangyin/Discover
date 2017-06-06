@@ -5,7 +5,6 @@ import com.masker.discover.base.BaseView;
 import com.masker.discover.model.entity.CollectionListBean;
 import com.masker.discover.model.entity.CollectionSearchBean;
 
-import java.util.List;
 
 /**
  * CreatedBy: masker

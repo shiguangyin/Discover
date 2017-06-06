@@ -48,5 +48,11 @@
 
     <!--collection detail activity-->
     <string name="from">From</string>
+
+    <!--search activity-->
+    <string name="search">Search</string>
+    <string name="tab_photo">Photos</string>
+    <string name="tab_collection">Collections</string>
+    <string name="tab_user">Users</string>
 </resources>
 

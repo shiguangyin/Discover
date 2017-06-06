@@ -44,7 +44,10 @@
         <activity
             android:name=".collection.CollectionDetailActivity"
             android:parentActivityName=".home.HomeActivity"></activity>
-        <activity android:name=".search.SearchActivity"></activity>
+
+        <activity android:name=".search.SearchActivity"
+            android:theme="@style/NormalTheme"
+            android:parentActivityName=".home.HomeActivity"></activity>
     </application>
 
 </manifest>
