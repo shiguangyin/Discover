@@ -8,6 +8,7 @@ import android.support.v4.app.FragmentPagerAdapter;
 import com.masker.discover.R;
 import com.masker.discover.search.fragment.SearchCollectionFragment;
 import com.masker.discover.search.fragment.SearchPhotoFragment;
+import com.masker.discover.search.fragment.SearchUserFragment;
 
 /**
  * CreatedBy: masker
@@ -32,7 +33,7 @@ public class SearchVpAdapter extends FragmentPagerAdapter{
             return SearchCollectionFragment.newInstance();
         }
         else if(position == 2){
-            return SearchPhotoFragment.newInstance();
+            return SearchUserFragment.newInstance();
         }
         return null;
     }

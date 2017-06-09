@@ -54,5 +54,8 @@
     <string name="tab_photo">Photos</string>
     <string name="tab_collection">Collections</string>
     <string name="tab_user">Users</string>
+
+    <!--user adapter-->
+    <string name="user_msg">%1$d Photos, %2$d Collections, %3$d Likes</string>
 </resources>
 
