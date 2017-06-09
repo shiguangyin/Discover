@@ -11,6 +11,7 @@ import android.support.v7.app.ActionBar;
 import android.support.v7.widget.ActionBarContainer;
 import android.support.v7.widget.SearchView;
 import android.support.v7.widget.Toolbar;
+import android.text.TextUtils;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -21,6 +22,8 @@ import android.widget.LinearLayout;
 import com.masker.discover.R;
 import com.masker.discover.base.BaseActivity;
 import com.masker.discover.model.api.SearchService;
+import com.masker.discover.rxbus.RxBus;
+import com.masker.discover.rxbus.SearchEvent;
 
 public class SearchActivity extends BaseActivity {
     public static final String SEARCH_KEY = "key";
@@ -47,11 +50,13 @@ public class SearchActivity extends BaseActivity {
         }
 
         mVpResult = find(R.id.vp_result);
+        mVpResult.setAdapter(new SearchVpAdapter(getSupportFragmentManager(),this));
+        mVpResult.setOffscreenPageLimit(2);
         mTabLayout = find(R.id.tab_layout);
-        mTabLayout.addTab(mTabLayout.newTab().setText(getString(R.string.tab_photo)));
-        mTabLayout.addTab(mTabLayout.newTab().setText(getString(R.string.tab_collection)));
-        mTabLayout.addTab(mTabLayout.newTab().setText(getString(R.string.tab_user)));
-
+        mTabLayout.addTab(mTabLayout.newTab());
+        mTabLayout.addTab(mTabLayout.newTab());
+        mTabLayout.addTab(mTabLayout.newTab());
+        mTabLayout.setupWithViewPager(mVpResult);
     }
 
     @Override
@@ -66,6 +71,21 @@ public class SearchActivity extends BaseActivity {
         mSearchView = (SearchView) MenuItemCompat.getActionView(itemSearch);
         mSearchView.onActionViewExpanded();
         mSearchView.setQueryHint(getString(R.string.search));
+
+        mSearchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                if(!TextUtils.isEmpty(query)){
+                    RxBus.post(new SearchEvent(query));
+                }
+                return false;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String newText) {
+                return false;
+            }
+        });
 
         //remove search icon
         ImageView searchViewIcon = (ImageView)mSearchView.findViewById(R.id.search_mag_icon);

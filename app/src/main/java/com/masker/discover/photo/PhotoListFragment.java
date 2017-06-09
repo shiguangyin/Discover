@@ -8,10 +8,6 @@ import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 
-import android.util.Log;
-import android.view.Menu;
-import android.view.MenuInflater;
-import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
@@ -24,12 +20,10 @@ import com.masker.discover.model.entity.LikeResponseBean;
 import com.masker.discover.model.entity.PhotoListBean;
 import com.masker.discover.rxbus.ReOrderEvent;
 import com.masker.discover.rxbus.RxBus;
-import com.orhanobut.logger.Logger;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import okhttp3.internal.connection.RealConnection;
 import rx.Subscription;
 import rx.functions.Action1;
 
@@ -82,8 +76,8 @@ public class PhotoListFragment extends BaseFragment implements PhotoListContract
 
     @Override
     protected void initViews(View contentView) {
-        mRlContent = getViewById(R.id.rl_content);
-        mRefreshLayout = getViewById(R.id.swipe_refresh_layout);
+        mRlContent = find(R.id.rl_content);
+        mRefreshLayout = find(R.id.swipe_refresh_layout);
         mRefreshListener = new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
@@ -93,7 +87,7 @@ public class PhotoListFragment extends BaseFragment implements PhotoListContract
             }
         };
         mRefreshLayout.setOnRefreshListener(mRefreshListener);
-        mRecyclerView = getViewById(R.id.recycler_view);
+        mRecyclerView = find(R.id.recycler_view);
         mPhotos = new ArrayList<>();
         mPhotoAdapter = new PhotoListAdapter(mPhotos,getContext());
         mPhotoAdapter.setLoadMoreListener(new BaseAdpater.LoadMoreListener() {

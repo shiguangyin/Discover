@@ -31,7 +31,7 @@ public class CollectionFragment extends BaseFragment {
         if(mTabLayout != null){
             mTabLayout.setVisibility(View.VISIBLE);
         }
-        mViewPager = getViewById(R.id.vp_collection);
+        mViewPager = find(R.id.vp_collection);
         mAdapter = new CollectionFragmentAdapter(getChildFragmentManager(),getContext());
         mViewPager.setAdapter(mAdapter);
         mTabLayout.setupWithViewPager(mViewPager);

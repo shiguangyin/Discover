@@ -11,7 +11,6 @@ import com.masker.discover.R;
 import com.masker.discover.base.BaseAdpater;
 import com.masker.discover.base.BaseMvpFragment;
 import com.masker.discover.model.entity.CollectionListBean;
-import com.orhanobut.logger.Logger;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -60,7 +59,7 @@ public class CollectionListFragment extends BaseMvpFragment
 
     @Override
     protected void initViews(View contentView) {
-        mRefreshLayout = getViewById(R.id.swipe_refresh_layout);
+        mRefreshLayout = find(R.id.swipe_refresh_layout);
         mListener = new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
@@ -70,7 +69,7 @@ public class CollectionListFragment extends BaseMvpFragment
             }
         };
         mRefreshLayout.setOnRefreshListener(mListener);
-        mRecyclerView = getViewById(R.id.recycler_view);
+        mRecyclerView = find(R.id.recycler_view);
         mCollections = new ArrayList<>();
         mAdapter = new CollectionListAdapter(mCollections,getContext());
         mAdapter.setLoadMoreListener(new BaseAdpater.LoadMoreListener() {

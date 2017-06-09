@@ -1,13 +1,10 @@
 package com.masker.discover.tag;
 
-import android.os.Bundle;
-import android.support.annotation.Nullable;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 
 import com.masker.discover.R;
-import com.masker.discover.base.BaseFragment;
 import com.masker.discover.base.BaseMvpFragment;
 import com.masker.discover.model.entity.TagBean;
 
@@ -36,7 +33,7 @@ public class TagListFragment extends BaseMvpFragment implements TagListContract.
 
     @Override
     protected void initViews(View contentView) {
-        mRecyclerView = getViewById(R.id.recycler_view);
+        mRecyclerView = find(R.id.recycler_view);
         mTags = new ArrayList<>();
         mAdapter = new TagListAdapter(mTags,getContext());
         mAdapter.enableLoadMore(false);

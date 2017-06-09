@@ -1,23 +1,24 @@
-package com.masker.discover.search.contract;
+package com.masker.discover.search;
 
 import com.masker.discover.base.BasePresenter;
 import com.masker.discover.base.BaseView;
-import com.masker.discover.model.entity.CollectionListBean;
-import com.masker.discover.model.entity.CollectionSearchBean;
-
 
 /**
  * CreatedBy: masker
- * Date: 2017/6/6
+ * Date: 2017/6/9
  * Description:
  */
 
-public interface SearchCollectionsContract {
+public interface SearchContract {
     interface View extends BaseView{
-        void showCollections(CollectionSearchBean result);
+        void showLists(Object obj);
+        void showLoading();
+        void hideLoading();
     }
 
     interface Presenter extends BasePresenter{
         void searchCollections(String key,int page,int perPage);
+        void searchPhotos(String key,int page,int perPage);
+        void searchUsers(String key,int page,int perPage);
     }
 }
