@@ -37,7 +37,7 @@ public class SearchUserFragment extends BaseResultFragment{
         mRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
-                mIsRefresh = true;
+                mIsLoadMore = true;
                 mPage = START_PAGE;
                 if(!TextUtils.isEmpty(mKey)){
                     mPresenter.searchUsers(mKey,mPage,PER_PAGE);
@@ -62,14 +62,17 @@ public class SearchUserFragment extends BaseResultFragment{
     public void showLists(Object obj) {
         UserSearchBean bean = (UserSearchBean) obj;
         mTotalCount = bean.getTotal();
-        if(mIsRefresh){
-            mUsers.clear();
-            mRefreshLayout.setRefreshing(false);
+        if(mIsLoadMore){
+            mUsers.addAll(bean.getResults());
+            mIsLoadMore = false;
         }
-        mUsers.addAll(bean.getResults());
+        else{
+            mUsers.clear();
+            mUsers.addAll(bean.getResults());
+        }
         mAdapter.notifyDataSetChanged();
+        mRefreshLayout.setRefreshing(false);
         mPage++;
-        Logger.i("user size="+mUsers.size());
         if(mUsers.size() == mTotalCount){
             mAdapter.enableLoadMore(false);
         }
@@ -80,10 +83,6 @@ public class SearchUserFragment extends BaseResultFragment{
 
     @Override
     protected void startSearch(String key) {
-        if(TextUtils.isEmpty(mKey) || !mKey.equals(key)){
-            mIsRefresh = true;
-            mPage = 1;
-        }
         mKey = key;
         mPresenter.searchUsers(key,mPage,PER_PAGE);
         showLoading();

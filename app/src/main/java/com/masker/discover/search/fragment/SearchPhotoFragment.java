@@ -8,6 +8,7 @@ import com.masker.discover.base.BaseAdpater;
 import com.masker.discover.model.entity.PhotoListBean;
 import com.masker.discover.model.entity.PhotoSearchBean;
 import com.masker.discover.photo.PhotoListAdapter;
+import com.orhanobut.logger.Logger;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -36,7 +37,7 @@ public class SearchPhotoFragment extends BaseResultFragment{
         mRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
-                mIsRefresh = true;
+                mIsLoadMore = true;
                 mPage = START_PAGE;
                 if(!TextUtils.isEmpty(mKey)){
                     mPresenter.searchPhotos(mKey,mPage,PER_PAGE);
@@ -50,6 +51,7 @@ public class SearchPhotoFragment extends BaseResultFragment{
             @Override
             public void onLoadMore() {
                 if(!TextUtils.isEmpty(mKey)){
+                    mIsLoadMore = true;
                     mPresenter.searchPhotos(mKey,mPage,PER_PAGE);
                 }
             }
@@ -59,10 +61,6 @@ public class SearchPhotoFragment extends BaseResultFragment{
 
     @Override
     protected void startSearch(String key) {
-        if(TextUtils.isEmpty(mKey) || !mKey.equals(key)){
-            mIsRefresh = true;
-            mPage = 1;
-        }
         mKey = key;
         mPresenter.searchPhotos(key,mPage,PER_PAGE);
         showLoading();
@@ -72,13 +70,20 @@ public class SearchPhotoFragment extends BaseResultFragment{
     public void showLists(Object obj) {
         PhotoSearchBean bean = (PhotoSearchBean) obj;
         mTotalCount = bean.getTotal();
-        if(mIsRefresh){
-            mPhotos.clear();
-            mRefreshLayout.setRefreshing(false);
+        if(mIsLoadMore){
+            Logger.i("load more");
+            mPhotos.addAll(bean.getResults());
+            mIsLoadMore = false;
         }
-        mPhotos.addAll(bean.getResults());
+        else{
+            Logger.i("clear");
+            mPhotos.clear();
+            mPhotos.addAll(bean.getResults());
+        }
         mAdapter.notifyDataSetChanged();
+        mRefreshLayout.setRefreshing(false);
         mPage++;
+        Logger.i("photo size = "+mPhotos.size());
         if(mPhotos.size() == mTotalCount){
             mAdapter.enableLoadMore(false);
         }

@@ -10,6 +10,7 @@ import com.masker.discover.base.BaseAdpater;
 import com.masker.discover.collection.CollectionListAdapter;
 import com.masker.discover.model.entity.CollectionListBean;
 import com.masker.discover.model.entity.CollectionSearchBean;
+import com.orhanobut.logger.Logger;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -38,7 +39,7 @@ public class SearchCollectionFragment extends BaseResultFragment{
         mRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
-                mIsRefresh = true;
+                mIsLoadMore = true;
                 mPage = START_PAGE;
                 if(!TextUtils.isEmpty(mKey)){
                     mPresenter.searchCollections(mKey,mPage,PER_PAGE);
@@ -52,6 +53,7 @@ public class SearchCollectionFragment extends BaseResultFragment{
             @Override
             public void onLoadMore() {
                 if(!TextUtils.isEmpty(mKey)){
+                    mIsLoadMore = true;
                     mPresenter.searchPhotos(mKey,mPage,PER_PAGE);
                 }
             }
@@ -62,12 +64,18 @@ public class SearchCollectionFragment extends BaseResultFragment{
     public void showLists(Object obj) {
         CollectionSearchBean bean = (CollectionSearchBean) obj;
         mTotalCount = bean.getTotal();
-        if(mIsRefresh){
-            mCollections.clear();
-            mRefreshLayout.setRefreshing(false);
+        if(mIsLoadMore){
+            Logger.i("load more");
+            mCollections.addAll(bean.getResults());
+            mIsLoadMore = false;
         }
-        mCollections.addAll(bean.getResults());
+        else{
+            Logger.i("refresh");
+            mCollections.clear();
+            mCollections.addAll(bean.getResults());
+        }
         mAdapter.notifyDataSetChanged();
+        mRefreshLayout.setRefreshing(false);
         mPage++;
         if(mCollections.size() == mTotalCount){
             mAdapter.enableLoadMore(false);
@@ -79,10 +87,6 @@ public class SearchCollectionFragment extends BaseResultFragment{
 
     @Override
     protected void startSearch(String key) {
-        if(TextUtils.isEmpty(mKey) || !mKey.equals(key)){
-            mIsRefresh = true;
-            mPage = 1;
-        }
         mKey = key;
         mPresenter.searchCollections(key,mPage,PER_PAGE);
         showLoading();
