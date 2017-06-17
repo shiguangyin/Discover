@@ -37,7 +37,6 @@ public class SearchUserFragment extends BaseResultFragment{
         mRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
-                mIsLoadMore = true;
                 mPage = START_PAGE;
                 if(!TextUtils.isEmpty(mKey)){
                     mPresenter.searchUsers(mKey,mPage,PER_PAGE);
@@ -51,6 +50,7 @@ public class SearchUserFragment extends BaseResultFragment{
             @Override
             public void onLoadMore() {
                 if(!TextUtils.isEmpty(mKey)){
+                    mIsLoadMore = true;
                     mPresenter.searchUsers(mKey,mPage,PER_PAGE);
                 }
             }
@@ -65,14 +65,17 @@ public class SearchUserFragment extends BaseResultFragment{
         if(mIsLoadMore){
             mUsers.addAll(bean.getResults());
             mIsLoadMore = false;
+            Logger.i("user load more size = "+bean.getResults().size());
         }
         else{
             mUsers.clear();
             mUsers.addAll(bean.getResults());
+            Logger.i("user refresh size ");
         }
         mAdapter.notifyDataSetChanged();
         mRefreshLayout.setRefreshing(false);
         mPage++;
+        Logger.i(String.format("total users = %d,musers.size = %d",mTotalCount,mUsers.size()));
         if(mUsers.size() == mTotalCount){
             mAdapter.enableLoadMore(false);
         }

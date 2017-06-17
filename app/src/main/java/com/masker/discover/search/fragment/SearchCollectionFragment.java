@@ -39,7 +39,6 @@ public class SearchCollectionFragment extends BaseResultFragment{
         mRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
-                mIsLoadMore = true;
                 mPage = START_PAGE;
                 if(!TextUtils.isEmpty(mKey)){
                     mPresenter.searchCollections(mKey,mPage,PER_PAGE);
@@ -54,7 +53,7 @@ public class SearchCollectionFragment extends BaseResultFragment{
             public void onLoadMore() {
                 if(!TextUtils.isEmpty(mKey)){
                     mIsLoadMore = true;
-                    mPresenter.searchPhotos(mKey,mPage,PER_PAGE);
+                    mPresenter.searchCollections(mKey,mPage,PER_PAGE);
                 }
             }
         });
@@ -77,6 +76,7 @@ public class SearchCollectionFragment extends BaseResultFragment{
         mAdapter.notifyDataSetChanged();
         mRefreshLayout.setRefreshing(false);
         mPage++;
+        Logger.i(String.format("total = %d size = %d",mTotalCount,mCollections.size()));
         if(mCollections.size() == mTotalCount){
             mAdapter.enableLoadMore(false);
         }

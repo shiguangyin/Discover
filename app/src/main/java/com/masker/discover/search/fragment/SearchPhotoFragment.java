@@ -37,7 +37,6 @@ public class SearchPhotoFragment extends BaseResultFragment{
         mRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
-                mIsLoadMore = true;
                 mPage = START_PAGE;
                 if(!TextUtils.isEmpty(mKey)){
                     mPresenter.searchPhotos(mKey,mPage,PER_PAGE);
