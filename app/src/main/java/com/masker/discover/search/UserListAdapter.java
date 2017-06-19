@@ -1,11 +1,10 @@
 package com.masker.discover.search;
 
 import android.content.Context;
-import android.widget.ImageView;
 
 import com.bumptech.glide.Glide;
 import com.masker.discover.R;
-import com.masker.discover.base.BaseAdpater;
+import com.masker.discover.base.BaseAdapter;
 import com.masker.discover.base.BaseViewHolder;
 import com.masker.discover.model.entity.UserListBean;
 
@@ -19,7 +18,7 @@ import de.hdodenhof.circleimageview.CircleImageView;
  * Description:
  */
 
-public class UserListAdapter extends BaseAdpater<UserListBean>{
+public class UserListAdapter extends BaseAdapter<UserListBean> {
     public UserListAdapter(List<UserListBean> datas, Context context) {
         super(datas, context);
     }

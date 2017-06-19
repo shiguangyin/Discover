@@ -8,7 +8,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.View;
 
 import com.masker.discover.R;
-import com.masker.discover.base.BaseAdpater;
+import com.masker.discover.base.BaseAdapter;
 import com.masker.discover.base.BaseMvpFragment;
 import com.masker.discover.model.entity.CollectionListBean;
 
@@ -72,14 +72,14 @@ public class CollectionListFragment extends BaseMvpFragment
         mRecyclerView = find(R.id.recycler_view);
         mCollections = new ArrayList<>();
         mAdapter = new CollectionListAdapter(mCollections,getContext());
-        mAdapter.setLoadMoreListener(new BaseAdpater.LoadMoreListener() {
+        mAdapter.setLoadMoreListener(new BaseAdapter.LoadMoreListener() {
             @Override
             public void onLoadMore() {
                 mPage++;
                 mPresenter.loadCollections(mPage,PER_PAGE,mType);
             }
         });
-        mAdapter.setOnItemClickListener(new BaseAdpater.OnItemClickListener() {
+        mAdapter.setOnItemClickListener(new BaseAdapter.OnItemClickListener() {
             @Override
             public void onClick(View view, int position) {
                 gotoDetail(position);

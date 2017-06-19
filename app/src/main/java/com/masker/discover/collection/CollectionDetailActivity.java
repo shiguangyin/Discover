@@ -2,7 +2,6 @@ package com.masker.discover.collection;
 
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.pdf.PdfDocument;
 import android.support.v7.app.ActionBar;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -15,22 +14,19 @@ import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
-import com.bumptech.glide.Glide;
 import com.masker.discover.R;
-import com.masker.discover.base.BaseAdpater;
+import com.masker.discover.base.BaseAdapter;
 import com.masker.discover.base.BaseMvpActivity;
 import com.masker.discover.model.entity.CollectionBean;
 import com.masker.discover.model.entity.PhotoListBean;
 import com.masker.discover.photo.PhotoListAdapter;
 import com.masker.discover.utils.ImgLoader;
 import com.masker.discover.utils.ScreenUtils;
-import com.orhanobut.logger.Logger;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import de.hdodenhof.circleimageview.CircleImageView;
-import jp.wasabeef.glide.transformations.BlurTransformation;
 
 public class CollectionDetailActivity extends BaseMvpActivity
         implements CollectionDetailContract.View{
@@ -97,7 +93,7 @@ public class CollectionDetailActivity extends BaseMvpActivity
         mAdapter = new PhotoListAdapter(mPhotos,this);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
         mRecyclerView.setAdapter(mAdapter);
-        mAdapter.setLoadMoreListener(new BaseAdpater.LoadMoreListener() {
+        mAdapter.setLoadMoreListener(new BaseAdapter.LoadMoreListener() {
             @Override
             public void onLoadMore() {
                 mPage++;

@@ -13,7 +13,7 @@ import android.widget.ImageView;
 import android.widget.RelativeLayout;
 
 import com.masker.discover.R;
-import com.masker.discover.base.BaseAdpater;
+import com.masker.discover.base.BaseAdapter;
 import com.masker.discover.base.BaseFragment;
 import com.masker.discover.model.api.PhotoService;
 import com.masker.discover.model.entity.LikeResponseBean;
@@ -90,13 +90,13 @@ public class PhotoListFragment extends BaseFragment implements PhotoListContract
         mRecyclerView = find(R.id.recycler_view);
         mPhotos = new ArrayList<>();
         mPhotoAdapter = new PhotoListAdapter(mPhotos,getContext());
-        mPhotoAdapter.setLoadMoreListener(new BaseAdpater.LoadMoreListener() {
+        mPhotoAdapter.setLoadMoreListener(new BaseAdapter.LoadMoreListener() {
             @Override
             public void onLoadMore() {
                 mPresenter.loadPhotos(mPage,mPerPage,mOrder);
             }
         });
-        mPhotoAdapter.setOnItemClickListener(new BaseAdpater.OnItemClickListener() {
+        mPhotoAdapter.setOnItemClickListener(new BaseAdapter.OnItemClickListener() {
             @Override
             public void onClick(View view, int position) {
                 PhotoListBean photo = mPhotos.get(position);

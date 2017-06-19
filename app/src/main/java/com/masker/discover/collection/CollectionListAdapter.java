@@ -6,7 +6,7 @@ import android.widget.RelativeLayout;
 
 import com.bumptech.glide.Glide;
 import com.masker.discover.R;
-import com.masker.discover.base.BaseAdpater;
+import com.masker.discover.base.BaseAdapter;
 import com.masker.discover.base.BaseViewHolder;
 import com.masker.discover.model.entity.CollectionListBean;
 import com.masker.discover.utils.ImgLoader;
@@ -22,7 +22,7 @@ import de.hdodenhof.circleimageview.CircleImageView;
  * Description: collection recylcerview adapter
  */
 
-public class CollectionListAdapter extends BaseAdpater<CollectionListBean>{
+public class CollectionListAdapter extends BaseAdapter<CollectionListBean> {
 
     public CollectionListAdapter(List<CollectionListBean> datas, Context context) {
         super(datas, context);

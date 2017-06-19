@@ -4,7 +4,7 @@ import android.support.v4.widget.SwipeRefreshLayout;
 import android.text.TextUtils;
 import android.view.View;
 
-import com.masker.discover.base.BaseAdpater;
+import com.masker.discover.base.BaseAdapter;
 import com.masker.discover.model.entity.PhotoListBean;
 import com.masker.discover.model.entity.PhotoSearchBean;
 import com.masker.discover.photo.PhotoListAdapter;
@@ -46,7 +46,7 @@ public class SearchPhotoFragment extends BaseResultFragment{
                 }
             }
         });
-        mAdapter.setLoadMoreListener(new BaseAdpater.LoadMoreListener() {
+        mAdapter.setLoadMoreListener(new BaseAdapter.LoadMoreListener() {
             @Override
             public void onLoadMore() {
                 if(!TextUtils.isEmpty(mKey)){

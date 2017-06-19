@@ -11,7 +11,7 @@ import android.widget.RelativeLayout;
 
 import com.bumptech.glide.Glide;
 import com.masker.discover.R;
-import com.masker.discover.base.BaseAdpater;
+import com.masker.discover.base.BaseAdapter;
 import com.masker.discover.base.BaseViewHolder;
 import com.masker.discover.model.entity.PhotoListBean;
 import com.masker.discover.utils.ImgLoader;
@@ -28,7 +28,7 @@ import de.hdodenhof.circleimageview.CircleImageView;
  */
 
 
-public class PhotoListAdapter extends BaseAdpater<PhotoListBean>{
+public class PhotoListAdapter extends BaseAdapter<PhotoListBean> {
 
     public static final int STATE_NORMAL = 100000;
     public static final int STATE_LOADING = 100001;

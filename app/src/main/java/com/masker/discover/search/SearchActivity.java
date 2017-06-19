@@ -24,6 +24,7 @@ import com.masker.discover.base.BaseActivity;
 import com.masker.discover.model.api.SearchService;
 import com.masker.discover.rxbus.RxBus;
 import com.masker.discover.rxbus.SearchEvent;
+import com.orhanobut.logger.Logger;
 
 public class SearchActivity extends BaseActivity {
     public static final String SEARCH_KEY = "key";
@@ -94,7 +95,9 @@ public class SearchActivity extends BaseActivity {
         //underLine
         View underline =mSearchView.findViewById(R.id.search_plate);
         underline.setBackgroundColor(ContextCompat.getColor(this,R.color.colorPrimary));
-
+        if(!TextUtils.isEmpty(mSearchKey)){
+            mSearchView.setQuery(mSearchKey,true);
+        }
         return super.onCreateOptionsMenu(menu);
     }
 
@@ -104,7 +107,7 @@ public class SearchActivity extends BaseActivity {
     }
 
     public static void start(Context context,String key){
-        Intent intent = new Intent();
+        Intent intent = new Intent(context,SearchActivity.class);
         intent.putExtra(SEARCH_KEY,key);
         context.startActivity(intent);
     }

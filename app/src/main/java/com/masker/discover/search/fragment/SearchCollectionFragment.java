@@ -6,7 +6,7 @@ import android.support.v4.widget.SwipeRefreshLayout;
 import android.text.TextUtils;
 import android.view.View;
 
-import com.masker.discover.base.BaseAdpater;
+import com.masker.discover.base.BaseAdapter;
 import com.masker.discover.collection.CollectionListAdapter;
 import com.masker.discover.model.entity.CollectionListBean;
 import com.masker.discover.model.entity.CollectionSearchBean;
@@ -48,7 +48,7 @@ public class SearchCollectionFragment extends BaseResultFragment{
                 }
             }
         });
-        mAdapter.setLoadMoreListener(new BaseAdpater.LoadMoreListener() {
+        mAdapter.setLoadMoreListener(new BaseAdapter.LoadMoreListener() {
             @Override
             public void onLoadMore() {
                 if(!TextUtils.isEmpty(mKey)){
@@ -77,7 +77,7 @@ public class SearchCollectionFragment extends BaseResultFragment{
         mRefreshLayout.setRefreshing(false);
         mPage++;
         Logger.i(String.format("total = %d size = %d",mTotalCount,mCollections.size()));
-        if(mCollections.size() == mTotalCount){
+        if(mCollections.size() >= mTotalCount){
             mAdapter.enableLoadMore(false);
         }
         else{

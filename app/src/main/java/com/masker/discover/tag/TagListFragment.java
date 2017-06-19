@@ -5,8 +5,11 @@ import android.support.v7.widget.RecyclerView;
 import android.view.View;
 
 import com.masker.discover.R;
+import com.masker.discover.base.BaseAdapter;
 import com.masker.discover.base.BaseMvpFragment;
 import com.masker.discover.model.entity.TagBean;
+import com.masker.discover.search.SearchActivity;
+import com.orhanobut.logger.Logger;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -39,6 +42,13 @@ public class TagListFragment extends BaseMvpFragment implements TagListContract.
         mAdapter.enableLoadMore(false);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         mRecyclerView.setAdapter(mAdapter);
+        mAdapter.setOnItemClickListener(new BaseAdapter.OnItemClickListener() {
+            @Override
+            public void onClick(View view, int position) {
+                String tag = mTags.get(position).getTitle();
+                SearchActivity.start(getContext(),tag);
+            }
+        });
     }
 
     @Override

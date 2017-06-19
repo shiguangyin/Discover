@@ -5,7 +5,7 @@ import android.widget.ImageView;
 
 import com.bumptech.glide.Glide;
 import com.masker.discover.R;
-import com.masker.discover.base.BaseAdpater;
+import com.masker.discover.base.BaseAdapter;
 import com.masker.discover.base.BaseViewHolder;
 import com.masker.discover.model.entity.TagBean;
 
@@ -17,7 +17,7 @@ import java.util.List;
  * Description: adpter for tag recyclerview
  */
 
-public class TagListAdapter extends BaseAdpater<TagBean>{
+public class TagListAdapter extends BaseAdapter<TagBean> {
     public TagListAdapter(List<TagBean> datas, Context context) {
         super(datas, context);
     }

@@ -18,7 +18,7 @@ import java.util.List;
  */
 
 
-public abstract class BaseAdpater<T> extends RecyclerView.Adapter<BaseViewHolder> {
+public abstract class BaseAdapter<T> extends RecyclerView.Adapter<BaseViewHolder> {
     protected String TAG = getClass().getSimpleName();
 
     protected List<T> mDatas;
@@ -35,7 +35,7 @@ public abstract class BaseAdpater<T> extends RecyclerView.Adapter<BaseViewHolder
     protected static final int TYPE_FOOTER = 1;
 
 
-    public BaseAdpater(List<T> datas,Context context){
+    public BaseAdapter(List<T> datas, Context context){
         this.mDatas = datas;
         this.mLayoutId = getmLayoutId();
         this.mContext = context;
@@ -92,7 +92,10 @@ public abstract class BaseAdpater<T> extends RecyclerView.Adapter<BaseViewHolder
 
     @Override
     public int getItemCount() {
-        return mEnableLoadMore ?(mDatas.size()+1):(mDatas.size());
+        if(mEnableLoadMore){
+            return mDatas.size()==0?mDatas.size():mDatas.size()+1;
+        }
+        return mDatas.size();
     }
 
     @Override
