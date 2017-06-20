@@ -215,6 +215,9 @@ public class CollectionDetailActivity extends BaseMvpActivity
         if(item.getItemId() == R.id.action_share){
             //Snackbar.make(mRecyclerView,"under developing",Snackbar.LENGTH_SHORT).show();
         }
+        else if(item.getItemId() == android.R.id.home){
+            onBackPressed();
+        }
         return super.onOptionsItemSelected(item);
     }
 

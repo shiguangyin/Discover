@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.Snackbar;
+import android.support.v4.app.NavUtils;
 import android.support.v7.app.ActionBar;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -14,6 +15,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
+import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.masker.discover.R;
@@ -185,6 +187,9 @@ public class PhotoInfoActivity extends BaseMvpActivity implements PhotoInfoContr
     public boolean onOptionsItemSelected(MenuItem item) {
         if(item.getItemId() == R.id.action_share){
             Snackbar.make(mRecyclerView,"under developing",Snackbar.LENGTH_SHORT).show();
+        }
+        else if(item.getItemId() == android.R.id.home){
+            onBackPressed();
         }
         return super.onOptionsItemSelected(item);
     }

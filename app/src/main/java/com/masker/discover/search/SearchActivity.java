@@ -106,7 +106,15 @@ public class SearchActivity extends BaseActivity {
         context.startActivity(intent);
     }
 
-    public static void start(Context context,String key){
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        if(item.getItemId() == android.R.id.home){
+            onBackPressed();
+        }
+        return super.onOptionsItemSelected(item);
+    }
+
+    public static void start(Context context, String key){
         Intent intent = new Intent(context,SearchActivity.class);
         intent.putExtra(SEARCH_KEY,key);
         context.startActivity(intent);

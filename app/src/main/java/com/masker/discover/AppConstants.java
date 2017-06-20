@@ -9,11 +9,11 @@ package com.masker.discover;
 
 public class AppConstants {
     public static final String BASE_URL = "https://api.unsplash.com";
-//    public static final String APP_ID = "8e0f33ff297a8c195959ba170b12151a9a781b4425425e9aa975017b7180398e";
-//    public static final String APP_SECRET = "edf81bebe2116487c2b2c602a8db34de6cfd9d4ffac8d2697e693a3c3f4d5e32";
+    public static final String APP_ID = "8e0f33ff297a8c195959ba170b12151a9a781b4425425e9aa975017b7180398e";
+    public static final String APP_SECRET = "edf81bebe2116487c2b2c602a8db34de6cfd9d4ffac8d2697e693a3c3f4d5e32";
 
-    public static final String APP_ID = "6ce1dac492678a5c11b1c38f7273f664069d7d02f5cd5d6046fb5b47b58e8302";
-    public static final String APP_SECRET = "2800c16d92029c857e8d3b18d327181436fd8e5913260e12643520caf123f058";
+//    public static final String APP_ID = "6ce1dac492678a5c11b1c38f7273f664069d7d02f5cd5d6046fb5b47b58e8302";
+//    public static final String APP_SECRET = "2800c16d92029c857e8d3b18d327181436fd8e5913260e12643520caf123f058";
 
     public static final String REDIRECT_URL = "discover://oauth.callback";
     public static final String OATHU_HOST = "oauth.callback";

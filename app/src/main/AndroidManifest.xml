@@ -26,7 +26,7 @@
         <activity
             android:name=".photo.PhotoInfoActivity"
             android:launchMode="singleTop"
-            android:parentActivityName=".home.HomeActivity" />
+            />
         <activity
             android:name=".activity.LoginActivity"
             android:launchMode="singleTask">
@@ -43,11 +43,11 @@
         </activity>
         <activity
             android:name=".collection.CollectionDetailActivity"
-            android:parentActivityName=".home.HomeActivity"></activity>
+            ></activity>
 
         <activity android:name=".search.SearchActivity"
             android:theme="@style/NormalTheme"
-            android:parentActivityName=".home.HomeActivity"></activity>
+            ></activity>
     </application>
 
 </manifest>
