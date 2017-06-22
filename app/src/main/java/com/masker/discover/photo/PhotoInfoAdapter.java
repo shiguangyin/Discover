@@ -73,7 +73,8 @@ public class PhotoInfoAdapter extends RecyclerView.Adapter<BaseViewHolder>{
             String avatarUrl = info.getUser().getProfile_image().getLarge();
             Glide.with(mContext).load(avatarUrl).into(ivAvatar);
 
-            holder.setText(R.id.tv_name,info.getUser().getName());
+            String name = String.format("By %s From Unsplash",info.getUser().getName());
+            holder.setText(R.id.tv_name,name);
             holder.setText(R.id.tv_time, FormatUtils.transform(info.getUpdated_at()));
 
             holder.setText(R.id.tv_views_num,FormatUtils.getNum(info.getViews()));

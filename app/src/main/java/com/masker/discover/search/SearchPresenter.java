@@ -31,14 +31,14 @@ public class SearchPresenter implements SearchContract.Presenter{
 
 
     @Override
-    public void searchCollections(String key, int page, int perPage) {
+    public void searchCollections(String key, int page, int perPage, final boolean refresh) {
         Subscription subscription = SearchRepository.searchCollections(key,page,perPage)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new Action1<CollectionSearchBean>() {
                     @Override
                     public void call(CollectionSearchBean collectionSearchBean) {
-                        mView.showLists(collectionSearchBean);
+                        mView.showLists(collectionSearchBean,refresh);
                         mView.hideLoading();
                     }
                 }, new Action1<Throwable>() {
@@ -53,14 +53,14 @@ public class SearchPresenter implements SearchContract.Presenter{
     }
 
     @Override
-    public void searchPhotos(String key, int page, int perPage) {
+    public void searchPhotos(String key, int page, int perPage, final boolean refresh) {
         Subscription subscription = SearchRepository.searchPhotos(key,page,perPage)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new Action1<PhotoSearchBean>() {
                     @Override
                     public void call(PhotoSearchBean photoSearchBean) {
-                        mView.showLists(photoSearchBean);
+                        mView.showLists(photoSearchBean,refresh);
                         mView.hideLoading();
                     }
                 }, new Action1<Throwable>() {
@@ -75,14 +75,14 @@ public class SearchPresenter implements SearchContract.Presenter{
     }
 
     @Override
-    public void searchUsers(String key, int page, int perPage) {
+    public void searchUsers(String key, int page, int perPage, final boolean refresh) {
         Subscription subscription = SearchRepository.searchUsers(key,page,perPage)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new Action1<UserSearchBean>() {
                     @Override
                     public void call(UserSearchBean userSearchBean) {
-                        mView.showLists(userSearchBean);
+                        mView.showLists(userSearchBean,refresh);
                         mView.hideLoading();
                     }
                 }, new Action1<Throwable>() {

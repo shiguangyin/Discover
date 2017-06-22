@@ -41,7 +41,7 @@ public class SearchCollectionFragment extends BaseResultFragment{
             public void onRefresh() {
                 mPage = START_PAGE;
                 if(!TextUtils.isEmpty(mKey)){
-                    mPresenter.searchCollections(mKey,mPage,PER_PAGE);
+                    mPresenter.searchCollections(mKey,mPage,PER_PAGE,true);
                 }
                 else{
                     mRefreshLayout.setRefreshing(false);
@@ -52,27 +52,20 @@ public class SearchCollectionFragment extends BaseResultFragment{
             @Override
             public void onLoadMore() {
                 if(!TextUtils.isEmpty(mKey)){
-                    mIsLoadMore = true;
-                    mPresenter.searchCollections(mKey,mPage,PER_PAGE);
+                    mPresenter.searchCollections(mKey,mPage,PER_PAGE,false);
                 }
             }
         });
     }
 
     @Override
-    public void showLists(Object obj) {
+    public void showLists(Object obj,boolean refresh) {
         CollectionSearchBean bean = (CollectionSearchBean) obj;
         mTotalCount = bean.getTotal();
-        if(mIsLoadMore){
-            Logger.i("load more");
-            mCollections.addAll(bean.getResults());
-            mIsLoadMore = false;
-        }
-        else{
-            Logger.i("refresh");
+        if(refresh){
             mCollections.clear();
-            mCollections.addAll(bean.getResults());
         }
+        mCollections.addAll(bean.getResults());
         mAdapter.notifyDataSetChanged();
         mRefreshLayout.setRefreshing(false);
         mPage++;
@@ -88,7 +81,8 @@ public class SearchCollectionFragment extends BaseResultFragment{
     @Override
     protected void startSearch(String key) {
         mKey = key;
-        mPresenter.searchCollections(key,mPage,PER_PAGE);
+        mPage = START_PAGE;
+        mPresenter.searchCollections(key,mPage,PER_PAGE,true);
         showLoading();
     }
 

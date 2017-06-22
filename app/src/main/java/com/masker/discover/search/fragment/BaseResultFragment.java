@@ -36,7 +36,6 @@ public  abstract class BaseResultFragment extends BaseMvpFragment
 
     protected int mPage = START_PAGE;
     protected String mKey;
-    protected boolean mIsLoadMore;
     protected int mTotalCount;
 
     //rxbus

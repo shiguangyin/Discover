@@ -11,14 +11,14 @@ import com.masker.discover.base.BaseView;
 
 public interface SearchContract {
     interface View extends BaseView{
-        void showLists(Object obj);
+        void showLists(Object obj,boolean refresh);
         void showLoading();
         void hideLoading();
     }
 
     interface Presenter extends BasePresenter{
-        void searchCollections(String key,int page,int perPage);
-        void searchPhotos(String key,int page,int perPage);
-        void searchUsers(String key,int page,int perPage);
+        void searchCollections(String key,int page,int perPage,boolean refresh);
+        void searchPhotos(String key,int page,int perPage,boolean refresh);
+        void searchUsers(String key,int page,int perPage,boolean refresh);
     }
 }

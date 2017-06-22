@@ -39,7 +39,7 @@ public class SearchUserFragment extends BaseResultFragment{
             public void onRefresh() {
                 mPage = START_PAGE;
                 if(!TextUtils.isEmpty(mKey)){
-                    mPresenter.searchUsers(mKey,mPage,PER_PAGE);
+                    mPresenter.searchUsers(mKey,mPage,PER_PAGE,true);
                 }
                 else{
                     mRefreshLayout.setRefreshing(false);
@@ -50,8 +50,7 @@ public class SearchUserFragment extends BaseResultFragment{
             @Override
             public void onLoadMore() {
                 if(!TextUtils.isEmpty(mKey)){
-                    mIsLoadMore = true;
-                    mPresenter.searchUsers(mKey,mPage,PER_PAGE);
+                    mPresenter.searchUsers(mKey,mPage,PER_PAGE,false);
                 }
             }
         });
@@ -59,24 +58,17 @@ public class SearchUserFragment extends BaseResultFragment{
     }
 
     @Override
-    public void showLists(Object obj) {
+    public void showLists(Object obj,boolean refresh) {
         UserSearchBean bean = (UserSearchBean) obj;
         mTotalCount = bean.getTotal();
-        if(mIsLoadMore){
-            mUsers.addAll(bean.getResults());
-            mIsLoadMore = false;
-            Logger.i("user load more size = "+bean.getResults().size());
-        }
-        else{
+        if(refresh){
             mUsers.clear();
-            mUsers.addAll(bean.getResults());
-            Logger.i("user refresh size ");
         }
+        mUsers.addAll(bean.getResults());
         mAdapter.notifyDataSetChanged();
         mRefreshLayout.setRefreshing(false);
         mPage++;
-        Logger.i(String.format("total users = %d,musers.size = %d",mTotalCount,mUsers.size()));
-        if(mUsers.size() == mTotalCount){
+        if(mUsers.size() >= mTotalCount){
             mAdapter.enableLoadMore(false);
         }
         else{
@@ -87,7 +79,8 @@ public class SearchUserFragment extends BaseResultFragment{
     @Override
     protected void startSearch(String key) {
         mKey = key;
-        mPresenter.searchUsers(key,mPage,PER_PAGE);
+        mPage = START_PAGE;
+        mPresenter.searchUsers(key,mPage,PER_PAGE,true);
         showLoading();
     }
 

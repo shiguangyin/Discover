@@ -39,7 +39,7 @@ public class SearchPhotoFragment extends BaseResultFragment{
             public void onRefresh() {
                 mPage = START_PAGE;
                 if(!TextUtils.isEmpty(mKey)){
-                    mPresenter.searchPhotos(mKey,mPage,PER_PAGE);
+                    mPresenter.searchPhotos(mKey,mPage,PER_PAGE,true);
                 }
                 else{
                     mRefreshLayout.setRefreshing(false);
@@ -50,8 +50,7 @@ public class SearchPhotoFragment extends BaseResultFragment{
             @Override
             public void onLoadMore() {
                 if(!TextUtils.isEmpty(mKey)){
-                    mIsLoadMore = true;
-                    mPresenter.searchPhotos(mKey,mPage,PER_PAGE);
+                    mPresenter.searchPhotos(mKey,mPage,PER_PAGE,false);
                 }
             }
         });
@@ -61,24 +60,19 @@ public class SearchPhotoFragment extends BaseResultFragment{
     @Override
     protected void startSearch(String key) {
         mKey = key;
-        mPresenter.searchPhotos(key,mPage,PER_PAGE);
+        mPage = START_PAGE;
+        mPresenter.searchPhotos(key,mPage,PER_PAGE,true);
         showLoading();
     }
 
     @Override
-    public void showLists(Object obj) {
+    public void showLists(Object obj,boolean refresh) {
         PhotoSearchBean bean = (PhotoSearchBean) obj;
         mTotalCount = bean.getTotal();
-        if(mIsLoadMore){
-            Logger.i("load more");
-            mPhotos.addAll(bean.getResults());
-            mIsLoadMore = false;
-        }
-        else{
-            Logger.i("clear");
+        if(refresh){
             mPhotos.clear();
-            mPhotos.addAll(bean.getResults());
         }
+        mPhotos.addAll(bean.getResults());
         mAdapter.notifyDataSetChanged();
         mRefreshLayout.setRefreshing(false);
         mPage++;
