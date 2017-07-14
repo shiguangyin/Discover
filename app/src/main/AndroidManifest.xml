@@ -16,7 +16,7 @@
             android:screenOrientation="portrait" />
         <activity
             android:name=".activity.SplashActivity"
-            android:theme="@style/SplashTheme">
+            android:theme="@style/FullScreenTheme">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -48,6 +48,8 @@
         <activity android:name=".search.SearchActivity"
             android:theme="@style/NormalTheme"
             ></activity>
+        <activity android:name=".activity.PhotoDetailActivity"
+            android:theme="@android:style/Theme.Translucent.NoTitleBar.Fullscreen"/>
     </application>
 
 </manifest>

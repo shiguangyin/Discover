@@ -4,7 +4,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.Snackbar;
-import android.support.v4.app.NavUtils;
 import android.support.v7.app.ActionBar;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -15,10 +14,10 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
-import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.masker.discover.R;
+import com.masker.discover.activity.PhotoDetailActivity;
 import com.masker.discover.base.BaseMvpActivity;
 import com.masker.discover.model.entity.PhotoBean;
 import com.masker.discover.model.entity.TagBean;
@@ -88,10 +87,21 @@ public class PhotoInfoActivity extends BaseMvpActivity implements PhotoInfoContr
         mAdapter = new PhotoInfoAdapter(this,mDatas);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
         mRecyclerView.setAdapter(mAdapter);
+
     }
 
     @Override
-    protected void initDatas() {
+    protected void initListeners() {
+        mIvPhoto.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                PhotoDetailActivity.start(PhotoInfoActivity.this,mImgUrl);
+            }
+        });
+    }
+
+    @Override
+    protected void initData() {
         mPresenter.loadPhotoInfo(mId);
     }
 

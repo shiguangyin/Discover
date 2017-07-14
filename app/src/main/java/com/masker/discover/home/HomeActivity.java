@@ -123,7 +123,7 @@ public class HomeActivity extends BaseMvpActivity implements HomeContract.View{
 
 
     @Override
-    protected void initDatas() {
+    protected void initData() {
         if(UserManager.getInstance().isLogin()){
             User user = UserManager.getInstance().getUser();
             if(user != null){

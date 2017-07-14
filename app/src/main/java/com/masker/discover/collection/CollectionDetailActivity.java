@@ -119,7 +119,7 @@ public class CollectionDetailActivity extends BaseMvpActivity
 
 
     @Override
-    protected void initDatas() {
+    protected void initData() {
         if(mId != -1){
             if(mIsCurated){
                 mPresenter.loadCuratedCollection(mId);

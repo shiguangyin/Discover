@@ -2,17 +2,11 @@ package com.masker.discover.base;
 
 import android.content.Context;
 import android.content.Intent;
-import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
-import android.view.Window;
-import android.view.WindowManager;
 import android.widget.Toast;
-
-import com.masker.discover.R;
 
 
 /**
@@ -34,8 +28,9 @@ public abstract class BaseActivity extends AppCompatActivity{
         if(mLayoutId != 0){
             setContentView(mLayoutId);
             initViews();
+            initListeners();
         }
-        initDatas();
+        initData();
     }
 
     protected abstract int getLayoutId();
@@ -57,12 +52,14 @@ public abstract class BaseActivity extends AppCompatActivity{
 
     protected abstract void initViews();
 
-    protected abstract void initDatas();
+    protected abstract void initData();
 
     protected void handleIntent(){}
 
     protected void shortToast(String msg){
         Toast.makeText(this,msg,Toast.LENGTH_SHORT).show();
     }
+
+    protected  void initListeners(){};
 
 }
