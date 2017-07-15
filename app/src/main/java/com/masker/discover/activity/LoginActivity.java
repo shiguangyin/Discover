@@ -16,7 +16,7 @@ import com.masker.discover.AppConstants;
 import com.masker.discover.R;
 import com.masker.discover.base.BaseActivity;
 import com.masker.discover.home.HomeActivity;
-import com.masker.discover.model.UserManager;
+import com.masker.discover.UserManager;
 import com.masker.discover.model.api.TokenService;
 import com.masker.discover.model.entity.TokenBean;
 import com.masker.discover.model.http.ApiClient;

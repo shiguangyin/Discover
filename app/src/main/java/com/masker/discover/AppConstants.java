@@ -9,8 +9,8 @@ package com.masker.discover;
 
 public class AppConstants {
     public static final String BASE_URL = "https://api.unsplash.com";
-    public static final String APP_ID = "8e0f33ff297a8c195959ba170b12151a9a781b4425425e9aa975017b7180398e";
-    public static final String APP_SECRET = "edf81bebe2116487c2b2c602a8db34de6cfd9d4ffac8d2697e693a3c3f4d5e32";
+    public static final String APP_ID = "a86c44ac40a9f4644a69606c882c3957c4119bfba81632b4742dbc843509142a";
+    public static final String APP_SECRET = "627c13ac551c16f9878aab7bb4740e932d83da9ec437811dade52f05ab632ae6";
     
 
     public static final String REDIRECT_URL = "discover://oauth.callback";

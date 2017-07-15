@@ -13,26 +13,27 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Button;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.masker.discover.R;
+import com.masker.discover.UserManager;
 import com.masker.discover.activity.LoginActivity;
 import com.masker.discover.base.BaseMvpActivity;
 import com.masker.discover.collection.CollectionFragment;
-import com.masker.discover.model.UserManager;
 import com.masker.discover.model.api.PhotoService;
 import com.masker.discover.model.entity.User;
+import com.masker.discover.photo.PhotoListFragment;
 import com.masker.discover.rxbus.ReOrderEvent;
 import com.masker.discover.rxbus.RxBus;
 import com.masker.discover.search.SearchActivity;
 import com.masker.discover.tag.TagListFragment;
-import com.masker.discover.photo.PhotoListFragment;
-import com.orhanobut.logger.Logger;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
-public class HomeActivity extends BaseMvpActivity implements HomeContract.View{
+public class HomeActivity extends BaseMvpActivity implements HomeContract.View,View.OnClickListener{
 
 
     public static final int FRAGMENT_HOME = 0;
@@ -45,16 +46,18 @@ public class HomeActivity extends BaseMvpActivity implements HomeContract.View{
     private AppBarLayout mAppBar;
     private TabLayout mTabLayout;
     private NavigationView mNavView;
+    private Menu mNavMenu;
     private View mNavHeader;
     private DrawerLayout mDrawer;
     private ActionBarDrawerToggle mDrawerToggle;
 
     //header view
     private CircleImageView mIvAvatar;
-    private TextView mTvLogin;
     private TextView mTvBio;
     private TextView mTvName;
     private TextView mTvEmail;
+    private RelativeLayout mRlUnLogin;
+    private Button mBtnLogin;
 
 
     private PhotoListFragment mPhotoFragment;
@@ -82,6 +85,7 @@ public class HomeActivity extends BaseMvpActivity implements HomeContract.View{
         mDrawerToggle.syncState();
 
         mNavView = find(R.id.nv_main);
+        mNavMenu = mNavView.getMenu();
         mNavView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
@@ -106,21 +110,25 @@ public class HomeActivity extends BaseMvpActivity implements HomeContract.View{
                 return true;
             }
         });
+
         mNavHeader = mNavView.getHeaderView(0);
-        mTvLogin = (TextView) mNavHeader.findViewById(R.id.tv_login);
-        mTvLogin.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                invokeActivity(HomeActivity.this,LoginActivity.class);
-            }
-        });
         mTvBio = (TextView) mNavHeader.findViewById(R.id.tv_bio);
         mTvName = (TextView) mNavHeader.findViewById(R.id.tv_name);
         mTvEmail = (TextView) mNavHeader.findViewById(R.id.tv_email);
         mIvAvatar = (CircleImageView) mNavHeader.findViewById(R.id.iv_avatar);
+        mRlUnLogin = (RelativeLayout) mNavHeader.findViewById(R.id.rl_unlogin);
+        mBtnLogin = (Button) mNavHeader.findViewById(R.id.btn_login);
+        if(UserManager.getInstance().isLogin()){
+            mRlUnLogin.setVisibility(View.GONE);
+        }
         switchFragment(FRAGMENT_HOME);
     }
 
+    @Override
+    protected void initListeners() {
+        mIvAvatar.setOnClickListener(this);
+        mBtnLogin.setOnClickListener(this);
+    }
 
     @Override
     protected void initData() {
@@ -264,7 +272,7 @@ public class HomeActivity extends BaseMvpActivity implements HomeContract.View{
 
     @Override
     public void updateMyInfo(User user) {
-        mTvLogin.setVisibility(View.GONE);
+        mRlUnLogin.setVisibility(View.GONE);
 
         mTvName.setVisibility(View.VISIBLE);
         mTvName.setText(user.getUserName());
@@ -280,4 +288,12 @@ public class HomeActivity extends BaseMvpActivity implements HomeContract.View{
     }
 
 
+    @Override
+    public void onClick(View view) {
+        switch (view.getId()){
+            case R.id.btn_login:
+                invokeActivity(this, LoginActivity.class);
+                break;
+        }
+    }
 }

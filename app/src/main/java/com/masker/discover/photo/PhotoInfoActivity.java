@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.Snackbar;
+import android.support.v4.app.ActivityOptionsCompat;
 import android.support.v7.app.ActionBar;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -95,7 +96,10 @@ public class PhotoInfoActivity extends BaseMvpActivity implements PhotoInfoContr
         mIvPhoto.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                PhotoDetailActivity.start(PhotoInfoActivity.this,mImgUrl);
+                ActivityOptionsCompat options = ActivityOptionsCompat
+                        .makeSceneTransitionAnimation(PhotoInfoActivity.this,mIvPhoto,"photo");
+                PhotoDetailActivity.start(PhotoInfoActivity.this,mImgUrl,options.toBundle());
+
             }
         });
     }

@@ -2,6 +2,7 @@ package com.masker.discover.activity;
 
 import android.content.Context;
 import android.content.Intent;
+import android.os.Bundle;
 import android.text.TextUtils;
 import android.widget.ImageView;
 
@@ -56,10 +57,10 @@ public class PhotoDetailActivity extends BaseActivity{
         mUrl = getIntent().getStringExtra(URL);
     }
 
-    public static void start(Context context, String url){
+    public static void start(Context context, String url, Bundle bundle){
         Intent intent = new Intent(context,PhotoDetailActivity.class);
         intent.putExtra(URL,url);
-        context.startActivity(intent);
+        context.startActivity(intent,bundle);
     }
 
 }

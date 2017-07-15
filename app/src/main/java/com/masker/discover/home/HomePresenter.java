@@ -2,7 +2,7 @@ package com.masker.discover.home;
 
 import android.util.Log;
 
-import com.masker.discover.model.UserManager;
+import com.masker.discover.UserManager;
 import com.masker.discover.model.entity.MyInfoBean;
 import com.masker.discover.model.entity.User;
 import com.masker.discover.model.repository.UserRepository;

@@ -2,9 +2,6 @@ package com.masker.discover;
 
 import android.app.Application;
 import android.content.Context;
-import android.text.TextUtils;
-
-import com.masker.discover.utils.SpUtils;
 
 /**
  * CreatedBy: masker
@@ -15,7 +12,7 @@ import com.masker.discover.utils.SpUtils;
 public class App extends Application{
     private static Application mApp;
 
-    public static Context getAppContext(){
+    public static Context getApp(){
         return mApp;
     }
 

@@ -1,15 +1,12 @@
-package com.masker.discover.model;
+package com.masker.discover;
 
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.text.TextUtils;
-import android.util.Log;
 
-import com.masker.discover.App;
 import com.masker.discover.model.entity.MyInfoBean;
 import com.masker.discover.model.entity.User;
 import com.masker.discover.utils.SpUtils;
-import com.orhanobut.logger.Logger;
 
 /**
  * CreatedBy: masker
@@ -47,7 +44,6 @@ public class UserManager {
     public void setToken(String token){
         this.token = token;
         SpUtils.putString(SpUtils.USER,KEY_TOKEN,token);
-        Logger.i("setToken");
     }
 
     public String getToken(){
@@ -57,7 +53,6 @@ public class UserManager {
         else{
             token = SpUtils.getString(SpUtils.USER,KEY_TOKEN);
         }
-        Logger.i(" "+(token == null));
         return token;
     }
 
@@ -72,7 +67,7 @@ public class UserManager {
             return ;
         }
         this.user = user;
-        SharedPreferences sp = App.getAppContext().getSharedPreferences(SpUtils.USER, Context.MODE_PRIVATE);
+        SharedPreferences sp = App.getApp().getSharedPreferences(SpUtils.USER, Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = sp.edit();
         editor.putString(KEY_NAME,user.getUserName());
         editor.putString(KEY_BIO,user.getBio());
@@ -87,7 +82,7 @@ public class UserManager {
             return user;
         }
         else{
-            SharedPreferences sp = App.getAppContext().getSharedPreferences(SpUtils.USER,Context.MODE_PRIVATE);
+            SharedPreferences sp = App.getApp().getSharedPreferences(SpUtils.USER,Context.MODE_PRIVATE);
             if(sp.getString(KEY_NAME,null) == null){
                 return null;
             }
@@ -113,4 +108,18 @@ public class UserManager {
         user.setAvatorUrl(bean.getProfile_image().getLarge());
         setUser(user);
     }
+
+    public void logOut(){
+        SharedPreferences sp = App.getApp().getSharedPreferences(SpUtils.USER,Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor =  sp.edit();
+        editor.remove(KEY_TOKEN);
+        editor.remove(KEY_NAME);
+        editor.remove(KEY_AVATOR);
+        editor.remove(KEY_BIO);
+        editor.remove(KEY_EMAIL);
+        editor.remove(KEY_LOCATION);
+        editor.commit();
+    }
+
+
 }

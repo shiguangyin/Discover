@@ -3,13 +3,10 @@ package com.masker.discover.photo;
 import android.content.Context;
 import android.graphics.drawable.Drawable;
 import android.support.v4.content.ContextCompat;
-
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 
-
-import com.bumptech.glide.Glide;
 import com.masker.discover.R;
 import com.masker.discover.base.BaseAdapter;
 import com.masker.discover.base.BaseViewHolder;
@@ -61,7 +58,7 @@ public class PhotoListAdapter extends BaseAdapter<PhotoListBean> {
 
         String avatarUrl = data.getUser().getProfile_image().getLarge();
         CircleImageView ivAvator = holder.getView(R.id.iv_avatar);
-        Glide.with(mContext).load(avatarUrl).into(ivAvator);
+        ImgLoader.loadAvator(mContext,avatarUrl,ivAvator);
 
         String name = data.getUser().getName();
         holder.setText(R.id.tv_name,name);

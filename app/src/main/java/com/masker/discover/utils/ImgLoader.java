@@ -3,7 +3,6 @@ package com.masker.discover.utils;
 import android.content.Context;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
-import android.media.Image;
 import android.widget.ImageView;
 
 import com.bumptech.glide.Glide;
@@ -26,6 +25,6 @@ public class ImgLoader {
 
 
     public static void loadAvator(Context context, String url, ImageView iv){
-        Glide.with(context).load(url).into(iv);
+        Glide.with(context).load(url).dontAnimate().into(iv);
     }
 }

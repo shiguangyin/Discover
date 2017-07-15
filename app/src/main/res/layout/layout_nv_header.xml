@@ -5,25 +5,14 @@
    >
     <de.hdodenhof.circleimageview.CircleImageView
         android:id="@+id/iv_avatar"
-        android:layout_width="50dp"
-        android:layout_height="50dp"
+        android:layout_width="60dp"
+        android:layout_height="60dp"
         android:layout_marginTop="60dp"
         android:layout_marginStart="20dp"
         android:src="@drawable/ic_unlogin_white_24dp"
+        android:visibility="gone"
        />
 
-    <TextView
-        android:id="@+id/tv_login"
-        android:layout_width="60dp"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="20dp"
-        android:layout_marginTop="10dp"
-        android:layout_below="@+id/iv_avatar"
-        android:textSize="20sp"
-        android:gravity="center"
-        android:textStyle="bold"
-        android:text="@string/login"
-       />
 
     <TextView
         android:id="@+id/tv_bio"
@@ -63,4 +52,32 @@
         android:textSize="14sp"
         android:visibility="gone"
         />
+
+    <RelativeLayout
+        android:id="@+id/rl_unlogin"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_centerInParent="true"
+        >
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="LOGIN TO DISCOVER MORE"
+            android:textColor="@color/color_text_white"
+            android:textSize="15sp"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="70dp"/>
+
+        <Button
+            android:id="@+id/btn_login"
+            android:layout_width="140dp"
+            android:layout_height="32dp"
+            android:text="LOGIN"
+            android:background="@drawable/bg_shape_login"
+            android:layout_centerHorizontal="true"
+            android:layout_alignParentBottom="true"
+            android:layout_marginBottom="30dp"/>
+
+    </RelativeLayout>
+
 </RelativeLayout>

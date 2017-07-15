@@ -4,9 +4,7 @@ package com.masker.discover.model.http;
 import android.text.TextUtils;
 
 import com.masker.discover.AppConstants;
-import com.masker.discover.model.UserManager;
-import com.masker.discover.model.entity.User;
-import com.masker.discover.utils.SpUtils;
+import com.masker.discover.UserManager;
 
 import java.io.IOException;
 

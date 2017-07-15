@@ -2,7 +2,6 @@ package com.masker.discover.utils;
 
 import android.content.Context;
 import android.content.SharedPreferences;
-import android.support.annotation.VisibleForTesting;
 
 import com.masker.discover.App;
 
@@ -18,12 +17,12 @@ public class SpUtils {
     public static final String TOKEN = "token";
 
     public static String getString(String name, String key){
-        SharedPreferences sp = App.getAppContext().getSharedPreferences(name,Context.MODE_PRIVATE);
+        SharedPreferences sp = App.getApp().getSharedPreferences(name,Context.MODE_PRIVATE);
         return sp.getString(key,null);
     }
 
     public static void putString(String name, String key, String value){
-        SharedPreferences sp = App.getAppContext().getSharedPreferences(name,Context.MODE_PRIVATE);
+        SharedPreferences sp = App.getApp().getSharedPreferences(name,Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = sp.edit();
         editor.putString(key,value);
         editor.commit();
