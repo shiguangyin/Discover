@@ -51,6 +51,7 @@
             ></activity>
         <activity android:name=".activity.PhotoDetailActivity"
             android:theme="@style/PhotoViewTheme"/>
+        <activity android:name=".user.UserInfoActivity"/>
     </application>
 
 </manifest>

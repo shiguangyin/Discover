@@ -89,7 +89,7 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener{
                 .getToken(AppConstants.APP_ID,AppConstants.APP_SECRET,
                         AppConstants.REDIRECT_URL,code,
                         AppConstants.GRANT_TYPE)
-                .map(new Func1<TokenBean, Observable<MyInfoBean>>() {
+                .flatMap(new Func1<TokenBean, Observable<MyInfoBean>>() {
                     @Override
                     public Observable<MyInfoBean> call(TokenBean tokenBean) {
                         UserManager.getInstance().setToken(tokenBean.getAccess_token());
@@ -98,9 +98,10 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener{
                 })
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Action1<Observable<MyInfoBean>>() {
+                .subscribe(new Action1<MyInfoBean>() {
                     @Override
-                    public void call(Observable<MyInfoBean> myInfoBeanObservable) {
+                    public void call(MyInfoBean myInfoBean) {
+                        UserManager.getInstance().writeMyInfo(myInfoBean);
                         mLoadingView.smoothToHide();
                         Intent intent = new Intent(LoginActivity.this, HomeActivity.class);
                         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);

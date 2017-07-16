@@ -74,6 +74,9 @@ public class PhotoInfoAdapter extends RecyclerView.Adapter<BaseViewHolder>{
             String avatarUrl = info.getUser().getProfile_image().getLarge();
             ImgLoader.loadAvator(mContext,avatarUrl,ivAvatar);
 
+            RelativeLayout rlHeader = holder.getView(R.id.rl_header);
+            ImgLoader.loadBlurBackgroud(mContext,info.getUser().getProfile_image().getSmall(),rlHeader);
+
             String name = String.format("By %s From Unsplash",info.getUser().getName());
             holder.setText(R.id.tv_name,name);
             holder.setText(R.id.tv_time, FormatUtils.transform(info.getUpdated_at()));

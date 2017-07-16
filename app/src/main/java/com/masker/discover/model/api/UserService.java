@@ -1,8 +1,14 @@
 package com.masker.discover.model.api;
 
+import com.masker.discover.model.entity.CollectionListBean;
 import com.masker.discover.model.entity.MyInfoBean;
+import com.masker.discover.model.entity.PhotoListBean;
+
+import java.util.List;
 
 import retrofit2.http.GET;
+import retrofit2.http.Path;
+import retrofit2.http.Query;
 import rx.Observable;
 
 /**
@@ -15,4 +21,20 @@ public interface UserService {
 
     @GET("/me")
     Observable<MyInfoBean> getMyInfo();
+
+
+    @GET("/users/{username}/photos")
+    Observable<List<PhotoListBean>> getUserPhotos(@Path("username")String userName,
+                                                  @Query("page")int page,
+                                                  @Query("per_page")int perPage);
+
+    @GET("/users/{username}/likes")
+    Observable<List<PhotoListBean>> getUserLikedPhotos(@Path("username")String userName,
+                                                       @Query("page")int page,
+                                                       @Query("per_page")int perPage);
+
+    @GET("/users/{username}/collections")
+    Observable<List<CollectionListBean>> getUserCollections(@Path("username")String userName,
+                                                            @Query("page")int page,
+                                                            @Query("per_page")int perPage);
 }

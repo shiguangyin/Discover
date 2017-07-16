@@ -20,10 +20,11 @@ public abstract class BaseFragment extends Fragment{
     protected View mContentView;
     protected String TAG = getClass().getSimpleName();
 
+
+
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        Log.i(TAG, "onCreateView: ");
         if(getLayoutId() != 0){
             mContentView = inflater.inflate(getLayoutId(),container,false);
         }
@@ -45,8 +46,13 @@ public abstract class BaseFragment extends Fragment{
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        Log.i(TAG, "onCreate: ");
+        Bundle args = getArguments();
+        if(args != null){
+            handleArgs(args);
+        }
     }
+
+    protected void handleArgs(Bundle args){}
 
     @Override
     public void onDestroyView() {

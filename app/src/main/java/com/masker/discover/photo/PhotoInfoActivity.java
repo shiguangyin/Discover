@@ -83,7 +83,7 @@ public class PhotoInfoActivity extends BaseMvpActivity implements PhotoInfoContr
         Glide.with(this).load(mImgUrl).into(mIvPhoto);
 
         mLoadingView = bind(R.id.loading_view);
-        mLoadingView.show();
+        mLoadingView.smoothToShow();
         mRecyclerView = bind(R.id.recycler_view);
         mDatas = new ArrayList<>();
         mAdapter = new PhotoInfoAdapter(this,mDatas);
@@ -146,7 +146,7 @@ public class PhotoInfoActivity extends BaseMvpActivity implements PhotoInfoContr
     @Override
     public void showPhotoInfo(PhotoBean info) {
 
-        mLoadingView.hide();
+        mLoadingView.smoothToHide();
         mRecyclerView.setVisibility(View.VISIBLE);
         mDatas.add(info);
 

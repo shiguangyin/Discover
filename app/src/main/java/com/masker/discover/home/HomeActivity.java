@@ -30,6 +30,7 @@ import com.masker.discover.rxbus.ReOrderEvent;
 import com.masker.discover.rxbus.RxBus;
 import com.masker.discover.search.SearchActivity;
 import com.masker.discover.tag.TagListFragment;
+import com.masker.discover.user.UserInfoActivity;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
@@ -65,6 +66,7 @@ public class HomeActivity extends BaseMvpActivity implements HomeContract.View,V
     private TagListFragment mTagFragment;
 
     private HomePresenter mPrensenter;
+    private User mUser;
 
 
     @Override
@@ -133,13 +135,14 @@ public class HomeActivity extends BaseMvpActivity implements HomeContract.View,V
     @Override
     protected void initData() {
         if(UserManager.getInstance().isLogin()){
-            User user = UserManager.getInstance().getUser();
-            if(user != null){
-                updateMyInfo(user);
+            mUser = UserManager.getInstance().getUser();
+            if(mUser != null){
+                updateMyInfo(mUser);
             }
             mPrensenter.getMyInfo();
         }
     }
+
 
     @Override
     public boolean onPrepareOptionsMenu(Menu menu) {
@@ -295,6 +298,10 @@ public class HomeActivity extends BaseMvpActivity implements HomeContract.View,V
             case R.id.btn_login:
                 invokeActivity(this, LoginActivity.class);
                 break;
+            case R.id.iv_avatar:
+                if(mUser != null){
+                    UserInfoActivity.start(this,mUser);
+                }
         }
     }
 }
