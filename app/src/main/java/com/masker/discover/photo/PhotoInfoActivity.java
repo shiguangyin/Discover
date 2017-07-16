@@ -52,7 +52,7 @@ public class PhotoInfoActivity extends BaseMvpActivity implements PhotoInfoContr
     private List<Object> mDatas;
     private PhotoInfoAdapter mAdapter;
 
-    private PhotoInfoContract.Presenter mPresenter;
+    private PhotoInfoPresenter mPresenter;
 
 
     @Override

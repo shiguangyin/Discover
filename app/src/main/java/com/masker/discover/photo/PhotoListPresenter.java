@@ -1,18 +1,18 @@
 package com.masker.discover.photo;
 
+import android.support.annotation.NonNull;
+
+import com.masker.discover.base.BasePresenter;
 import com.masker.discover.model.entity.LikeResponseBean;
 import com.masker.discover.model.entity.PhotoListBean;
 import com.masker.discover.model.repository.PhotoRepository;
 
 import java.util.List;
 
-import rx.Observable;
-import rx.Subscriber;
 import rx.Subscription;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.functions.Action1;
 import rx.schedulers.Schedulers;
-import rx.subscriptions.CompositeSubscription;
 
 /**
  * CreatedBy: masker
@@ -21,23 +21,11 @@ import rx.subscriptions.CompositeSubscription;
  */
 
 
-public class PhotoListPresenter implements PhotoListContract.Presenter{
-
-    private  PhotoListContract.View mView;
-
-    private CompositeSubscription mSubscriptions;
+public class PhotoListPresenter extends BasePresenter<PhotoListContract.View> implements PhotoListContract.Presenter{
 
 
-    public PhotoListPresenter(PhotoListContract.View view){
-        mView = view;
-        mSubscriptions = new CompositeSubscription();
-    }
-
-
-    @Override
-    public void onUnsubscribe() {
-        mView = null;
-        mSubscriptions.clear();
+    public PhotoListPresenter(@NonNull PhotoListContract.View view) {
+        super(view);
     }
 
     @Override
@@ -97,9 +85,7 @@ public class PhotoListPresenter implements PhotoListContract.Presenter{
                 });
         mSubscriptions.add(subscription);
 
-
     }
-
 
 
 }

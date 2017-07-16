@@ -1,6 +1,5 @@
 package com.masker.discover.tag;
 
-import com.masker.discover.base.BasePresenter;
 import com.masker.discover.base.BaseView;
 import com.masker.discover.model.entity.TagBean;
 
@@ -17,7 +16,7 @@ public interface TagListContract {
         void showTags(List<TagBean> tags);
     }
 
-    interface Presenter extends BasePresenter{
+    interface Presenter{
         void loadTags();
     }
 }

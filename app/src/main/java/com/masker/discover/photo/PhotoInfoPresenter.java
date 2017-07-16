@@ -1,5 +1,8 @@
 package com.masker.discover.photo;
 
+import android.support.annotation.NonNull;
+
+import com.masker.discover.base.BasePresenter;
 import com.masker.discover.model.entity.PhotoBean;
 import com.masker.discover.model.repository.PhotoRepository;
 
@@ -7,7 +10,6 @@ import rx.Subscription;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.functions.Action1;
 import rx.schedulers.Schedulers;
-import rx.subscriptions.CompositeSubscription;
 
 /**
  * CreatedBy: masker
@@ -15,20 +17,11 @@ import rx.subscriptions.CompositeSubscription;
  * Description:
  */
 
-public class PhotoInfoPresenter implements PhotoInfoContract.Presenter {
-    private static final String TAG = "PhotoInfoPresenter";
+public class PhotoInfoPresenter extends BasePresenter<PhotoInfoContract.View> implements PhotoInfoContract.Presenter {
 
-    private CompositeSubscription mCompositeSubscription;
-    private PhotoInfoContract.View mView;
 
-    public PhotoInfoPresenter(PhotoInfoContract.View view){
-        mView = view;
-        mCompositeSubscription = new CompositeSubscription();
-    }
-
-    @Override
-    public void onUnsubscribe() {
-        mCompositeSubscription.clear();
+    public PhotoInfoPresenter(@NonNull PhotoInfoContract.View view) {
+        super(view);
     }
 
     @Override
@@ -47,6 +40,6 @@ public class PhotoInfoPresenter implements PhotoInfoContract.Presenter {
                         mView.showError();
                     }
                 });
-        mCompositeSubscription.add(subscription);
+        mSubscriptions.add(subscription);
     }
 }

@@ -1,6 +1,5 @@
 package com.masker.discover.search;
 
-import com.masker.discover.base.BasePresenter;
 import com.masker.discover.base.BaseView;
 
 /**
@@ -16,7 +15,7 @@ public interface SearchContract {
         void hideLoading();
     }
 
-    interface Presenter extends BasePresenter{
+    interface Presenter{
         void searchCollections(String key,int page,int perPage,boolean refresh);
         void searchPhotos(String key,int page,int perPage,boolean refresh);
         void searchUsers(String key,int page,int perPage,boolean refresh);

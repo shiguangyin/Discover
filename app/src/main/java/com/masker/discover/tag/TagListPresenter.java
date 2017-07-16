@@ -1,7 +1,9 @@
 package com.masker.discover.tag;
 
-import android.content.Context;
+import android.support.annotation.NonNull;
 
+import com.masker.discover.App;
+import com.masker.discover.base.BasePresenter;
 import com.masker.discover.model.entity.TagBean;
 
 import org.json.JSONArray;
@@ -27,22 +29,11 @@ import rx.schedulers.Schedulers;
  * Description:
  */
 
-public class TagListPresenter implements TagListContract.Presenter{
+public class TagListPresenter extends BasePresenter<TagListContract.View> implements TagListContract.Presenter{
 
-    private static final String TAG = "TagListPresenter";
 
-    private TagListContract.View mView;
-    private Context mContext;
-
-    public TagListPresenter(TagListContract.View view, Context context){
-        mView = view;
-        mContext = context;
-    }
-
-    @Override
-    public void onUnsubscribe() {
-        mView = null;
-        mContext = null;
+    public TagListPresenter(@NonNull TagListContract.View view) {
+        super(view);
     }
 
     @Override
@@ -58,7 +49,7 @@ public class TagListPresenter implements TagListContract.Presenter{
                         StringBuilder sb = new StringBuilder();
                         String content;
                         try {
-                            is = mContext.getAssets().open(path);
+                            is = App.getApp().getAssets().open(path);
                             reader = new BufferedReader(new InputStreamReader(is));
                             char[] buff = new char[128];
                             while(reader.read(buff)!=-1){

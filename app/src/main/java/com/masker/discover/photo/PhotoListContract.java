@@ -1,6 +1,5 @@
 package com.masker.discover.photo;
 
-import com.masker.discover.base.BasePresenter;
 import com.masker.discover.base.BaseView;
 import com.masker.discover.model.entity.LikeResponseBean;
 import com.masker.discover.model.entity.PhotoListBean;
@@ -21,7 +20,7 @@ public interface PhotoListContract {
         void showLikeError(String message,String id);
     }
 
-    interface Presenter extends BasePresenter{
+    interface Presenter{
         void loadPhotos(int page,int perPage,String orderBy);
         void likePhoto(String id);
         void unlikePhoto(String id);

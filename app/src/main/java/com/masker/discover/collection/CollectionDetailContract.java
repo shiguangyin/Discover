@@ -1,6 +1,5 @@
 package com.masker.discover.collection;
 
-import com.masker.discover.base.BasePresenter;
 import com.masker.discover.base.BaseView;
 import com.masker.discover.model.entity.CollectionBean;
 import com.masker.discover.model.entity.PhotoListBean;
@@ -20,7 +19,7 @@ public interface CollectionDetailContract {
         void showCollectionPhotos(List<PhotoListBean> photos);
     }
 
-    interface Presenter extends BasePresenter{
+    interface Presenter{
         void loadCollection(int id);
         void loadCollectionPhotos(int id,int page,int perPage);
         void loadCuratedCollection(int id);

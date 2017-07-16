@@ -1,6 +1,5 @@
 package com.masker.discover.collection;
 
-import com.masker.discover.base.BasePresenter;
 import com.masker.discover.base.BaseView;
 import com.masker.discover.model.entity.CollectionListBean;
 
@@ -18,7 +17,7 @@ public interface CollectionListContract {
         void showCollections(List<CollectionListBean> collections);
     }
 
-    interface Presenter extends BasePresenter{
+    interface Presenter {
         void loadCollections(int page,int perPage,int type);
     }
 }

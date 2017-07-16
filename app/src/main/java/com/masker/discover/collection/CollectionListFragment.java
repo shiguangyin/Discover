@@ -42,7 +42,7 @@ public class CollectionListFragment extends BaseMvpFragment
     private CollectionListAdapter mAdapter;
     private List<CollectionListBean> mCollections;
 
-    private CollectionListContract.Presenter mPresenter;
+    private CollectionListPresenter mPresenter;
     private int mPage = START_PAGE;
 
     @Override

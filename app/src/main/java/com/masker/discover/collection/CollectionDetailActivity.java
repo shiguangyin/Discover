@@ -61,7 +61,7 @@ public class CollectionDetailActivity extends BaseMvpActivity
     private int mPage = START_PAGE;
 
 
-    private CollectionDetailContract.Presenter mPresenter;
+    private CollectionDetailPresenter mPresenter;
 
 
     @Override

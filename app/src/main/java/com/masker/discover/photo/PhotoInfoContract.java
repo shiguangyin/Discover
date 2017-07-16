@@ -1,6 +1,5 @@
 package com.masker.discover.photo;
 
-import com.masker.discover.base.BasePresenter;
 import com.masker.discover.base.BaseView;
 import com.masker.discover.model.entity.PhotoBean;
 
@@ -15,7 +14,7 @@ public interface PhotoInfoContract {
         void showPhotoInfo(PhotoBean info);
     }
 
-    interface Presenter extends BasePresenter{
+    interface Presenter{
         void loadPhotoInfo(String id);
     }
 }

@@ -24,7 +24,7 @@ public class TagListFragment extends BaseMvpFragment implements TagListContract.
     private TagListAdapter mAdapter;
     private List<TagBean> mTags;
 
-    private TagListContract.Presenter mPresenter;
+    private TagListPresenter mPresenter;
 
     @Override
     protected int getLayoutId() {
@@ -83,7 +83,7 @@ public class TagListFragment extends BaseMvpFragment implements TagListContract.
 
     @Override
     protected void attach() {
-        mPresenter = new TagListPresenter(this,getContext());
+        mPresenter = new TagListPresenter(this);
     }
 
     @Override

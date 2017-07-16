@@ -1,8 +1,6 @@
 package com.masker.discover.home;
 
-import com.masker.discover.base.BasePresenter;
 import com.masker.discover.base.BaseView;
-import com.masker.discover.model.entity.MyInfoBean;
 import com.masker.discover.model.entity.User;
 
 /**
@@ -16,7 +14,7 @@ public interface HomeContract {
         void updateMyInfo(User user);
     }
 
-    interface Presenter extends BasePresenter {
+    interface Presenter {
         void getMyInfo();
     }
 }

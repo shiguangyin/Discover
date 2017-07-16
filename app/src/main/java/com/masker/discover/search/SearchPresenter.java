@@ -1,5 +1,8 @@
 package com.masker.discover.search;
 
+import android.support.annotation.NonNull;
+
+import com.masker.discover.base.BasePresenter;
 import com.masker.discover.model.entity.CollectionSearchBean;
 import com.masker.discover.model.entity.PhotoSearchBean;
 import com.masker.discover.model.entity.UserSearchBean;
@@ -10,7 +13,6 @@ import rx.Subscription;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.functions.Action1;
 import rx.schedulers.Schedulers;
-import rx.subscriptions.CompositeSubscription;
 
 /**
  * CreatedBy: masker
@@ -18,17 +20,12 @@ import rx.subscriptions.CompositeSubscription;
  * Description:
  */
 
-public class SearchPresenter implements SearchContract.Presenter{
-
-    private CompositeSubscription mSubscriptions;
-    private SearchContract.View mView;
+public class SearchPresenter extends BasePresenter<SearchContract.View> implements SearchContract.Presenter{
 
 
-    public SearchPresenter(SearchContract.View view){
-        mView = view;
-        mSubscriptions = new CompositeSubscription();
+    public SearchPresenter(@NonNull SearchContract.View view) {
+        super(view);
     }
-
 
     @Override
     public void searchCollections(String key, int page, int perPage, final boolean refresh) {
@@ -94,11 +91,5 @@ public class SearchPresenter implements SearchContract.Presenter{
                     }
                 });
         mSubscriptions.add(subscription);
-    }
-
-    @Override
-    public void onUnsubscribe() {
-        mView = null;
-        mSubscriptions.clear();
     }
 }

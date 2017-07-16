@@ -64,7 +64,7 @@ public class HomeActivity extends BaseMvpActivity implements HomeContract.View,V
     private CollectionFragment mCollectionFragment;
     private TagListFragment mTagFragment;
 
-    private HomeContract.Presenter mPrensenter;
+    private HomePresenter mPrensenter;
 
 
     @Override

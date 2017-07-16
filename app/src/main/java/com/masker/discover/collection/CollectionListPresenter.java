@@ -1,5 +1,8 @@
 package com.masker.discover.collection;
 
+import android.support.annotation.NonNull;
+
+import com.masker.discover.base.BasePresenter;
 import com.masker.discover.model.entity.CollectionListBean;
 import com.masker.discover.model.repository.CollectionRepository;
 
@@ -11,7 +14,6 @@ import rx.android.schedulers.AndroidSchedulers;
 import rx.functions.Action1;
 import rx.functions.Func1;
 import rx.schedulers.Schedulers;
-import rx.subscriptions.CompositeSubscription;
 
 /**
  * CreatedBy: masker
@@ -19,24 +21,11 @@ import rx.subscriptions.CompositeSubscription;
  * Description:
  */
 
-public class CollectionListPresenter implements CollectionListContract.Presenter{
-
-    private CollectionListContract.View mView;
-
-    private CompositeSubscription mCompositeSubscription;
+public class CollectionListPresenter extends BasePresenter<CollectionListContract.View> implements CollectionListContract.Presenter{
 
 
-    public CollectionListPresenter(CollectionListContract.View view){
-        mView = view;
-        mCompositeSubscription = new CompositeSubscription();
-    }
-
-
-
-    @Override
-    public void onUnsubscribe() {
-        mView = null;
-        mCompositeSubscription.clear();
+    public CollectionListPresenter(@NonNull CollectionListContract.View view) {
+        super(view);
     }
 
     @Override
@@ -69,7 +58,7 @@ public class CollectionListPresenter implements CollectionListContract.Presenter
                         mView.showError();
                     }
                 });
-        mCompositeSubscription.add(subscription);
+        mSubscriptions.add(subscription);
     }
 
 }

@@ -1,8 +1,9 @@
 package com.masker.discover.home;
 
-import android.util.Log;
+import android.support.annotation.NonNull;
 
 import com.masker.discover.UserManager;
+import com.masker.discover.base.BasePresenter;
 import com.masker.discover.model.entity.MyInfoBean;
 import com.masker.discover.model.entity.User;
 import com.masker.discover.model.repository.UserRepository;
@@ -12,7 +13,6 @@ import rx.Subscription;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.functions.Action1;
 import rx.schedulers.Schedulers;
-import rx.subscriptions.CompositeSubscription;
 
 /**
  * CreatedBy: masker
@@ -20,23 +20,12 @@ import rx.subscriptions.CompositeSubscription;
  * Description:
  */
 
-public class HomePresenter implements HomeContract.Presenter{
-    private static final String TAG = "HomePresenter";
+public class HomePresenter extends BasePresenter<HomeContract.View> implements HomeContract.Presenter{
 
-    private HomeContract.View mView;
-    private CompositeSubscription mCompositeSubscription;
 
-    public HomePresenter(HomeContract.View view){
-        mView = view;
-        mCompositeSubscription = new CompositeSubscription();
+    public HomePresenter(@NonNull HomeContract.View view) {
+        super(view);
     }
-
-    @Override
-    public void onUnsubscribe() {
-        mView = null;
-        mCompositeSubscription.clear();
-    }
-
 
     @Override
     public void getMyInfo() {
@@ -46,7 +35,6 @@ public class HomePresenter implements HomeContract.Presenter{
                 .subscribe(new Action1<MyInfoBean>() {
                     @Override
                     public void call(MyInfoBean myInfo) {
-                        Logger.i("get my info");
                         UserManager.getInstance().writeMyInfo(myInfo);
                         User user = UserManager.getInstance().getUser();
                         mView.updateMyInfo(user);
@@ -55,11 +43,9 @@ public class HomePresenter implements HomeContract.Presenter{
                     @Override
                     public void call(Throwable throwable) {
                         mView.showError();
-                        Log.i(TAG, "call: "+throwable.getMessage());
-                        Log.i(TAG, "call: "+throwable.getStackTrace());
-
+                        Logger.e(throwable.getMessage());
                     }
                 });
-        mCompositeSubscription.add(subscription);
+        mSubscriptions.add(subscription);
     }
 }

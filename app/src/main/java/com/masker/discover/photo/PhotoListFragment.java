@@ -50,7 +50,7 @@ public class PhotoListFragment extends BaseFragment implements PhotoListContract
     private String mOrder = PhotoService.LATEST;
 
 
-    private PhotoListContract.Presenter mPresenter;
+    private PhotoListPresenter mPresenter;
     private Subscription mSubcription;
 
     @Override

@@ -1,5 +1,6 @@
 package com.masker.discover.collection;
 
+import com.masker.discover.base.BasePresenter;
 import com.masker.discover.model.entity.CollectionBean;
 import com.masker.discover.model.entity.PhotoListBean;
 import com.masker.discover.model.repository.CollectionRepository;
@@ -11,7 +12,6 @@ import rx.Subscription;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.functions.Action1;
 import rx.schedulers.Schedulers;
-import rx.subscriptions.CompositeSubscription;
 
 /**
  * CreatedBy: masker
@@ -19,22 +19,13 @@ import rx.subscriptions.CompositeSubscription;
  * Description:
  */
 
-public class CollectionDetailPresenter implements CollectionDetailContract.Presenter {
-
-
-    private CollectionDetailContract.View mView;
-    private CompositeSubscription mSubsciptions;
+public class CollectionDetailPresenter extends BasePresenter<CollectionDetailContract.View> implements CollectionDetailContract.Presenter {
 
     public CollectionDetailPresenter(CollectionDetailContract.View view){
-        mView = view;
-        mSubsciptions = new CompositeSubscription();
+        super(view);
+
     }
 
-    @Override
-    public void onUnsubscribe() {
-        mView = null;
-        mSubsciptions.clear();
-    }
 
     @Override
     public void loadCollection(int id) {
@@ -58,7 +49,7 @@ public class CollectionDetailPresenter implements CollectionDetailContract.Prese
                         mView.showError();
                     }
                 });
-        mSubsciptions.add(subscription);
+        mSubscriptions.add(subscription);
     }
 
     @Override
@@ -86,7 +77,7 @@ public class CollectionDetailPresenter implements CollectionDetailContract.Prese
                         mView.showError();
                     }
                 });
-        mSubsciptions.add(subscription);
+        mSubscriptions.add(subscription);
     }
 
     @Override
@@ -111,7 +102,7 @@ public class CollectionDetailPresenter implements CollectionDetailContract.Prese
                         mView.showError();
                     }
                 });
-        mSubsciptions.add(subscription);
+        mSubscriptions.add(subscription);
     }
 
     @Override
@@ -139,6 +130,6 @@ public class CollectionDetailPresenter implements CollectionDetailContract.Prese
                         mView.showError();
                     }
                 });
-        mSubsciptions.add(subscription);
+        mSubscriptions.add(subscription);
     }
 }
