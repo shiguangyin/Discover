@@ -71,24 +71,24 @@ public class CollectionDetailActivity extends BaseMvpActivity
 
     @Override
     protected void initViews() {
-        mTvTitle = find(R.id.tv_title);
-        mTvDesc = find(R.id.tv_desc);
-        mIvAvator = find(R.id.iv_avatar);
-        mTvFrom = find(R.id.tv_from);
-        mToolbar = find(R.id.tool_bar);
+        mTvTitle = bind(R.id.tv_title);
+        mTvDesc = bind(R.id.tv_desc);
+        mIvAvator = bind(R.id.iv_avatar);
+        mTvFrom = bind(R.id.tv_from);
+        mToolbar = bind(R.id.tool_bar);
         setSupportActionBar(mToolbar);
         ActionBar ab = getSupportActionBar();
         if(ab != null){
             ab.setDisplayHomeAsUpEnabled(true);
         }
-        mProgressBar = find(R.id.progress_bar);
-        mIvCover = find(R.id.iv_cover);
+        mProgressBar = bind(R.id.progress_bar);
+        mIvCover = bind(R.id.iv_cover);
 //        resetSize();
 //        Glide.with(this).load(mImgUrl)
 //                .bitmapTransform(new BlurTransformation(this))
 //                .into(mIvCover);
 
-        mRecyclerView = find(R.id.recycler_view);
+        mRecyclerView = bind(R.id.recycler_view);
         mPhotos = new ArrayList<>();
         mAdapter = new PhotoListAdapter(mPhotos,this);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(this));

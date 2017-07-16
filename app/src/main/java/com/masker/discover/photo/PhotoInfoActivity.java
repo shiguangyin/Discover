@@ -14,7 +14,6 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
-import android.widget.ProgressBar;
 
 import com.bumptech.glide.Glide;
 import com.masker.discover.R;
@@ -23,6 +22,7 @@ import com.masker.discover.base.BaseMvpActivity;
 import com.masker.discover.model.entity.PhotoBean;
 import com.masker.discover.model.entity.TagBean;
 import com.masker.discover.utils.ScreenUtils;
+import com.wang.avi.AVLoadingIndicatorView;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -47,7 +47,7 @@ public class PhotoInfoActivity extends BaseMvpActivity implements PhotoInfoContr
 
     private Toolbar mToolbar;
     private ImageView mIvPhoto;
-    private ProgressBar mProgressBar;
+    private AVLoadingIndicatorView mLoadingView;
     private RecyclerView mRecyclerView;
     private List<Object> mDatas;
     private PhotoInfoAdapter mAdapter;
@@ -71,19 +71,20 @@ public class PhotoInfoActivity extends BaseMvpActivity implements PhotoInfoContr
 
     @Override
     protected void initViews() {
-        mToolbar = find(R.id.tool_bar);
+        mToolbar = bind(R.id.tool_bar);
         setSupportActionBar(mToolbar);
         ActionBar ab = getSupportActionBar();
         if(ab != null){
             ab.setDisplayHomeAsUpEnabled(true);
             ab.setDisplayShowTitleEnabled(false);
         }
-        mIvPhoto = find(R.id.iv_photo);
+        mIvPhoto = bind(R.id.iv_photo);
         resetSize();
         Glide.with(this).load(mImgUrl).into(mIvPhoto);
 
-        mProgressBar = find(R.id.progress_bar);
-        mRecyclerView = find(R.id.recycler_view);
+        mLoadingView = bind(R.id.loading_view);
+        mLoadingView.show();
+        mRecyclerView = bind(R.id.recycler_view);
         mDatas = new ArrayList<>();
         mAdapter = new PhotoInfoAdapter(this,mDatas);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
@@ -144,8 +145,8 @@ public class PhotoInfoActivity extends BaseMvpActivity implements PhotoInfoContr
 
     @Override
     public void showPhotoInfo(PhotoBean info) {
-        mProgressBar.setVisibility(View.GONE);
 
+        mLoadingView.hide();
         mRecyclerView.setVisibility(View.VISIBLE);
         mDatas.add(info);
 

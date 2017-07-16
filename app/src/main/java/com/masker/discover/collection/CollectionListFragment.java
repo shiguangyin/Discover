@@ -59,7 +59,7 @@ public class CollectionListFragment extends BaseMvpFragment
 
     @Override
     protected void initViews(View contentView) {
-        mRefreshLayout = find(R.id.swipe_refresh_layout);
+        mRefreshLayout = bind(R.id.swipe_refresh_layout);
         mListener = new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
@@ -69,7 +69,7 @@ public class CollectionListFragment extends BaseMvpFragment
             }
         };
         mRefreshLayout.setOnRefreshListener(mListener);
-        mRecyclerView = find(R.id.recycler_view);
+        mRecyclerView = bind(R.id.recycler_view);
         mCollections = new ArrayList<>();
         mAdapter = new CollectionListAdapter(mCollections,getContext());
         mAdapter.setLoadMoreListener(new BaseAdapter.LoadMoreListener() {

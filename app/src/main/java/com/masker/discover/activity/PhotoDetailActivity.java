@@ -2,15 +2,21 @@ package com.masker.discover.activity;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.widget.ImageView;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.resource.drawable.GlideDrawable;
+import com.bumptech.glide.request.animation.GlideAnimation;
+import com.bumptech.glide.request.target.GlideDrawableImageViewTarget;
 import com.github.chrisbanes.photoview.OnPhotoTapListener;
 import com.github.chrisbanes.photoview.PhotoView;
 import com.masker.discover.R;
 import com.masker.discover.base.BaseActivity;
+import com.orhanobut.logger.Logger;
+import com.wang.avi.AVLoadingIndicatorView;
 
 /**
  * Author: masker
@@ -22,6 +28,7 @@ public class PhotoDetailActivity extends BaseActivity{
     public static final String URL = "url";
 
     private PhotoView mPhotoView;
+    private AVLoadingIndicatorView mLoadingView;
 
     private String mUrl;
 
@@ -32,7 +39,8 @@ public class PhotoDetailActivity extends BaseActivity{
 
     @Override
     protected void initViews() {
-        mPhotoView = find(R.id.photo_view);
+        mPhotoView = bind(R.id.photo_view);
+        mLoadingView = bind(R.id.loading_view);
     }
 
     @Override
@@ -48,7 +56,27 @@ public class PhotoDetailActivity extends BaseActivity{
     @Override
     protected void initData() {
         if(!TextUtils.isEmpty(mUrl)){
-            Glide.with(this).load(mUrl).into(mPhotoView);
+            Glide.with(this).load(mUrl).into(new GlideDrawableImageViewTarget(mPhotoView){
+
+                @Override
+                public void onLoadStarted(Drawable placeholder) {
+                    super.onLoadStarted(placeholder);
+                    mLoadingView.smoothToShow();
+                }
+
+                @Override
+                public void onLoadFailed(Exception e, Drawable errorDrawable) {
+                    super.onLoadFailed(e, errorDrawable);
+                    mLoadingView.smoothToHide();
+                }
+
+                @Override
+                public void onResourceReady(GlideDrawable resource, GlideAnimation<? super GlideDrawable> animation) {
+                    super.onResourceReady(resource, animation);
+                    mLoadingView.smoothToHide();
+                }
+
+            });
         }
     }
 
@@ -63,4 +91,9 @@ public class PhotoDetailActivity extends BaseActivity{
         context.startActivity(intent,bundle);
     }
 
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        Logger.i("on destroy");
+    }
 }

@@ -8,8 +8,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.bumptech.glide.util.LogTime;
-
 /**
  * CreatedBy: masker
  * Date: 2017/4/30
@@ -40,7 +38,7 @@ public abstract class BaseFragment extends Fragment{
 
     protected abstract void initData();
 
-    protected <T extends View> T find(int resId){
+    protected <T extends View> T bind(int resId){
         return (T) mContentView.findViewById(resId);
     }
 

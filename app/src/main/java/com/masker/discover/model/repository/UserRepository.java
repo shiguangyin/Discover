@@ -2,7 +2,7 @@ package com.masker.discover.model.repository;
 
 import com.masker.discover.model.api.UserService;
 import com.masker.discover.model.entity.MyInfoBean;
-import com.masker.discover.model.http.ApiClient;
+import com.masker.discover.model.http.HttpClient;
 
 import rx.Observable;
 
@@ -18,7 +18,7 @@ public class UserRepository {
     * get my info
     */
     public static Observable<MyInfoBean> getMyInfo(){
-        return ApiClient.getClient()
+        return HttpClient.getClient()
                 .create(UserService.class)
                 .getMyInfo();
     }

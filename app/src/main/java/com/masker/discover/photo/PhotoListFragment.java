@@ -76,8 +76,8 @@ public class PhotoListFragment extends BaseFragment implements PhotoListContract
 
     @Override
     protected void initViews(View contentView) {
-        mRlContent = find(R.id.rl_content);
-        mRefreshLayout = find(R.id.swipe_refresh_layout);
+        mRlContent = bind(R.id.rl_content);
+        mRefreshLayout = bind(R.id.swipe_refresh_layout);
         mRefreshListener = new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
@@ -87,7 +87,7 @@ public class PhotoListFragment extends BaseFragment implements PhotoListContract
             }
         };
         mRefreshLayout.setOnRefreshListener(mRefreshListener);
-        mRecyclerView = find(R.id.recycler_view);
+        mRecyclerView = bind(R.id.recycler_view);
         mPhotos = new ArrayList<>();
         mPhotoAdapter = new PhotoListAdapter(mPhotos,getContext());
         mPhotoAdapter.setLoadMoreListener(new BaseAdapter.LoadMoreListener() {

@@ -74,17 +74,17 @@ public class HomeActivity extends BaseMvpActivity implements HomeContract.View,V
 
     @Override
     protected void initViews() {
-        mToolbar = find(R.id.tool_bar);
+        mToolbar = bind(R.id.tool_bar);
         setSupportActionBar(mToolbar);
-        mAppBar = find(R.id.app_bar);
-        mTabLayout = find(R.id.tab_layout);
-        mDrawer = find(R.id.drawer);
+        mAppBar = bind(R.id.app_bar);
+        mTabLayout = bind(R.id.tab_layout);
+        mDrawer = bind(R.id.drawer);
         mDrawerToggle = new ActionBarDrawerToggle(HomeActivity.this,mDrawer,mToolbar,
                 R.string.open,R.string.close);
         mDrawer.addDrawerListener(mDrawerToggle);
         mDrawerToggle.syncState();
 
-        mNavView = find(R.id.nv_main);
+        mNavView = bind(R.id.nv_main);
         mNavMenu = mNavView.getMenu();
         mNavView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
             @Override
@@ -283,6 +283,7 @@ public class HomeActivity extends BaseMvpActivity implements HomeContract.View,V
         mTvBio.setVisibility(View.VISIBLE);
         mTvBio.setText(user.getBio());
 
+        mIvAvatar.setVisibility(View.VISIBLE);
         Glide.with(this).load(user.getAvatorUrl()).dontAnimate()
                 .into(mIvAvatar);
     }

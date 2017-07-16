@@ -4,7 +4,7 @@ import com.masker.discover.model.api.PhotoService;
 import com.masker.discover.model.entity.LikeResponseBean;
 import com.masker.discover.model.entity.PhotoListBean;
 import com.masker.discover.model.entity.PhotoBean;
-import com.masker.discover.model.http.ApiClient;
+import com.masker.discover.model.http.HttpClient;
 
 import java.util.List;
 
@@ -20,26 +20,26 @@ import rx.Observable;
 public class PhotoRepository {
 
     public static Observable<List<PhotoListBean>> getPhoto(int page, int perPage, String orderBy){
-        return  ApiClient.getClient()
+        return  HttpClient.getClient()
                 .create(PhotoService.class)
                 .getPhotos(page,perPage,orderBy);
     }
 
     public static Observable<PhotoBean> getPhotoInfo(String id){
-        return ApiClient.getClient()
+        return HttpClient.getClient()
                 .create(PhotoService.class)
                 .getPhotoInfo(id);
     }
 
 
     public static Observable<LikeResponseBean> likePhoto(String id){
-        return ApiClient.getClient()
+        return HttpClient.getClient()
                 .create(PhotoService.class)
                 .likePhoto(id);
     }
 
     public static Observable<LikeResponseBean> unlikePhoto(String id){
-        return ApiClient.getClient()
+        return HttpClient.getClient()
                 .create(PhotoService.class)
                 .unlikePhoto(id);
     }

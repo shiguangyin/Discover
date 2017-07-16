@@ -1,10 +1,8 @@
 package com.masker.discover.search.fragment;
 
-import android.inputmethodservice.Keyboard;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.SearchView;
 import android.view.View;
 import android.widget.ProgressBar;
 
@@ -49,10 +47,10 @@ public  abstract class BaseResultFragment extends BaseMvpFragment
 
     @Override
     protected void initViews(View contentView) {
-        mRefreshLayout = find(R.id.swipe_refresh_layout);
-        mRecyclerView = find(R.id.recycler_view);
+        mRefreshLayout = bind(R.id.swipe_refresh_layout);
+        mRecyclerView = bind(R.id.recycler_view);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
-        mProgressBar = find(R.id.progress_bar);
+        mProgressBar = bind(R.id.progress_bar);
     }
 
     @Override

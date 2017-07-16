@@ -8,24 +8,27 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
-import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 
 import com.bumptech.glide.Glide;
 import com.masker.discover.AppConstants;
 import com.masker.discover.R;
+import com.masker.discover.UserManager;
 import com.masker.discover.base.BaseActivity;
 import com.masker.discover.home.HomeActivity;
-import com.masker.discover.UserManager;
 import com.masker.discover.model.api.TokenService;
+import com.masker.discover.model.api.UserService;
+import com.masker.discover.model.entity.MyInfoBean;
 import com.masker.discover.model.entity.TokenBean;
-import com.masker.discover.model.http.ApiClient;
+import com.masker.discover.model.http.HttpClient;
 import com.orhanobut.logger.Logger;
-
+import com.wang.avi.AVLoadingIndicatorView;
 
 import jp.wasabeef.glide.transformations.BlurTransformation;
+import rx.Observable;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.functions.Action1;
+import rx.functions.Func1;
 import rx.schedulers.Schedulers;
 
 /**
@@ -40,7 +43,7 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener{
     private Button mBtnLogin;
     private Button mBtnJoin;
     private ImageButton mBtnClose;
-    private ProgressBar mProgressBar;
+    private AVLoadingIndicatorView mLoadingView;
     private RelativeLayout mRlContent;
 
 
@@ -62,37 +65,43 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener{
 
     @Override
     protected void initViews() {
-        mIvBg = find(R.id.iv_bg);
+        mIvBg = bind(R.id.iv_bg);
         Glide.with(this).load(R.drawable.bg_login)
                 .bitmapTransform(new BlurTransformation(this))
                 .into(mIvBg);
 
-        mProgressBar = find(R.id.progress_bar);
-        mRlContent = find(R.id.rl_content);
+        mLoadingView = bind(R.id.loading_view);
+        mRlContent = bind(R.id.rl_content);
 
-        mBtnLogin = find(R.id.btn_login);
+        mBtnLogin = bind(R.id.btn_login);
         mBtnLogin.setOnClickListener(this);
-        mBtnJoin = find(R.id.btn_join);
+        mBtnJoin = bind(R.id.btn_join);
         mBtnJoin.setOnClickListener(this);
-        mBtnClose = find(R.id.btn_close);
+        mBtnClose = bind(R.id.btn_close);
         mBtnClose.setOnClickListener(this);
     }
 
 
 
     private void fetchToken(String code){
-        mProgressBar.setVisibility(View.VISIBLE);
-        ApiClient.getClient().create(TokenService.class)
+        mLoadingView.smoothToShow();
+        HttpClient.getClient().create(TokenService.class)
                 .getToken(AppConstants.APP_ID,AppConstants.APP_SECRET,
                         AppConstants.REDIRECT_URL,code,
                         AppConstants.GRANT_TYPE)
+                .map(new Func1<TokenBean, Observable<MyInfoBean>>() {
+                    @Override
+                    public Observable<MyInfoBean> call(TokenBean tokenBean) {
+                        UserManager.getInstance().setToken(tokenBean.getAccess_token());
+                        return HttpClient.getClient().create(UserService.class).getMyInfo();
+                    }
+                })
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Action1<TokenBean>() {
+                .subscribe(new Action1<Observable<MyInfoBean>>() {
                     @Override
-                    public void call(TokenBean token) {
-                        UserManager.getInstance().setToken(token.getAccess_token());
-                        mProgressBar.setVisibility(View.GONE);
+                    public void call(Observable<MyInfoBean> myInfoBeanObservable) {
+                        mLoadingView.smoothToHide();
                         Intent intent = new Intent(LoginActivity.this, HomeActivity.class);
                         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                         startActivity(intent);
@@ -101,8 +110,8 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener{
                 }, new Action1<Throwable>() {
                     @Override
                     public void call(Throwable throwable) {
-                        mProgressBar.setVisibility(View.GONE);
-                        Snackbar.make(mRlContent,R.string.oauth_failed,
+                        mLoadingView.smoothToHide();
+                        Snackbar.make(mRlContent, R.string.oauth_failed,
                                 Snackbar.LENGTH_SHORT).show();
                         Logger.i(throwable.getMessage());
                     }

@@ -15,6 +15,7 @@ import com.masker.discover.base.BaseViewHolder;
 import com.masker.discover.model.entity.PhotoBean;
 import com.masker.discover.model.entity.TagBean;
 import com.masker.discover.utils.FormatUtils;
+import com.masker.discover.utils.ImgLoader;
 import com.masker.discover.utils.ScreenUtils;
 
 import java.util.List;
@@ -71,7 +72,7 @@ public class PhotoInfoAdapter extends RecyclerView.Adapter<BaseViewHolder>{
 
             CircleImageView ivAvatar = holder.getView(R.id.iv_avatar);
             String avatarUrl = info.getUser().getProfile_image().getLarge();
-            Glide.with(mContext).load(avatarUrl).into(ivAvatar);
+            ImgLoader.loadAvator(mContext,avatarUrl,ivAvatar);
 
             String name = String.format("By %s From Unsplash",info.getUser().getName());
             holder.setText(R.id.tv_name,name);

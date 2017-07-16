@@ -4,7 +4,7 @@ import com.masker.discover.model.api.CollectionService;
 import com.masker.discover.model.entity.CollectionBean;
 import com.masker.discover.model.entity.CollectionListBean;
 import com.masker.discover.model.entity.PhotoListBean;
-import com.masker.discover.model.http.ApiClient;
+import com.masker.discover.model.http.HttpClient;
 
 import java.util.List;
 
@@ -31,17 +31,17 @@ public class CollectionRepository {
         switch (type){
             //all
             case ALL:
-                return ApiClient.getClient()
+                return HttpClient.getClient()
                         .create(CollectionService.class)
                         .getCollectionList(page,perPage);
             //curated
             case CURATED:
-                return ApiClient.getClient()
+                return HttpClient.getClient()
                         .create(CollectionService.class)
                         .getCuratedCollectionList(page,perPage);
             //featured
             case FEATURED:
-                return ApiClient.getClient()
+                return HttpClient.getClient()
                         .create(CollectionService.class)
                         .getFeaturedCollectionList(page,perPage);
             default:
@@ -54,7 +54,7 @@ public class CollectionRepository {
      * get a collection
      */
     public static Observable<CollectionBean> getCollection(int id){
-        return ApiClient.getClient().create(CollectionService.class)
+        return HttpClient.getClient().create(CollectionService.class)
                 .getCollection(id);
     }
 
@@ -64,7 +64,7 @@ public class CollectionRepository {
      * get photos from the collection
      */
     public static Observable<List<PhotoListBean>> getCollectionPhotos(int id,int page,int perPage){
-        return ApiClient.getClient().create(CollectionService.class)
+        return HttpClient.getClient().create(CollectionService.class)
                 .getCollectionPhotos(id,page,perPage);
     }
 
@@ -74,7 +74,7 @@ public class CollectionRepository {
     * get a curated collection
     */
     public static Observable<CollectionBean> getCuratedCollection(int id){
-        return ApiClient.getClient().create(CollectionService.class)
+        return HttpClient.getClient().create(CollectionService.class)
                 .getCuratedCollection(id);
     }
 
@@ -83,7 +83,7 @@ public class CollectionRepository {
     * get photos from the curated collection
     */
     public static Observable<List<PhotoListBean>> getCuratedCollectionPhotos(int id,int page,int perPage){
-        return ApiClient.getClient().create(CollectionService.class)
+        return HttpClient.getClient().create(CollectionService.class)
                 .getCuratedCollectionPhotos(id,page,perPage);
     }
 

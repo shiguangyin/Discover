@@ -9,7 +9,6 @@ import com.masker.discover.base.BaseAdapter;
 import com.masker.discover.base.BaseMvpFragment;
 import com.masker.discover.model.entity.TagBean;
 import com.masker.discover.search.SearchActivity;
-import com.orhanobut.logger.Logger;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -36,7 +35,7 @@ public class TagListFragment extends BaseMvpFragment implements TagListContract.
 
     @Override
     protected void initViews(View contentView) {
-        mRecyclerView = find(R.id.recycler_view);
+        mRecyclerView = bind(R.id.recycler_view);
         mTags = new ArrayList<>();
         mAdapter = new TagListAdapter(mTags,getContext());
         mAdapter.enableLoadMore(false);

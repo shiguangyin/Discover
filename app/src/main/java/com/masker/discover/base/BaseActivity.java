@@ -44,9 +44,9 @@ public abstract class BaseActivity extends AppCompatActivity{
     }
 
     /*
-    * find view by id
+    * bind view by id
      */
-    protected <T extends View> T find(int resId){
+    protected <T extends View> T bind(int resId){
         return (T) findViewById(resId);
     }
 

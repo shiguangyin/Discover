@@ -8,7 +8,6 @@ import android.support.v4.content.ContextCompat;
 import android.support.v4.view.MenuItemCompat;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.ActionBar;
-import android.support.v7.widget.ActionBarContainer;
 import android.support.v7.widget.SearchView;
 import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
@@ -17,14 +16,11 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 
 import com.masker.discover.R;
 import com.masker.discover.base.BaseActivity;
-import com.masker.discover.model.api.SearchService;
 import com.masker.discover.rxbus.RxBus;
 import com.masker.discover.rxbus.SearchEvent;
-import com.orhanobut.logger.Logger;
 
 public class SearchActivity extends BaseActivity {
     public static final String SEARCH_KEY = "key";
@@ -43,17 +39,17 @@ public class SearchActivity extends BaseActivity {
 
     @Override
     protected void initViews() {
-        mToolbar = find(R.id.tool_bar);
+        mToolbar = bind(R.id.tool_bar);
         setSupportActionBar(mToolbar);
         ActionBar ab = getSupportActionBar();
         if(ab != null){
             ab.setDisplayHomeAsUpEnabled(true);
         }
 
-        mVpResult = find(R.id.vp_result);
+        mVpResult = bind(R.id.vp_result);
         mVpResult.setAdapter(new SearchVpAdapter(getSupportFragmentManager(),this));
         mVpResult.setOffscreenPageLimit(2);
-        mTabLayout = find(R.id.tab_layout);
+        mTabLayout = bind(R.id.tab_layout);
         mTabLayout.addTab(mTabLayout.newTab());
         mTabLayout.addTab(mTabLayout.newTab());
         mTabLayout.addTab(mTabLayout.newTab());

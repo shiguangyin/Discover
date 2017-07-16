@@ -9,6 +9,7 @@
         android:layout_height="60dp"
         android:layout_marginTop="30dp"
         android:layout_centerHorizontal="true"
+        android:src="@drawable/ic_unlogin_white_24dp"
         />
 
     <TextView

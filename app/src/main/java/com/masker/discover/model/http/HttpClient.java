@@ -13,7 +13,7 @@ import retrofit2.converter.gson.GsonConverterFactory;
  */
 
 
-public class ApiClient {
+public class HttpClient {
     private static Retrofit retrofit;
 
     public static Retrofit getClient(){

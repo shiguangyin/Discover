@@ -1,6 +1,7 @@
 package com.masker.discover.model.entity;
 
-import java.util.List;
+import android.os.Parcel;
+import android.os.Parcelable;
 
 /**
  * CreatedBy: masker
@@ -8,7 +9,7 @@ import java.util.List;
  * Description: myinfo bean for /me
  */
 
-public class MyInfoBean {
+public class MyInfoBean implements Parcelable {
 
     private String uid;
     private String id;
@@ -18,7 +19,6 @@ public class MyInfoBean {
     private String name;
     private String first_name;
     private String last_name;
-    private Object portfolio_url;
     private String bio;
     private String location;
     private int total_likes;
@@ -31,11 +31,9 @@ public class MyInfoBean {
     private ProfileImageBean profile_image;
     private boolean completed_onboarding;
     private int uploads_remaining;
-    private Object instagram_username;
+    private String instagram_username;
     private String email;
-    private Object badge;
     private LinksBean links;
-    private List<?> photos;
 
     public String getUid() {
         return uid;
@@ -101,13 +99,6 @@ public class MyInfoBean {
         this.last_name = last_name;
     }
 
-    public Object getPortfolio_url() {
-        return portfolio_url;
-    }
-
-    public void setPortfolio_url(Object portfolio_url) {
-        this.portfolio_url = portfolio_url;
-    }
 
     public String getBio() {
         return bio;
@@ -205,11 +196,11 @@ public class MyInfoBean {
         this.uploads_remaining = uploads_remaining;
     }
 
-    public Object getInstagram_username() {
+    public String getInstagram_username() {
         return instagram_username;
     }
 
-    public void setInstagram_username(Object instagram_username) {
+    public void setInstagram_username(String instagram_username) {
         this.instagram_username = instagram_username;
     }
 
@@ -221,13 +212,6 @@ public class MyInfoBean {
         this.email = email;
     }
 
-    public Object getBadge() {
-        return badge;
-    }
-
-    public void setBadge(Object badge) {
-        this.badge = badge;
-    }
 
     public LinksBean getLinks() {
         return links;
@@ -237,15 +221,8 @@ public class MyInfoBean {
         this.links = links;
     }
 
-    public List<?> getPhotos() {
-        return photos;
-    }
 
-    public void setPhotos(List<?> photos) {
-        this.photos = photos;
-    }
-
-    public static class ProfileImageBean {
+    public static class ProfileImageBean implements Parcelable {
         /**
          * small : https://images.unsplash.com/profile-1494573922707-2e2c5dcbb757?ixlib=rb-0.3.5&q=80&fm=jpg&crop=faces&cs=tinysrgb&fit=crop&h=32&w=32&s=7853c60bc812b19277356c423aa674bd
          * medium : https://images.unsplash.com/profile-1494573922707-2e2c5dcbb757?ixlib=rb-0.3.5&q=80&fm=jpg&crop=faces&cs=tinysrgb&fit=crop&h=64&w=64&s=1b44c1bfd304201c636eb0669ed1618a
@@ -279,9 +256,42 @@ public class MyInfoBean {
         public void setLarge(String large) {
             this.large = large;
         }
+
+        @Override
+        public int describeContents() {
+            return 0;
+        }
+
+        @Override
+        public void writeToParcel(Parcel dest, int flags) {
+            dest.writeString(this.small);
+            dest.writeString(this.medium);
+            dest.writeString(this.large);
+        }
+
+        public ProfileImageBean() {
+        }
+
+        protected ProfileImageBean(Parcel in) {
+            this.small = in.readString();
+            this.medium = in.readString();
+            this.large = in.readString();
+        }
+
+        public static final Creator<ProfileImageBean> CREATOR = new Creator<ProfileImageBean>() {
+            @Override
+            public ProfileImageBean createFromParcel(Parcel source) {
+                return new ProfileImageBean(source);
+            }
+
+            @Override
+            public ProfileImageBean[] newArray(int size) {
+                return new ProfileImageBean[size];
+            }
+        };
     }
 
-    public static class LinksBean {
+    public static class LinksBean implements Parcelable {
         /**
          * self : https://api.unsplash.com/users/masker
          * html : http://unsplash.com/@masker
@@ -355,5 +365,119 @@ public class MyInfoBean {
         public void setFollowers(String followers) {
             this.followers = followers;
         }
+
+        @Override
+        public int describeContents() {
+            return 0;
+        }
+
+        @Override
+        public void writeToParcel(Parcel dest, int flags) {
+            dest.writeString(this.self);
+            dest.writeString(this.html);
+            dest.writeString(this.photos);
+            dest.writeString(this.likes);
+            dest.writeString(this.portfolio);
+            dest.writeString(this.following);
+            dest.writeString(this.followers);
+        }
+
+        public LinksBean() {
+        }
+
+        protected LinksBean(Parcel in) {
+            this.self = in.readString();
+            this.html = in.readString();
+            this.photos = in.readString();
+            this.likes = in.readString();
+            this.portfolio = in.readString();
+            this.following = in.readString();
+            this.followers = in.readString();
+        }
+
+        public static final Creator<LinksBean> CREATOR = new Creator<LinksBean>() {
+            @Override
+            public LinksBean createFromParcel(Parcel source) {
+                return new LinksBean(source);
+            }
+
+            @Override
+            public LinksBean[] newArray(int size) {
+                return new LinksBean[size];
+            }
+        };
     }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeString(this.uid);
+        dest.writeString(this.id);
+        dest.writeString(this.updated_at);
+        dest.writeInt(this.numeric_id);
+        dest.writeString(this.username);
+        dest.writeString(this.name);
+        dest.writeString(this.first_name);
+        dest.writeString(this.last_name);
+        dest.writeString(this.bio);
+        dest.writeString(this.location);
+        dest.writeInt(this.total_likes);
+        dest.writeInt(this.total_photos);
+        dest.writeInt(this.total_collections);
+        dest.writeByte(this.followed_by_user ? (byte) 1 : (byte) 0);
+        dest.writeInt(this.following_count);
+        dest.writeInt(this.followers_count);
+        dest.writeInt(this.downloads);
+        dest.writeParcelable(this.profile_image, flags);
+        dest.writeByte(this.completed_onboarding ? (byte) 1 : (byte) 0);
+        dest.writeInt(this.uploads_remaining);
+        dest.writeString(this.instagram_username);
+        dest.writeString(this.email);
+        dest.writeParcelable(this.links, flags);
+    }
+
+    public MyInfoBean() {
+    }
+
+    protected MyInfoBean(Parcel in) {
+        this.uid = in.readString();
+        this.id = in.readString();
+        this.updated_at = in.readString();
+        this.numeric_id = in.readInt();
+        this.username = in.readString();
+        this.name = in.readString();
+        this.first_name = in.readString();
+        this.last_name = in.readString();
+        this.bio = in.readString();
+        this.location = in.readString();
+        this.total_likes = in.readInt();
+        this.total_photos = in.readInt();
+        this.total_collections = in.readInt();
+        this.followed_by_user = in.readByte() != 0;
+        this.following_count = in.readInt();
+        this.followers_count = in.readInt();
+        this.downloads = in.readInt();
+        this.profile_image = in.readParcelable(ProfileImageBean.class.getClassLoader());
+        this.completed_onboarding = in.readByte() != 0;
+        this.uploads_remaining = in.readInt();
+        this.instagram_username = in.readString();
+        this.email = in.readString();
+        this.links = in.readParcelable(LinksBean.class.getClassLoader());
+    }
+
+    public static final Parcelable.Creator<MyInfoBean> CREATOR = new Parcelable.Creator<MyInfoBean>() {
+        @Override
+        public MyInfoBean createFromParcel(Parcel source) {
+            return new MyInfoBean(source);
+        }
+
+        @Override
+        public MyInfoBean[] newArray(int size) {
+            return new MyInfoBean[size];
+        }
+    };
 }
