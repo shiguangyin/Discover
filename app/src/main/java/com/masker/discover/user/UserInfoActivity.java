@@ -100,7 +100,7 @@ public class UserInfoActivity extends BaseMvpActivity implements UserInfoContrac
         mTabLayout.addTab(mTabLayout.newTab());
         mTabLayout.addTab(mTabLayout.newTab());
         mTabLayout.addTab(mTabLayout.newTab());
-        mViewPager.setAdapter(new UserVpAdapter(getSupportFragmentManager(),mUser.getUserName()));
+        mViewPager.setAdapter(new UserVpAdapter(getSupportFragmentManager(),mUser));
         mTabLayout.setupWithViewPager(mViewPager);
     }
 
@@ -127,6 +127,7 @@ public class UserInfoActivity extends BaseMvpActivity implements UserInfoContrac
             ImgLoader.loadBlurBackgroud(this,mUser.getAvatorUrl(),mRlHeader);
             mTvName.setText(mUser.getName());
             mTvLocation.setText(mUser.getLocation());
+
         }
         mLoadingView.smoothToShow();
         if(mUserType == USER_SELF){
@@ -156,6 +157,7 @@ public class UserInfoActivity extends BaseMvpActivity implements UserInfoContrac
         }
         return super.onCreateOptionsMenu(menu);
     }
+
 
     @Override
     protected void handleIntent() {

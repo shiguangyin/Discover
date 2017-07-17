@@ -18,7 +18,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             app:layout_scrollFlags="scroll|exitUntilCollapsed"
-            app:contentScrim="@color/colorPrimary"
+            app:contentScrim="#cc000000"
             app:statusBarScrim="@color/transparent"
             android:fitsSystemWindows="true"
             >
