@@ -11,14 +11,14 @@ import android.widget.ImageView;
 import android.widget.RelativeLayout;
 
 import com.bumptech.glide.Glide;
-import com.masker.discover.AppConstants;
+import com.masker.discover.global.AppConstants;
 import com.masker.discover.R;
-import com.masker.discover.UserManager;
+import com.masker.discover.global.UserManager;
 import com.masker.discover.base.BaseActivity;
 import com.masker.discover.home.HomeActivity;
 import com.masker.discover.model.api.TokenService;
 import com.masker.discover.model.api.UserService;
-import com.masker.discover.model.entity.MyInfoBean;
+import com.masker.discover.model.entity.UserInfoBean;
 import com.masker.discover.model.entity.TokenBean;
 import com.masker.discover.model.http.HttpClient;
 import com.orhanobut.logger.Logger;
@@ -89,18 +89,18 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener{
                 .getToken(AppConstants.APP_ID,AppConstants.APP_SECRET,
                         AppConstants.REDIRECT_URL,code,
                         AppConstants.GRANT_TYPE)
-                .flatMap(new Func1<TokenBean, Observable<MyInfoBean>>() {
+                .flatMap(new Func1<TokenBean, Observable<UserInfoBean>>() {
                     @Override
-                    public Observable<MyInfoBean> call(TokenBean tokenBean) {
+                    public Observable<UserInfoBean> call(TokenBean tokenBean) {
                         UserManager.getInstance().setToken(tokenBean.getAccess_token());
                         return HttpClient.getClient().create(UserService.class).getMyInfo();
                     }
                 })
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Action1<MyInfoBean>() {
+                .subscribe(new Action1<UserInfoBean>() {
                     @Override
-                    public void call(MyInfoBean myInfoBean) {
+                    public void call(UserInfoBean myInfoBean) {
                         UserManager.getInstance().writeMyInfo(myInfoBean);
                         mLoadingView.smoothToHide();
                         Intent intent = new Intent(LoginActivity.this, HomeActivity.class);

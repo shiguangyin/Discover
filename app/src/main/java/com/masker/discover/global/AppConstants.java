@@ -1,4 +1,4 @@
-package com.masker.discover;
+package com.masker.discover.global;
 
 /**
  * CreatedBy: masker

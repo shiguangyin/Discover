@@ -1,6 +1,6 @@
 package com.masker.discover.model.http;
 
-import com.masker.discover.AppConstants;
+import com.masker.discover.global.AppConstants;
 
 import okhttp3.OkHttpClient;
 import retrofit2.Retrofit;

@@ -2,7 +2,7 @@ package com.masker.discover.tag;
 
 import android.support.annotation.NonNull;
 
-import com.masker.discover.App;
+import com.masker.discover.global.App;
 import com.masker.discover.base.BasePresenter;
 import com.masker.discover.model.entity.TagBean;
 

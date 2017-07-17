@@ -29,6 +29,7 @@ public abstract class BaseFragment extends Fragment{
             mContentView = inflater.inflate(getLayoutId(),container,false);
         }
         initViews(mContentView);
+        initListeners();
         initData();
         return mContentView;
     }
@@ -36,6 +37,8 @@ public abstract class BaseFragment extends Fragment{
     protected abstract int getLayoutId();
 
     protected abstract void initViews(View contentView);
+
+    protected void initListeners(){}
 
     protected abstract void initData();
 

@@ -1,7 +1,7 @@
 package com.masker.discover.user;
 
 import com.masker.discover.base.BaseView;
-import com.masker.discover.model.entity.MyInfoBean;
+import com.masker.discover.model.entity.UserInfoBean;
 
 /**
  * Author: masker
@@ -11,9 +11,11 @@ import com.masker.discover.model.entity.MyInfoBean;
 
 public class UserInfoContract {
     interface View extends BaseView{
-        void showMyInfo(MyInfoBean infoBean);
+        void showMyInfo(UserInfoBean infoBean);
+        void showUserInfo(UserInfoBean infoBean);
     }
     interface Presenter{
         void loadMyInfo();
+        void loadUserInfo(String userName);
     }
 }

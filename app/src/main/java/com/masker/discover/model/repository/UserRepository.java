@@ -2,7 +2,7 @@ package com.masker.discover.model.repository;
 
 import com.masker.discover.model.api.UserService;
 import com.masker.discover.model.entity.CollectionListBean;
-import com.masker.discover.model.entity.MyInfoBean;
+import com.masker.discover.model.entity.UserInfoBean;
 import com.masker.discover.model.entity.PhotoListBean;
 import com.masker.discover.model.http.HttpClient;
 
@@ -21,10 +21,16 @@ public class UserRepository {
    /*
     * get my info
     */
-    public static Observable<MyInfoBean> getMyInfo(){
+    public static Observable<UserInfoBean> getMyInfo(){
         return HttpClient.getClient()
                 .create(UserService.class)
                 .getMyInfo();
+    }
+
+    public static Observable<UserInfoBean> getUserInfo(String userName){
+        return HttpClient.getClient()
+                .create(UserService.class)
+                .getUserInfo(userName);
     }
 
     public static Observable<List<PhotoListBean>> getUserPhotos(String userName,int page,int perPage){

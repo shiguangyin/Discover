@@ -1,7 +1,7 @@
 package com.masker.discover.model.api;
 
 import com.masker.discover.model.entity.CollectionListBean;
-import com.masker.discover.model.entity.MyInfoBean;
+import com.masker.discover.model.entity.UserInfoBean;
 import com.masker.discover.model.entity.PhotoListBean;
 
 import java.util.List;
@@ -20,7 +20,10 @@ import rx.Observable;
 public interface UserService {
 
     @GET("/me")
-    Observable<MyInfoBean> getMyInfo();
+    Observable<UserInfoBean> getMyInfo();
+
+    @GET("/user/{username}")
+    Observable<UserInfoBean> getUserInfo(@Path("username")String userName);
 
 
     @GET("/users/{username}/photos")

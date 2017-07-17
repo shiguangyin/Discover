@@ -1,10 +1,10 @@
-package com.masker.discover;
+package com.masker.discover.global;
 
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.text.TextUtils;
 
-import com.masker.discover.model.entity.MyInfoBean;
+import com.masker.discover.model.entity.UserInfoBean;
 import com.masker.discover.model.entity.User;
 import com.masker.discover.utils.SpUtils;
 import com.orhanobut.logger.Logger;
@@ -113,7 +113,7 @@ public class UserManager {
         }
     }
 
-    public void writeMyInfo(MyInfoBean bean){
+    public void writeMyInfo(UserInfoBean bean){
         if(bean == null){
             return;
         }
@@ -148,6 +148,5 @@ public class UserManager {
         editor.remove(KEY_TOTAL_COLLECTIONS);
         editor.commit();
     }
-
 
 }

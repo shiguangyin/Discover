@@ -59,6 +59,14 @@ public class PhotoListAdapter extends BaseAdapter<PhotoListBean> {
         String avatarUrl = data.getUser().getProfile_image().getLarge();
         CircleImageView ivAvator = holder.getView(R.id.iv_avatar);
         ImgLoader.loadAvator(mContext,avatarUrl,ivAvator);
+        if(mAvatarClickListener != null){
+            ivAvator.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    mAvatarClickListener.onAvatarClick(view,position);
+                }
+            });
+        }
 
         String name = data.getUser().getName();
         holder.setText(R.id.tv_name,name);
@@ -97,7 +105,6 @@ public class PhotoListAdapter extends BaseAdapter<PhotoListBean> {
                 int state = (int) payloads.get(0);
                 if(state == STATE_NORMAL){
                     holder.getView(R.id.like_progress).setVisibility(View.GONE);
-
                     ImageView ivLikes = holder.getView(R.id.iv_likes);
                     ivLikes.setVisibility(View.VISIBLE);
                     PhotoListBean data = mDatas.get(position);
@@ -129,5 +136,16 @@ public class PhotoListAdapter extends BaseAdapter<PhotoListBean> {
     public void setOnLikeListener(OnLikeListener listener){
         mLikeListener = listener;
     }
+
+    public interface OnAvatarClickListener{
+        void onAvatarClick(View view,int position);
+    }
+
+    private OnAvatarClickListener mAvatarClickListener;
+
+    public void setOnAvatarClickListener(OnAvatarClickListener listener){
+        mAvatarClickListener = listener;
+    }
+
 
 }

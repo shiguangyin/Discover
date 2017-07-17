@@ -19,7 +19,7 @@ import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.masker.discover.R;
-import com.masker.discover.UserManager;
+import com.masker.discover.global.UserManager;
 import com.masker.discover.activity.LoginActivity;
 import com.masker.discover.base.BaseMvpActivity;
 import com.masker.discover.collection.CollectionFragment;
@@ -300,7 +300,7 @@ public class HomeActivity extends BaseMvpActivity implements HomeContract.View,V
                 break;
             case R.id.iv_avatar:
                 if(mUser != null){
-                    UserInfoActivity.start(this,mUser);
+                    UserInfoActivity.start(this,mUser,UserInfoActivity.USER_SELF);
                 }
         }
     }

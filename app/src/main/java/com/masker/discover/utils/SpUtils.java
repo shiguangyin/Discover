@@ -3,7 +3,7 @@ package com.masker.discover.utils;
 import android.content.Context;
 import android.content.SharedPreferences;
 
-import com.masker.discover.App;
+import com.masker.discover.global.App;
 
 /**
  * CreatedBy: masker

@@ -9,7 +9,7 @@ import android.os.Parcelable;
  * Description: myinfo bean for /me
  */
 
-public class MyInfoBean implements Parcelable {
+public class UserInfoBean implements Parcelable {
 
     private String uid;
     private String id;
@@ -440,10 +440,10 @@ public class MyInfoBean implements Parcelable {
         dest.writeParcelable(this.links, flags);
     }
 
-    public MyInfoBean() {
+    public UserInfoBean() {
     }
 
-    protected MyInfoBean(Parcel in) {
+    protected UserInfoBean(Parcel in) {
         this.uid = in.readString();
         this.id = in.readString();
         this.updated_at = in.readString();
@@ -469,15 +469,15 @@ public class MyInfoBean implements Parcelable {
         this.links = in.readParcelable(LinksBean.class.getClassLoader());
     }
 
-    public static final Parcelable.Creator<MyInfoBean> CREATOR = new Parcelable.Creator<MyInfoBean>() {
+    public static final Parcelable.Creator<UserInfoBean> CREATOR = new Parcelable.Creator<UserInfoBean>() {
         @Override
-        public MyInfoBean createFromParcel(Parcel source) {
-            return new MyInfoBean(source);
+        public UserInfoBean createFromParcel(Parcel source) {
+            return new UserInfoBean(source);
         }
 
         @Override
-        public MyInfoBean[] newArray(int size) {
-            return new MyInfoBean[size];
+        public UserInfoBean[] newArray(int size) {
+            return new UserInfoBean[size];
         }
     };
 }

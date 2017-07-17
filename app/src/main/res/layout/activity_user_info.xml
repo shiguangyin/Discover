@@ -58,6 +58,7 @@
                     />
 
                 <Button
+                    android:id="@+id/btn_edit"
                     android:layout_width="120dp"
                     android:layout_height="30dp"
                     android:text="Edit"
@@ -66,6 +67,19 @@
                     android:layout_centerHorizontal="true"
                     android:background="@drawable/bg_shape_login"
                     android:gravity="center"
+                    />
+
+                <Button
+                    android:id="@+id/btn_focus"
+                    android:layout_width="120dp"
+                    android:layout_height="30dp"
+                    android:text="FOCUS"
+                    android:layout_below="@id/tv_location"
+                    android:layout_marginTop="10dp"
+                    android:layout_centerHorizontal="true"
+                    android:background="@drawable/bg_shape_login"
+                    android:gravity="center"
+                    android:visibility="gone"
                     />
 
                 <com.wang.avi.AVLoadingIndicatorView

@@ -7,7 +7,6 @@ import android.support.v4.app.ActivityOptionsCompat;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
@@ -18,8 +17,10 @@ import com.masker.discover.base.BaseFragment;
 import com.masker.discover.model.api.PhotoService;
 import com.masker.discover.model.entity.LikeResponseBean;
 import com.masker.discover.model.entity.PhotoListBean;
+import com.masker.discover.model.entity.User;
 import com.masker.discover.rxbus.ReOrderEvent;
 import com.masker.discover.rxbus.RxBus;
+import com.masker.discover.user.UserInfoActivity;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -96,6 +97,13 @@ public class PhotoListFragment extends BaseFragment implements PhotoListContract
                 mPresenter.loadPhotos(mPage,mPerPage,mOrder);
             }
         });
+        mRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+        mRecyclerView.setAdapter(mPhotoAdapter);
+    }
+
+
+    @Override
+    protected void initListeners() {
         mPhotoAdapter.setOnItemClickListener(new BaseAdapter.OnItemClickListener() {
             @Override
             public void onClick(View view, int position) {
@@ -112,20 +120,35 @@ public class PhotoListFragment extends BaseFragment implements PhotoListContract
                         id,imgUrl,width,height);
             }
         });
+
+        mPhotoAdapter.setOnAvatarClickListener(new PhotoListAdapter.OnAvatarClickListener() {
+            @Override
+            public void onAvatarClick(View view, int position) {
+                PhotoListBean.UserBean userBean = mPhotos.get(position).getUser();
+                User user = new User();
+                user.setName(userBean.getName());
+                user.setUserName(userBean.getUsername());
+                user.setAvatorUrl(userBean.getProfile_image().getLarge());
+                user.setLocation(userBean.getLocation());
+                user.setBio(userBean.getBio());
+                user.setTotalPhotos(userBean.getTotal_photos());
+                user.setTotalLikes(userBean.getTotal_likes());
+                user.setTotalCollections(userBean.getTotal_collections());
+                UserInfoActivity.start(getContext(),user,UserInfoActivity.USER_OTHER);
+            }
+        });
+
         mPhotoAdapter.setOnLikeListener(new PhotoListAdapter.OnLikeListener() {
             @Override
             public void onLike(View view, int position) {
                 onClickLike(position);
             }
         });
-        mRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
-        mRecyclerView.setAdapter(mPhotoAdapter);
     }
 
-
     /*
-     * on like button clicked
-     */
+         * on like button clicked
+         */
     private void onClickLike(int position){
         PhotoListBean photo = mPhotos.get(position);
         boolean isLike = photo.isLiked_by_user();

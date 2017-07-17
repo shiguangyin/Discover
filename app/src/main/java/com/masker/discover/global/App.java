@@ -1,4 +1,4 @@
-package com.masker.discover;
+package com.masker.discover.global;
 
 import android.app.Application;
 import android.content.Context;

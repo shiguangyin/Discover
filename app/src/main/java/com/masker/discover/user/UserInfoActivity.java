@@ -10,13 +10,15 @@ import android.support.v7.app.ActionBar;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.Button;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.masker.discover.R;
-import com.masker.discover.UserManager;
+import com.masker.discover.global.UserManager;
 import com.masker.discover.base.BaseMvpActivity;
-import com.masker.discover.model.entity.MyInfoBean;
+import com.masker.discover.model.entity.UserInfoBean;
 import com.masker.discover.model.entity.User;
 import com.masker.discover.utils.ImgLoader;
 import com.orhanobut.logger.Logger;
@@ -34,12 +36,15 @@ import de.hdodenhof.circleimageview.CircleImageView;
 
 public class UserInfoActivity extends BaseMvpActivity implements UserInfoContract.View{
     public static final String KEY_USER = "user";
+    public static final String KEY_USER_TYPE = "user_type";
 
     public static final int USER_SELF = 1;
     public static final int USER_OTHER = 2;
 
     private User mUser;
     private UserInfoPresenter mPresenter;
+
+    private int mUserType = USER_SELF;
 
 
     @BindView(R.id.iv_avatar)
@@ -62,6 +67,10 @@ public class UserInfoActivity extends BaseMvpActivity implements UserInfoContrac
     ViewPager mViewPager;
     @BindView(R.id.loading_view)
     AVLoadingIndicatorView mLoadingView;
+    @BindView(R.id.btn_edit)
+    Button mBtnEdit;
+    @BindView(R.id.btn_focus)
+    Button mBtnFocus;
 
 
     @Override
@@ -78,10 +87,19 @@ public class UserInfoActivity extends BaseMvpActivity implements UserInfoContrac
             ab.setDisplayHomeAsUpEnabled(true);
             ab.setDisplayShowTitleEnabled(true);
         }
+        if(mUserType == USER_SELF){
+            mBtnEdit.setVisibility(View.VISIBLE);
+            mBtnFocus.setVisibility(View.GONE);
+        }
+        else{
+            mBtnEdit.setVisibility(View.GONE);
+            mBtnFocus.setVisibility(View.VISIBLE);
+        }
+
         Logger.i(""+mUser.getTotalLikes()+"   "+mUser.getTotalCollections());
-        mTabLayout.addTab(mTabLayout.newTab().setText(mUser.getTotalPhotos()+" PHOTOS"));
-        mTabLayout.addTab(mTabLayout.newTab().setText(mUser.getTotalLikes()+" LIKES"));
-        mTabLayout.addTab(mTabLayout.newTab().setText(mUser.getTotalCollections()+" COLLECTIONS"));
+        mTabLayout.addTab(mTabLayout.newTab());
+        mTabLayout.addTab(mTabLayout.newTab());
+        mTabLayout.addTab(mTabLayout.newTab());
         mViewPager.setAdapter(new UserVpAdapter(getSupportFragmentManager(),mUser.getUserName()));
         mTabLayout.setupWithViewPager(mViewPager);
     }
@@ -111,7 +129,12 @@ public class UserInfoActivity extends BaseMvpActivity implements UserInfoContrac
             mTvLocation.setText(mUser.getLocation());
         }
         mLoadingView.smoothToShow();
-        mPresenter.loadMyInfo();
+        if(mUserType == USER_SELF){
+            mPresenter.loadMyInfo();
+        }
+        else{
+            mPresenter.loadUserInfo(mUser.getUserName());
+        }
     }
 
 
@@ -128,17 +151,22 @@ public class UserInfoActivity extends BaseMvpActivity implements UserInfoContrac
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.menu_user_info,menu);
+        if(mUserType == USER_OTHER){
+            menu.findItem(R.id.item_logout).setVisible(false);
+        }
         return super.onCreateOptionsMenu(menu);
     }
 
     @Override
     protected void handleIntent() {
         mUser = getIntent().getParcelableExtra(KEY_USER);
+        mUserType = getIntent().getIntExtra(KEY_USER_TYPE,USER_SELF);
     }
 
-    public static void start(Context context, User user) {
+    public static void start(Context context, User user,int userType) {
         Intent intent = new Intent(context, UserInfoActivity.class);
         intent.putExtra(KEY_USER, user);
+        intent.putExtra(KEY_USER_TYPE,userType);
         context.startActivity(intent);
     }
 
@@ -153,17 +181,14 @@ public class UserInfoActivity extends BaseMvpActivity implements UserInfoContrac
     }
 
     @Override
-    public void showMyInfo(MyInfoBean infoBean) {
-        mLoadingView.smoothToHide();
+    public void showMyInfo(UserInfoBean infoBean) {
         UserManager.getInstance().writeMyInfo(infoBean);
-        ImgLoader.loadAvator(this, infoBean.getProfile_image().getLarge(), mIvAvatar);
-        ImgLoader.loadBlurBackgroud(this,infoBean.getProfile_image().getSmall(),mRlHeader);
-        mTvName.setText(infoBean.getName());
-        mTvLocation.setText(infoBean.getLocation());
-        mTabLayout.getTabAt(0).setText(infoBean.getTotal_photos()+" PHOTOS");
-        mTabLayout.getTabAt(1).setText(infoBean.getTotal_likes()+" LIKES");
-        mTabLayout.getTabAt(2).setText(infoBean.getTotal_collections()+" COLLECTIONS");
+        show(infoBean);
+    }
 
+    @Override
+    public void showUserInfo(UserInfoBean infoBean) {
+        show(infoBean);
     }
 
     @Override
@@ -174,5 +199,16 @@ public class UserInfoActivity extends BaseMvpActivity implements UserInfoContrac
     @Override
     protected void detach() {
         mPresenter.onUnsubscribe();
+    }
+
+    private void show(UserInfoBean infoBean){
+        mLoadingView.smoothToHide();
+        ImgLoader.loadAvator(this, infoBean.getProfile_image().getLarge(), mIvAvatar);
+        ImgLoader.loadBlurBackgroud(this,infoBean.getProfile_image().getSmall(),mRlHeader);
+        mTvName.setText(infoBean.getName());
+        mTvLocation.setText(infoBean.getLocation());
+        mTabLayout.getTabAt(0).setText(infoBean.getTotal_photos()+" PHOTOS");
+        mTabLayout.getTabAt(1).setText(infoBean.getTotal_likes()+" LIKES");
+        mTabLayout.getTabAt(2).setText(infoBean.getTotal_collections()+" COLLECTIONS");
     }
 }

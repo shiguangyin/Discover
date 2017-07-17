@@ -2,9 +2,9 @@ package com.masker.discover.home;
 
 import android.support.annotation.NonNull;
 
-import com.masker.discover.UserManager;
+import com.masker.discover.global.UserManager;
 import com.masker.discover.base.BasePresenter;
-import com.masker.discover.model.entity.MyInfoBean;
+import com.masker.discover.model.entity.UserInfoBean;
 import com.masker.discover.model.entity.User;
 import com.masker.discover.model.repository.UserRepository;
 import com.orhanobut.logger.Logger;
@@ -32,9 +32,9 @@ public class HomePresenter extends BasePresenter<HomeContract.View> implements H
         Subscription subscription = UserRepository.getMyInfo()
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Action1<MyInfoBean>() {
+                .subscribe(new Action1<UserInfoBean>() {
                     @Override
-                    public void call(MyInfoBean myInfo) {
+                    public void call(UserInfoBean myInfo) {
                         UserManager.getInstance().writeMyInfo(myInfo);
                         User user = UserManager.getInstance().getUser();
                         mView.updateMyInfo(user);

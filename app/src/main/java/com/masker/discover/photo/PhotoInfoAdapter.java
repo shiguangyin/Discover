@@ -9,7 +9,7 @@ import android.widget.ImageView;
 import android.widget.RelativeLayout;
 
 import com.bumptech.glide.Glide;
-import com.masker.discover.AppConstants;
+import com.masker.discover.global.AppConstants;
 import com.masker.discover.R;
 import com.masker.discover.base.BaseViewHolder;
 import com.masker.discover.model.entity.PhotoBean;
