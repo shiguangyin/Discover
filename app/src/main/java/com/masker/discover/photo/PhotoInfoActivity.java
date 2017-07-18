@@ -3,7 +3,6 @@ package com.masker.discover.photo;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.design.widget.Snackbar;
 import android.support.v4.app.ActivityOptionsCompat;
 import android.support.v7.app.ActionBar;
 import android.support.v7.widget.LinearLayoutManager;
@@ -22,6 +21,7 @@ import com.masker.discover.base.BaseMvpActivity;
 import com.masker.discover.model.entity.PhotoBean;
 import com.masker.discover.model.entity.TagBean;
 import com.masker.discover.utils.ScreenUtils;
+import com.masker.discover.utils.ShareUtils;
 import com.wang.avi.AVLoadingIndicatorView;
 
 import java.util.ArrayList;
@@ -53,6 +53,7 @@ public class PhotoInfoActivity extends BaseMvpActivity implements PhotoInfoContr
     private PhotoInfoAdapter mAdapter;
 
     private PhotoInfoPresenter mPresenter;
+    private PhotoBean mPhotoBean;
 
 
     @Override
@@ -145,7 +146,7 @@ public class PhotoInfoActivity extends BaseMvpActivity implements PhotoInfoContr
 
     @Override
     public void showPhotoInfo(PhotoBean info) {
-
+        mPhotoBean = info;
         mLoadingView.smoothToHide();
         mRecyclerView.setVisibility(View.VISIBLE);
         mDatas.add(info);
@@ -201,7 +202,11 @@ public class PhotoInfoActivity extends BaseMvpActivity implements PhotoInfoContr
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         if(item.getItemId() == R.id.action_share){
-            Snackbar.make(mRecyclerView,"under developing",Snackbar.LENGTH_SHORT).show();
+            if(mPhotoBean != null){
+                String content = "By "+mPhotoBean.getUser().getName()+" at "+mPhotoBean.getCreated_at()
+                        +" "+mPhotoBean.getLinks().getHtml();
+                ShareUtils.share(this,getString(R.string.APP_NAME),content);
+            }
         }
         else if(item.getItemId() == android.R.id.home){
             onBackPressed();

@@ -27,6 +27,7 @@ import com.masker.discover.home.HomeActivity;
 import com.masker.discover.model.entity.User;
 import com.masker.discover.model.entity.UserInfoBean;
 import com.masker.discover.utils.ImgLoader;
+import com.masker.discover.utils.ShareUtils;
 import com.orhanobut.logger.Logger;
 import com.wang.avi.AVLoadingIndicatorView;
 
@@ -48,6 +49,7 @@ public class UserInfoActivity extends BaseMvpActivity implements UserInfoContrac
     public static final int USER_OTHER = 2;
 
     private User mUser;
+    private UserInfoBean mUserInfoBean;
     private UserInfoPresenter mPresenter;
 
     private int mUserType = USER_SELF;
@@ -178,6 +180,11 @@ public class UserInfoActivity extends BaseMvpActivity implements UserInfoContrac
             case R.id.item_logout:
                 onLogOutClick();
                 break;
+            case R.id.item_share:
+                if(mUserInfoBean != null){
+                    ShareUtils.share(this,getString(R.string.APP_NAME),mUserInfoBean.getLinks().getHtml());
+                }
+                break;
         }
 
         return true;
@@ -280,6 +287,7 @@ public class UserInfoActivity extends BaseMvpActivity implements UserInfoContrac
 
     private void show(UserInfoBean infoBean){
         mLoadingView.hide();
+        mUserInfoBean = infoBean;
         Logger.i("is followed by user = "+infoBean.isFollowed_by_user());
         if(isFollowedByUser != infoBean.isFollowed_by_user()){
             showFollowStatusChange();
