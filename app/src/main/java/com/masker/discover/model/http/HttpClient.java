@@ -31,4 +31,21 @@ public class HttpClient {
         }
         return retrofit;
     }
+
+    private static Retrofit sNewRetrofit;
+
+    static {
+        OkHttpClient client = new OkHttpClient.Builder()
+                .addInterceptor(new HeaderInterceptor())
+                .addInterceptor(new LoggingInterceptor())
+                .build();
+        sNewRetrofit = new Retrofit.Builder()
+                .baseUrl(AppConstants.BASE_NEW_URL)
+                .client(client)
+                .build();
+    }
+
+    public static <T> T create(Class<T> service){
+        return sNewRetrofit.create(service);
+    }
 }

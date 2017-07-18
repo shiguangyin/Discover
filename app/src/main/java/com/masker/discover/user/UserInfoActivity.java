@@ -1,25 +1,31 @@
 package com.masker.discover.user;
 
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.design.widget.TabLayout;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.ActionBar;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.Toolbar;
+import android.text.TextUtils;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.masker.discover.R;
-import com.masker.discover.global.UserManager;
 import com.masker.discover.base.BaseMvpActivity;
-import com.masker.discover.model.entity.UserInfoBean;
+import com.masker.discover.global.UserManager;
+import com.masker.discover.home.HomeActivity;
 import com.masker.discover.model.entity.User;
+import com.masker.discover.model.entity.UserInfoBean;
 import com.masker.discover.utils.ImgLoader;
 import com.orhanobut.logger.Logger;
 import com.wang.avi.AVLoadingIndicatorView;
@@ -34,7 +40,7 @@ import de.hdodenhof.circleimageview.CircleImageView;
  * Description: activity for user info
  */
 
-public class UserInfoActivity extends BaseMvpActivity implements UserInfoContract.View{
+public class UserInfoActivity extends BaseMvpActivity implements UserInfoContract.View,View.OnClickListener{
     public static final String KEY_USER = "user";
     public static final String KEY_USER_TYPE = "user_type";
 
@@ -45,6 +51,8 @@ public class UserInfoActivity extends BaseMvpActivity implements UserInfoContrac
     private UserInfoPresenter mPresenter;
 
     private int mUserType = USER_SELF;
+    private boolean isFollowedByUser;
+    private int mFollowersCount;
 
 
     @BindView(R.id.iv_avatar)
@@ -69,8 +77,20 @@ public class UserInfoActivity extends BaseMvpActivity implements UserInfoContrac
     AVLoadingIndicatorView mLoadingView;
     @BindView(R.id.btn_edit)
     Button mBtnEdit;
-    @BindView(R.id.btn_focus)
-    Button mBtnFocus;
+    @BindView(R.id.rl_focus)
+    RelativeLayout mRlFocus;
+    @BindView(R.id.pb_focus)
+    ProgressBar mPbFocus;
+    @BindView(R.id.tv_focus)
+    TextView mTvFocus;
+    @BindView(R.id.iv_focus)
+    ImageView mIvFocus;
+    @BindView(R.id.tv_followers)
+    TextView mTvFollowers;
+    @BindView(R.id.tv_following)
+    TextView mTvFollowing;
+
+
 
 
     @Override
@@ -89,11 +109,11 @@ public class UserInfoActivity extends BaseMvpActivity implements UserInfoContrac
         }
         if(mUserType == USER_SELF){
             mBtnEdit.setVisibility(View.VISIBLE);
-            mBtnFocus.setVisibility(View.GONE);
+            mRlFocus.setVisibility(View.GONE);
         }
         else{
             mBtnEdit.setVisibility(View.GONE);
-            mBtnFocus.setVisibility(View.VISIBLE);
+            mRlFocus.setVisibility(View.VISIBLE);
         }
 
         Logger.i(""+mUser.getTotalLikes()+"   "+mUser.getTotalCollections());
@@ -102,6 +122,7 @@ public class UserInfoActivity extends BaseMvpActivity implements UserInfoContrac
         mTabLayout.addTab(mTabLayout.newTab());
         mViewPager.setAdapter(new UserVpAdapter(getSupportFragmentManager(),mUser));
         mTabLayout.setupWithViewPager(mViewPager);
+
     }
 
 
@@ -118,6 +139,9 @@ public class UserInfoActivity extends BaseMvpActivity implements UserInfoContrac
                 }
             }
         });
+
+        mRlFocus.setOnClickListener(this);
+
     }
 
     @Override
@@ -126,7 +150,12 @@ public class UserInfoActivity extends BaseMvpActivity implements UserInfoContrac
             ImgLoader.loadAvator(this, mUser.getAvatorUrl(), mIvAvatar);
             ImgLoader.loadBlurBackgroud(this,mUser.getAvatorUrl(),mRlHeader);
             mTvName.setText(mUser.getName());
-            mTvLocation.setText(mUser.getLocation());
+            if(TextUtils.isEmpty(mUser.getLocation())){
+                mTvLocation.setText("Unknown");
+            }
+            else{
+                mTvLocation.setText(mUser.getLocation());
+            }
 
         }
         mLoadingView.smoothToShow();
@@ -142,10 +171,38 @@ public class UserInfoActivity extends BaseMvpActivity implements UserInfoContrac
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        if (item.getItemId() == android.R.id.home) {
-            onBackPressed();
+        switch (item.getItemId()){
+            case android.R.id.home:
+                onBackPressed();
+                break;
+            case R.id.item_logout:
+                onLogOutClick();
+                break;
         }
+
         return true;
+    }
+
+    private void onLogOutClick(){
+        AlertDialog.Builder builder = new AlertDialog.Builder(this)
+                .setTitle("Are you sure to log out?")
+                .setCancelable(true)
+                .setPositiveButton("SURE", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        UserManager.getInstance().logOut();
+                        HomeActivity.reStart(UserInfoActivity.this);
+                        finish();
+                    }
+                })
+                .setNegativeButton("CANCEL", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        dialogInterface.dismiss();
+                    }
+                });
+        AlertDialog dialog = builder.create();
+        dialog.show();
     }
 
 
@@ -157,6 +214,7 @@ public class UserInfoActivity extends BaseMvpActivity implements UserInfoContrac
         }
         return super.onCreateOptionsMenu(menu);
     }
+
 
 
     @Override
@@ -175,6 +233,8 @@ public class UserInfoActivity extends BaseMvpActivity implements UserInfoContrac
     @Override
     public void showError() {
         mLoadingView.smoothToHide();
+        mPbFocus.setVisibility(View.GONE);
+        mIvFocus.setVisibility(View.VISIBLE);
     }
 
     @Override
@@ -194,6 +254,21 @@ public class UserInfoActivity extends BaseMvpActivity implements UserInfoContrac
     }
 
     @Override
+    public void showFollowStatusChange() {
+        isFollowedByUser = !isFollowedByUser;
+        mPbFocus.setVisibility(View.GONE);
+        mIvFocus.setVisibility(View.VISIBLE);
+        if(isFollowedByUser){
+            mIvFocus.setImageResource(R.drawable.ic_done_white_24dp);
+            mTvFocus.setText("FOLLOWED");
+        }
+        else{
+            mIvFocus.setImageResource(R.drawable.ic_follow_white_24dp);
+            mTvFocus.setText("FOLLOW");
+        }
+    }
+
+    @Override
     protected void attach() {
         mPresenter =  new UserInfoPresenter(this);
     }
@@ -204,7 +279,11 @@ public class UserInfoActivity extends BaseMvpActivity implements UserInfoContrac
     }
 
     private void show(UserInfoBean infoBean){
-        mLoadingView.smoothToHide();
+        mLoadingView.hide();
+        Logger.i("is followed by user = "+infoBean.isFollowed_by_user());
+        if(isFollowedByUser != infoBean.isFollowed_by_user()){
+            showFollowStatusChange();
+        }
         ImgLoader.loadAvator(this, infoBean.getProfile_image().getLarge(), mIvAvatar);
         ImgLoader.loadBlurBackgroud(this,infoBean.getProfile_image().getSmall(),mRlHeader);
         mTvName.setText(infoBean.getName());
@@ -212,5 +291,28 @@ public class UserInfoActivity extends BaseMvpActivity implements UserInfoContrac
         mTabLayout.getTabAt(0).setText(infoBean.getTotal_photos()+" PHOTOS");
         mTabLayout.getTabAt(1).setText(infoBean.getTotal_likes()+" LIKES");
         mTabLayout.getTabAt(2).setText(infoBean.getTotal_collections()+" COLLECTIONS");
+
+        mFollowersCount = infoBean.getFollowers_count();
+        mTvFollowers.setText("Followers "+infoBean.getFollowers_count());
+        mTvFollowing.setText("Following "+infoBean.getFollowing_count());
+    }
+
+    @Override
+    public void onClick(View view) {
+        switch (view.getId()){
+            case R.id.rl_focus:
+                if(mPbFocus.getVisibility() == View.VISIBLE){
+                    return ;
+                }
+                mIvFocus.setVisibility(View.GONE);
+                mPbFocus.setVisibility(View.VISIBLE);
+                if(!isFollowedByUser){
+                    mPresenter.followUser(mUser.getUserName());
+                }
+                else{
+                    mPresenter.deleteFollow(mUser.getUserName());
+                }
+                break;
+        }
     }
 }

@@ -54,13 +54,7 @@ public class UserManager {
     }
 
     public String getToken(){
-        if(token != null){
-            return token;
-        }
-        else{
-            token = SpUtils.getString(SpUtils.USER,KEY_TOKEN);
-        }
-        return token;
+        return SpUtils.getString(SpUtils.USER,KEY_TOKEN);
     }
 
     public boolean isLogin(){
@@ -147,6 +141,7 @@ public class UserManager {
         editor.remove(KEY_TOTAL_LIKES);
         editor.remove(KEY_TOTAL_COLLECTIONS);
         editor.commit();
+        Logger.i("is login = "+isLogin());
     }
 
 }

@@ -1,12 +1,16 @@
 package com.masker.discover.model.api;
 
 import com.masker.discover.model.entity.CollectionListBean;
-import com.masker.discover.model.entity.UserInfoBean;
 import com.masker.discover.model.entity.PhotoListBean;
+import com.masker.discover.model.entity.UserInfoBean;
 
 import java.util.List;
 
+import okhttp3.ResponseBody;
+import retrofit2.Call;
+import retrofit2.http.DELETE;
 import retrofit2.http.GET;
+import retrofit2.http.POST;
 import retrofit2.http.Path;
 import retrofit2.http.Query;
 import rx.Observable;
@@ -22,7 +26,7 @@ public interface UserService {
     @GET("/me")
     Observable<UserInfoBean> getMyInfo();
 
-    @GET("/user/{username}")
+    @GET("/users/{username}")
     Observable<UserInfoBean> getUserInfo(@Path("username")String userName);
 
 
@@ -40,4 +44,16 @@ public interface UserService {
     Observable<List<CollectionListBean>> getUserCollections(@Path("username")String userName,
                                                             @Query("page")int page,
                                                             @Query("per_page")int perPage);
+
+    /*
+     * follow an user
+     */
+    @POST("/napi/users/{user}/follow")
+    Call<ResponseBody> followUser(@Path("user")String userName);
+
+    /*
+     * delete follow
+     */
+    @DELETE("/napi/users/{user}/follow")
+    Call<ResponseBody> deleteFollow(@Path("user")String userName);
 }

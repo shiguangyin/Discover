@@ -13,9 +13,12 @@ public class UserInfoContract {
     interface View extends BaseView{
         void showMyInfo(UserInfoBean infoBean);
         void showUserInfo(UserInfoBean infoBean);
+        void showFollowStatusChange();
     }
     interface Presenter{
         void loadMyInfo();
         void loadUserInfo(String userName);
+        void followUser(String userName);
+        void deleteFollow(String userName);
     }
 }

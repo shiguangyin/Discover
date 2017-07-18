@@ -1,5 +1,7 @@
 package com.masker.discover.home;
 
+import android.content.Context;
+import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.NavigationView;
@@ -31,6 +33,7 @@ import com.masker.discover.rxbus.RxBus;
 import com.masker.discover.search.SearchActivity;
 import com.masker.discover.tag.TagListFragment;
 import com.masker.discover.user.UserInfoActivity;
+import com.orhanobut.logger.Logger;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
@@ -134,6 +137,7 @@ public class HomeActivity extends BaseMvpActivity implements HomeContract.View,V
 
     @Override
     protected void initData() {
+        Logger.i(" is login = "+UserManager.getInstance().isLogin());
         if(UserManager.getInstance().isLogin()){
             mUser = UserManager.getInstance().getUser();
             if(mUser != null){
@@ -303,5 +307,11 @@ public class HomeActivity extends BaseMvpActivity implements HomeContract.View,V
                     UserInfoActivity.start(this,mUser,UserInfoActivity.USER_SELF);
                 }
         }
+    }
+
+    public static void reStart(Context context){
+        Intent intent = new Intent(context,HomeActivity.class);
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        context.startActivity(intent);
     }
 }
