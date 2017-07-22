@@ -1,6 +1,7 @@
 package com.masker.discover.collection;
 
 import android.content.Context;
+import android.view.View;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 
@@ -34,7 +35,7 @@ public class CollectionListAdapter extends BaseAdapter<CollectionListBean> {
     }
 
     @Override
-    public void convert(BaseViewHolder holder, int position, CollectionListBean data) {
+    public void convert(BaseViewHolder holder, final int position, CollectionListBean data) {
         ImageView ivPhoto = holder.getView(R.id.iv_photo);
         int width = ScreenUtils.getScreenWidth(mContext);
         int picWidth = data.getCover_photo().getWidth();
@@ -52,6 +53,14 @@ public class CollectionListAdapter extends BaseAdapter<CollectionListBean> {
         CircleImageView ivAvatar = holder.getView(R.id.iv_avatar);
         String avatorUrl = data.getUser().getProfile_image().getLarge();
         Glide.with(mContext).load(avatorUrl).into(ivAvatar);
+        if(mOnAvatarClickListener != null){
+            ivAvatar.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    mOnAvatarClickListener.onAvatarClick(view,position);
+                }
+            });
+        }
 
         String name = data.getUser().getName();
         holder.setText(R.id.tv_name,name);
@@ -63,6 +72,16 @@ public class CollectionListAdapter extends BaseAdapter<CollectionListBean> {
         String strNum = num + " "+ mContext.getString(R.string.photos);
         holder.setText(R.id.tv_num,strNum);
 
-
     }
+
+    public interface OnAvatarClickListener{
+        void onAvatarClick(View view,int position);
+    }
+
+    private OnAvatarClickListener mOnAvatarClickListener;
+
+    public void setOnAvatarClickListener(OnAvatarClickListener listener){
+        mOnAvatarClickListener = listener;
+    }
+
 }

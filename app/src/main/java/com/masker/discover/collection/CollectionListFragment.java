@@ -10,7 +10,10 @@ import android.view.View;
 import com.masker.discover.R;
 import com.masker.discover.base.BaseAdapter;
 import com.masker.discover.base.BaseMvpFragment;
+import com.masker.discover.global.UserManager;
 import com.masker.discover.model.entity.CollectionListBean;
+import com.masker.discover.model.entity.User;
+import com.masker.discover.user.UserInfoActivity;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -72,6 +75,12 @@ public class CollectionListFragment extends BaseMvpFragment
         mRecyclerView = bind(R.id.recycler_view);
         mCollections = new ArrayList<>();
         mAdapter = new CollectionListAdapter(mCollections,getContext());
+        mRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+        mRecyclerView.setAdapter(mAdapter);
+    }
+
+    @Override
+    protected void initListeners() {
         mAdapter.setLoadMoreListener(new BaseAdapter.LoadMoreListener() {
             @Override
             public void onLoadMore() {
@@ -85,8 +94,13 @@ public class CollectionListFragment extends BaseMvpFragment
                 gotoDetail(position);
             }
         });
-        mRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
-        mRecyclerView.setAdapter(mAdapter);
+        mAdapter.setOnAvatarClickListener(new CollectionListAdapter.OnAvatarClickListener() {
+            @Override
+            public void onAvatarClick(View view, int position) {
+                User user = UserManager.transform(mCollections.get(position).getUser());
+                UserInfoActivity.start(getContext(),user,UserInfoActivity.USER_SELF);
+            }
+        });
     }
 
     private void gotoDetail(int position){

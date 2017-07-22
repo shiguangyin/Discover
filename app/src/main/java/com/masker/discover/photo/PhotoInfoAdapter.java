@@ -9,11 +9,15 @@ import android.widget.ImageView;
 import android.widget.RelativeLayout;
 
 import com.bumptech.glide.Glide;
+import com.masker.discover.collection.CollectionDetailActivity;
 import com.masker.discover.global.AppConstants;
 import com.masker.discover.R;
 import com.masker.discover.base.BaseViewHolder;
+import com.masker.discover.global.UserManager;
 import com.masker.discover.model.entity.PhotoBean;
 import com.masker.discover.model.entity.TagBean;
+import com.masker.discover.model.entity.User;
+import com.masker.discover.user.UserInfoActivity;
 import com.masker.discover.utils.FormatUtils;
 import com.masker.discover.utils.ImgLoader;
 import com.masker.discover.utils.ScreenUtils;
@@ -66,7 +70,7 @@ public class PhotoInfoAdapter extends RecyclerView.Adapter<BaseViewHolder>{
     }
 
     @Override
-    public void onBindViewHolder(BaseViewHolder holder, int position) {
+    public void onBindViewHolder(BaseViewHolder holder, final int position) {
         if(holder.getItemViewType() == TYPE_HEADER){
             PhotoBean info = (PhotoBean) mDatas.get(position);
 
@@ -91,7 +95,7 @@ public class PhotoInfoAdapter extends RecyclerView.Adapter<BaseViewHolder>{
             holder.setText(R.id.tv_title,title);
         }
         else if(holder.getItemViewType() == TYPE_COLLECTION){
-            PhotoBean.RelatedCollectionsBean.ResultsBean data
+            final PhotoBean.RelatedCollectionsBean.ResultsBean data
                     = (PhotoBean.RelatedCollectionsBean.ResultsBean) mDatas.get(position);
             ImageView ivPhoto = holder.getView(R.id.iv_photo);
             int width = ScreenUtils.getScreenWidth(mContext);
@@ -102,6 +106,18 @@ public class PhotoInfoAdapter extends RecyclerView.Adapter<BaseViewHolder>{
             RelativeLayout.LayoutParams lp = (RelativeLayout.LayoutParams) ivPhoto.getLayoutParams();
             lp.height = height;
             ivPhoto.setLayoutParams(lp);
+            ivPhoto.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    int id = data.getId();
+                    boolean curated = data.isCurated();
+                    int total = data.getTotal_photos();
+                    int width = data.getCover_photo().getWidth();
+                    int height = data.getCover_photo().getHeight();
+                    String url = data.getCover_photo().getUrls().getFull();
+                    CollectionDetailActivity.start(mContext,id,curated,total,height,width,url);
+                }
+            });
 
             String url = data.getCover_photo().getUrls().getRegular();
             Glide.with(mContext).load(url).into(ivPhoto);
@@ -109,6 +125,13 @@ public class PhotoInfoAdapter extends RecyclerView.Adapter<BaseViewHolder>{
             CircleImageView ivAvatar = holder.getView(R.id.iv_avatar);
             String avatarUrl = data.getUser().getProfile_image().getLarge();
             Glide.with(mContext).load(avatarUrl).into(ivAvatar);
+            ivAvatar.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    User user = UserManager.transform(data.getUser());
+                    UserInfoActivity.start(mContext,user,UserInfoActivity.USER_OTHER);
+                }
+            });
 
             String name = data.getUser().getName();
             holder.setText(R.id.tv_name,name);
@@ -153,4 +176,5 @@ public class PhotoInfoAdapter extends RecyclerView.Adapter<BaseViewHolder>{
         }
         return TYPE_TITLE;
     }
+
 }

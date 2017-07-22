@@ -1,6 +1,6 @@
 package com.masker.discover.collection;
 
-import com.masker.discover.base.BaseView;
+import com.masker.discover.base.BaseLikeView;
 import com.masker.discover.model.entity.CollectionBean;
 import com.masker.discover.model.entity.PhotoListBean;
 
@@ -14,7 +14,7 @@ import java.util.List;
 
 public interface CollectionDetailContract {
 
-    interface View extends BaseView{
+    interface View extends BaseLikeView{
         void showCollection(CollectionBean bean);
         void showCollectionPhotos(List<PhotoListBean> photos);
     }

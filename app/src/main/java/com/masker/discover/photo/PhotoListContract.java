@@ -1,7 +1,6 @@
 package com.masker.discover.photo;
 
-import com.masker.discover.base.BaseView;
-import com.masker.discover.model.entity.LikeResponseBean;
+import com.masker.discover.base.BaseLikeView;
 import com.masker.discover.model.entity.PhotoListBean;
 
 import java.util.List;
@@ -14,10 +13,8 @@ import java.util.List;
 
 
 public interface PhotoListContract {
-    interface View extends BaseView {
+    interface View extends BaseLikeView {
         void showPhotos(List<PhotoListBean> photos);
-        void updatePhoto(LikeResponseBean bean);
-        void showLikeError(String message,String id);
     }
 
     interface Presenter{

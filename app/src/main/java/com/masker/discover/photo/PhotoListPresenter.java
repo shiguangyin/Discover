@@ -2,8 +2,7 @@ package com.masker.discover.photo;
 
 import android.support.annotation.NonNull;
 
-import com.masker.discover.base.BasePresenter;
-import com.masker.discover.model.entity.LikeResponseBean;
+import com.masker.discover.base.BaseLikePresenter;
 import com.masker.discover.model.entity.PhotoListBean;
 import com.masker.discover.model.repository.PhotoRepository;
 
@@ -21,7 +20,7 @@ import rx.schedulers.Schedulers;
  */
 
 
-public class PhotoListPresenter extends BasePresenter<PhotoListContract.View> implements PhotoListContract.Presenter{
+public class PhotoListPresenter extends BaseLikePresenter<PhotoListContract.View> implements PhotoListContract.Presenter{
 
 
     public PhotoListPresenter(@NonNull PhotoListContract.View view) {
@@ -47,45 +46,6 @@ public class PhotoListPresenter extends BasePresenter<PhotoListContract.View> im
         mSubscriptions.add(subscription);
     }
 
-    @Override
-    public void likePhoto(final String id) {
-        Subscription subscription = PhotoRepository.likePhoto(id)
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Action1<LikeResponseBean>() {
-                    @Override
-                    public void call(LikeResponseBean bean) {
-                        mView.updatePhoto(bean);
-                    }
-                }, new Action1<Throwable>() {
-                    @Override
-                    public void call(Throwable throwable) {
-                        mView.showLikeError(throwable.getMessage(),id);
-                    }
-                });
-        mSubscriptions.add(subscription);
-    }
-
-    @Override
-    public void unlikePhoto(final String id) {
-        Subscription subscription = PhotoRepository.unlikePhoto(id)
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Action1<LikeResponseBean>() {
-                    @Override
-                    public void call(LikeResponseBean bean) {
-                        mView.updatePhoto(bean);
-                    }
-                }, new Action1<Throwable>() {
-                    @Override
-                    public void call(Throwable throwable) {
-                        mView.showLikeError(throwable.getMessage(),id);
-
-                    }
-                });
-        mSubscriptions.add(subscription);
-
-    }
 
 
 }

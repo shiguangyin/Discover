@@ -1166,7 +1166,7 @@ public class PhotoBean {
                 private String last_name;
                 private Object portfolio_url;
                 private String bio;
-                private Object location;
+                private String location;
                 private int total_likes;
                 private int total_photos;
                 private int total_collections;
@@ -1237,11 +1237,11 @@ public class PhotoBean {
                     this.bio = bio;
                 }
 
-                public Object getLocation() {
+                public String getLocation() {
                     return location;
                 }
 
-                public void setLocation(Object location) {
+                public void setLocation(String location) {
                     this.location = location;
                 }
 

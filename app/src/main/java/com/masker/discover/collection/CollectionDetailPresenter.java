@@ -1,6 +1,6 @@
 package com.masker.discover.collection;
 
-import com.masker.discover.base.BasePresenter;
+import com.masker.discover.base.BaseLikePresenter;
 import com.masker.discover.model.entity.CollectionBean;
 import com.masker.discover.model.entity.PhotoListBean;
 import com.masker.discover.model.repository.CollectionRepository;
@@ -19,7 +19,7 @@ import rx.schedulers.Schedulers;
  * Description:
  */
 
-public class CollectionDetailPresenter extends BasePresenter<CollectionDetailContract.View> implements CollectionDetailContract.Presenter {
+public class CollectionDetailPresenter extends BaseLikePresenter<CollectionDetailContract.View> implements CollectionDetailContract.Presenter {
 
     public CollectionDetailPresenter(CollectionDetailContract.View view){
         super(view);

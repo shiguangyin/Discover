@@ -2,6 +2,7 @@ package com.masker.discover.collection;
 
 import android.content.Context;
 import android.content.Intent;
+import android.support.v4.app.ActivityOptionsCompat;
 import android.support.v7.app.ActionBar;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -12,14 +13,21 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.masker.discover.R;
+import com.masker.discover.activity.LoginActivity;
 import com.masker.discover.base.BaseAdapter;
 import com.masker.discover.base.BaseMvpActivity;
+import com.masker.discover.global.UserManager;
 import com.masker.discover.model.entity.CollectionBean;
+import com.masker.discover.model.entity.LikeResponseBean;
 import com.masker.discover.model.entity.PhotoListBean;
+import com.masker.discover.model.entity.User;
+import com.masker.discover.photo.PhotoInfoActivity;
 import com.masker.discover.photo.PhotoListAdapter;
+import com.masker.discover.user.UserInfoActivity;
 import com.masker.discover.utils.ImgLoader;
 import com.masker.discover.utils.ScreenUtils;
 
@@ -56,7 +64,8 @@ public class CollectionDetailActivity extends BaseMvpActivity
     private TextView mTvFrom;
     private RecyclerView mRecyclerView;
     private ProgressBar mProgressBar;
-    private PhotoListAdapter mAdapter;
+    private PhotoListAdapter mPhotoAdapter;
+    private RelativeLayout mRlHeader;
     private List<PhotoListBean> mPhotos;
     private int mPage = START_PAGE;
 
@@ -76,6 +85,7 @@ public class CollectionDetailActivity extends BaseMvpActivity
         mIvAvator = bind(R.id.iv_avatar);
         mTvFrom = bind(R.id.tv_from);
         mToolbar = bind(R.id.tool_bar);
+        mRlHeader = bind(R.id.rl_header);
         setSupportActionBar(mToolbar);
         ActionBar ab = getSupportActionBar();
         if(ab != null){
@@ -90,10 +100,10 @@ public class CollectionDetailActivity extends BaseMvpActivity
 
         mRecyclerView = bind(R.id.recycler_view);
         mPhotos = new ArrayList<>();
-        mAdapter = new PhotoListAdapter(mPhotos,this);
+        mPhotoAdapter = new PhotoListAdapter(mPhotos,this);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
-        mRecyclerView.setAdapter(mAdapter);
-        mAdapter.setLoadMoreListener(new BaseAdapter.LoadMoreListener() {
+        mRecyclerView.setAdapter(mPhotoAdapter);
+        mPhotoAdapter.setLoadMoreListener(new BaseAdapter.LoadMoreListener() {
             @Override
             public void onLoadMore() {
                 mPage++;
@@ -105,10 +115,67 @@ public class CollectionDetailActivity extends BaseMvpActivity
                 }
             }
         });
+
+    }
+
+
+    @Override
+    protected void initListeners() {
+        mPhotoAdapter.setOnLikeListener(new PhotoListAdapter.OnLikeListener() {
+            @Override
+            public void onLike(View view, int position) {
+                onClickLike(position);
+            }
+        });
+        mPhotoAdapter.setOnAvatarClickListener(new PhotoListAdapter.OnAvatarClickListener() {
+            @Override
+            public void onAvatarClick(View view, int position) {
+                User user = UserManager.getInstance().transform(mPhotos.get(position).getUser());
+                UserInfoActivity.start(CollectionDetailActivity.this,user,UserInfoActivity.USER_OTHER);
+            }
+        });
+        mPhotoAdapter.setOnItemClickListener(new BaseAdapter.OnItemClickListener() {
+            @Override
+            public void onClick(View view, int position) {
+                PhotoListBean photo = mPhotos.get(position);
+                String id = photo.getId();
+                String imgUrl = photo.getUrls().getRegular();
+                int width = photo.getWidth();
+                int height = photo.getHeight();
+
+                ImageView ivPhoto = (ImageView) view.findViewById(R.id.iv_photo);
+                ActivityOptionsCompat options = ActivityOptionsCompat
+                        .makeSceneTransitionAnimation(CollectionDetailActivity.this,ivPhoto,"photo");
+                PhotoInfoActivity.start(CollectionDetailActivity.this,options.toBundle(),
+                        id,imgUrl,width,height);
+            }
+        });
     }
 
     /*
-    * reset size of imageview
+         * on like button clicked
+         */
+    private void onClickLike(int position){
+        if(UserManager.getInstance().isLogin()){
+            PhotoListBean photo = mPhotos.get(position);
+            boolean isLike = photo.isLiked_by_user();
+            mPhotoAdapter.notifyItemChanged(position,PhotoListAdapter.STATE_LOADING);
+            if(isLike){
+                mPresenter.unlikePhoto(photo.getId());
+            }
+            else{
+                mPresenter.likePhoto(photo.getId());
+            }
+        }
+        else{
+            startActivity(new Intent(this, LoginActivity.class));
+        }
+    }
+
+
+
+    /*
+     * reset size of imageview
      */
     private void resetSize(){
         ViewGroup.LayoutParams lp = mIvCover.getLayoutParams();
@@ -150,7 +217,9 @@ public class CollectionDetailActivity extends BaseMvpActivity
             mTvDesc.setText(bean.getDescription());
         }
         String url = bean.getUser().getProfile_image().getLarge();
+        String backgroudUrl = bean.getUser().getProfile_image().getSmall();
         ImgLoader.loadAvator(this,url,mIvAvator);
+        ImgLoader.loadBlurBackgroud(this,backgroudUrl,mRlHeader);
         String from = getString(R.string.from)+" "+bean.getUser().getName();
         mTvFrom.setText(from);
     }
@@ -160,9 +229,9 @@ public class CollectionDetailActivity extends BaseMvpActivity
         mProgressBar.setVisibility(View.GONE);
         mRecyclerView.setVisibility(View.VISIBLE);
         mPhotos.addAll(photos);
-        mAdapter.notifyDataSetChanged();
+        mPhotoAdapter.notifyDataSetChanged();
         if(mPhotos.size() == mTotalCount){
-            mAdapter.enableLoadMore(false);
+            mPhotoAdapter.enableLoadMore(false);
         }
     }
 
@@ -221,4 +290,29 @@ public class CollectionDetailActivity extends BaseMvpActivity
         return super.onOptionsItemSelected(item);
     }
 
+    @Override
+    public void updatePhoto(LikeResponseBean bean) {
+        for (int i = 0; i < mPhotos.size(); i++) {
+            PhotoListBean photo = mPhotos.get(i);
+            if(photo.getId().equals(bean.getPhoto().getId())){
+                boolean like = bean.getPhoto().isLiked_by_user();
+                photo.setLiked_by_user(like);
+                photo.setLikes(bean.getPhoto().getLikes());
+                mPhotoAdapter.notifyItemChanged(i,PhotoListAdapter.STATE_NORMAL);
+                break;
+            }
+        }
+    }
+
+    @Override
+    public void showLikeError(String message, String id) {
+        //Snackbar.make(mRlContent,message,Snackbar.LENGTH_SHORT).show();
+        //stop progress
+        for (int i = 0; i < mPhotos.size(); i++) {
+            PhotoListBean bean = mPhotos.get(i);
+            if(bean.getId().equals(id)){
+                mPhotoAdapter.notifyItemChanged(i,PhotoListAdapter.STATE_NORMAL);
+            }
+        }
+    }
 }

@@ -1,5 +1,6 @@
 package com.masker.discover.photo;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.Snackbar;
@@ -12,8 +13,10 @@ import android.widget.ImageView;
 import android.widget.RelativeLayout;
 
 import com.masker.discover.R;
+import com.masker.discover.activity.LoginActivity;
 import com.masker.discover.base.BaseAdapter;
 import com.masker.discover.base.BaseFragment;
+import com.masker.discover.global.UserManager;
 import com.masker.discover.model.api.PhotoService;
 import com.masker.discover.model.entity.LikeResponseBean;
 import com.masker.discover.model.entity.PhotoListBean;
@@ -124,17 +127,10 @@ public class PhotoListFragment extends BaseFragment implements PhotoListContract
         mPhotoAdapter.setOnAvatarClickListener(new PhotoListAdapter.OnAvatarClickListener() {
             @Override
             public void onAvatarClick(View view, int position) {
-                PhotoListBean.UserBean userBean = mPhotos.get(position).getUser();
-                User user = new User();
-                user.setName(userBean.getName());
-                user.setUserName(userBean.getUsername());
-                user.setAvatorUrl(userBean.getProfile_image().getLarge());
-                user.setLocation(userBean.getLocation());
-                user.setBio(userBean.getBio());
-                user.setTotalPhotos(userBean.getTotal_photos());
-                user.setTotalLikes(userBean.getTotal_likes());
-                user.setTotalCollections(userBean.getTotal_collections());
+            User user = UserManager.getInstance()
+                  .transform(mPhotos.get(position).getUser());
                 UserInfoActivity.start(getContext(),user,UserInfoActivity.USER_OTHER);
+
             }
         });
 
@@ -147,18 +143,23 @@ public class PhotoListFragment extends BaseFragment implements PhotoListContract
     }
 
     /*
-         * on like button clicked
-         */
+     * on like button clicked
+     */
     private void onClickLike(int position){
-        PhotoListBean photo = mPhotos.get(position);
-        boolean isLike = photo.isLiked_by_user();
-        mPhotoAdapter.notifyItemChanged(position,PhotoListAdapter.STATE_LOADING);
-        if(isLike){
-            mPresenter.unlikePhoto(photo.getId());
-        }
-        else{
-            mPresenter.likePhoto(photo.getId());
-        }
+       if(UserManager.getInstance().isLogin()){
+           PhotoListBean photo = mPhotos.get(position);
+           boolean isLike = photo.isLiked_by_user();
+           mPhotoAdapter.notifyItemChanged(position,PhotoListAdapter.STATE_LOADING);
+           if(isLike){
+               mPresenter.unlikePhoto(photo.getId());
+           }
+           else{
+               mPresenter.likePhoto(photo.getId());
+           }
+       }
+       else{
+           startActivity(new Intent(getContext(), LoginActivity.class));
+       }
     }
 
 

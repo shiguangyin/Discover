@@ -4,8 +4,11 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.text.TextUtils;
 
-import com.masker.discover.model.entity.UserInfoBean;
+import com.masker.discover.model.entity.CollectionListBean;
+import com.masker.discover.model.entity.PhotoBean;
+import com.masker.discover.model.entity.PhotoListBean;
 import com.masker.discover.model.entity.User;
+import com.masker.discover.model.entity.UserInfoBean;
 import com.masker.discover.utils.SpUtils;
 import com.orhanobut.logger.Logger;
 
@@ -143,5 +146,47 @@ public class UserManager {
         editor.commit();
         Logger.i("is login = "+isLogin());
     }
+
+
+    public static User transform(PhotoListBean.UserBean userBean){
+        User user = new User();
+        user.setName(userBean.getName());
+        user.setUserName(userBean.getUsername());
+        user.setAvatorUrl(userBean.getProfile_image().getLarge());
+        user.setLocation(userBean.getLocation());
+        user.setBio(userBean.getBio());
+        user.setTotalPhotos(userBean.getTotal_photos());
+        user.setTotalLikes(userBean.getTotal_likes());
+        user.setTotalCollections(userBean.getTotal_collections());
+        return user;
+    }
+
+    public static User transform(CollectionListBean.UserBeanX userBean){
+        User user = new User();
+        user.setName(userBean.getName());
+        user.setUserName(userBean.getUsername());
+        user.setAvatorUrl(userBean.getProfile_image().getLarge());
+        user.setLocation(userBean.getLocation());
+        user.setBio(userBean.getBio());
+        user.setTotalPhotos(userBean.getTotal_photos());
+        user.setTotalLikes(userBean.getTotal_likes());
+        user.setTotalCollections(userBean.getTotal_collections());
+        return user;
+    }
+
+
+    public static User transform(PhotoBean.RelatedCollectionsBean.ResultsBean.UserBeanX userBean){
+        User user = new User();
+        user.setName(userBean.getName());
+        user.setUserName(userBean.getUsername());
+        user.setAvatorUrl(userBean.getProfile_image().getLarge());
+        user.setLocation(userBean.getLocation());
+        user.setBio(userBean.getBio());
+        user.setTotalPhotos(userBean.getTotal_photos());
+        user.setTotalLikes(userBean.getTotal_likes());
+        user.setTotalCollections(userBean.getTotal_collections());
+        return user;
+    }
+
 
 }
