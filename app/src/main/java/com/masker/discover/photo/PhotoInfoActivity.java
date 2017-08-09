@@ -1,9 +1,16 @@
 package com.masker.discover.photo;
 
+import android.animation.Animator;
+import android.animation.AnimatorListenerAdapter;
+import android.animation.AnimatorSet;
+import android.animation.ObjectAnimator;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.ActivityOptionsCompat;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.ActionBar;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -12,9 +19,12 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.OvershootInterpolator;
 import android.widget.ImageView;
 
 import com.bumptech.glide.Glide;
+import com.github.clans.fab.FloatingActionButton;
+import com.github.clans.fab.FloatingActionMenu;
 import com.masker.discover.R;
 import com.masker.discover.activity.PhotoDetailActivity;
 import com.masker.discover.base.BaseMvpActivity;
@@ -22,6 +32,7 @@ import com.masker.discover.model.entity.PhotoBean;
 import com.masker.discover.model.entity.TagBean;
 import com.masker.discover.utils.ScreenUtils;
 import com.masker.discover.utils.ShareUtils;
+import com.masker.discover.widget.PhotoExifDialog;
 import com.wang.avi.AVLoadingIndicatorView;
 
 import java.util.ArrayList;
@@ -35,6 +46,7 @@ import java.util.List;
  */
 
 public class PhotoInfoActivity extends BaseMvpActivity implements PhotoInfoContract.View{
+    public static final String DIALOG = "dialog";
     public static final String ID = "id";
     public static final String IMG_URL = "img_url";
     public static final String WIDTH = "width";
@@ -47,6 +59,9 @@ public class PhotoInfoActivity extends BaseMvpActivity implements PhotoInfoContr
 
     private Toolbar mToolbar;
     private ImageView mIvPhoto;
+    private FloatingActionMenu mActionMenu;
+    private FloatingActionButton mFabInfo;
+
     private AVLoadingIndicatorView mLoadingView;
     private RecyclerView mRecyclerView;
     private List<Object> mDatas;
@@ -54,6 +69,7 @@ public class PhotoInfoActivity extends BaseMvpActivity implements PhotoInfoContr
 
     private PhotoInfoPresenter mPresenter;
     private PhotoBean mPhotoBean;
+
 
 
     @Override
@@ -83,6 +99,12 @@ public class PhotoInfoActivity extends BaseMvpActivity implements PhotoInfoContr
         resetSize();
         Glide.with(this).load(mImgUrl).into(mIvPhoto);
 
+        mActionMenu = bind(R.id.fab_menu);
+        mActionMenu.setClosedOnTouchOutside(true);
+        createCustomAnimation();
+        mFabInfo = bind(R.id.fab_info);
+
+
         mLoadingView = bind(R.id.loading_view);
         mLoadingView.smoothToShow();
         mRecyclerView = bind(R.id.recycler_view);
@@ -102,6 +124,14 @@ public class PhotoInfoActivity extends BaseMvpActivity implements PhotoInfoContr
                         .makeSceneTransitionAnimation(PhotoInfoActivity.this,mIvPhoto,"photo");
                 PhotoDetailActivity.start(PhotoInfoActivity.this,mImgUrl,options.toBundle());
 
+            }
+        });
+        mFabInfo.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if(mPhotoBean != null){
+                    showExifDialog(mPhotoBean);
+                }
             }
         });
     }
@@ -213,4 +243,50 @@ public class PhotoInfoActivity extends BaseMvpActivity implements PhotoInfoContr
         }
         return super.onOptionsItemSelected(item);
     }
+
+    private void createCustomAnimation() {
+        AnimatorSet set = new AnimatorSet();
+
+        ObjectAnimator scaleOutX = ObjectAnimator.ofFloat(mActionMenu.getMenuIconView(), "scaleX", 1.0f, 0.2f);
+        ObjectAnimator scaleOutY = ObjectAnimator.ofFloat(mActionMenu.getMenuIconView(), "scaleY", 1.0f, 0.2f);
+
+        ObjectAnimator scaleInX = ObjectAnimator.ofFloat(mActionMenu.getMenuIconView(), "scaleX", 0.2f, 1.0f);
+        ObjectAnimator scaleInY = ObjectAnimator.ofFloat(mActionMenu.getMenuIconView(), "scaleY", 0.2f, 1.0f);
+
+        scaleOutX.setDuration(50);
+        scaleOutY.setDuration(50);
+
+        scaleInX.setDuration(150);
+        scaleInY.setDuration(150);
+
+        scaleInX.addListener(new AnimatorListenerAdapter() {
+            @Override
+            public void onAnimationStart(Animator animation) {
+                mActionMenu.getMenuIconView().setImageResource(mActionMenu.isOpened()
+                        ? R.drawable.ic_expand_less_white_24dp : R.drawable.ic_expand_more_white_24dp);
+            }
+        });
+
+        set.play(scaleOutX).with(scaleOutY);
+        set.play(scaleInX).with(scaleInY).after(scaleOutX);
+        set.setInterpolator(new OvershootInterpolator(2));
+
+        mActionMenu.setIconToggleAnimatorSet(set);
+    }
+
+    private void showExifDialog(PhotoBean photoBean){
+        mActionMenu.close(true);
+        FragmentManager fm = getSupportFragmentManager();
+        Fragment fragment = fm.findFragmentByTag(DIALOG);
+        if(fragment != null){
+            FragmentTransaction ft = fm.beginTransaction();
+            ft.remove(fragment);
+            ft.commit();
+        }
+        PhotoExifDialog dialog = new PhotoExifDialog();
+        dialog.setData(photoBean);
+        dialog.show(fm,DIALOG);
+
+    }
+
 }

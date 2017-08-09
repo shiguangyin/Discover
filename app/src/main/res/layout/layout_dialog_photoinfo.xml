@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:orientation="vertical"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent">
+    <TextView
+        android:id="@+id/tv_make"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:drawableLeft="@drawable/ic_make_white_24dp"
+        android:gravity="center_vertical"
+        android:paddingLeft="20dp"
+        android:drawablePadding="20dp"
+        />
+
+    <TextView
+        android:id="@+id/tv_model"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:drawableLeft="@drawable/ic_model_white_24dp"
+        android:gravity="center_vertical"
+        android:paddingLeft="20dp"
+        android:drawablePadding="20dp"
+        />
+
+    <TextView
+        android:id="@+id/tv_exposure"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:drawableLeft="@drawable/ic_expo_white_24dp"
+        android:gravity="center_vertical"
+        android:paddingLeft="20dp"
+        android:drawablePadding="20dp"
+        />
+
+
+    <TextView
+        android:id="@+id/tv_aperture"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:drawableLeft="@drawable/ic_aperture_white_24dp"
+        android:gravity="center_vertical"
+        android:paddingLeft="20dp"
+        android:drawablePadding="20dp"
+        />
+    <TextView
+        android:id="@+id/tv_iso"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:drawableLeft="@drawable/ic_iso_white_24dp"
+        android:gravity="center_vertical"
+        android:paddingLeft="20dp"
+        android:drawablePadding="20dp"
+        />
+
+    <TextView
+        android:id="@+id/tv_focale"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:drawableLeft="@drawable/ic_focal_white_24dp"
+        android:gravity="center_vertical"
+        android:paddingLeft="20dp"
+        android:drawablePadding="20dp"
+        />
+
+</LinearLayout>
