@@ -57,5 +57,44 @@
 
     <!--user adapter-->
     <string name="user_msg">%1$d Photos, %2$d Collections, %3$d Likes</string>
+
+    <!--setting activity-->
+    <string name="key_clear_cache">Clear Cache</string>
+    <string name="key_language">language</string>
+    <string name="title_language">Language</string>
+    <array name="lan">
+        <item>English</item>
+        <item>中文</item>
+    </array>
+    <array name="lan_values">
+        <item>en</item>
+        <item>cn</item>
+    </array>
+    <string name="default_language">en</string>
+    <string name="title_quality_section">Quality</string>
+    <string name="title_load_quality_preference">Load Quality</string>
+    <string name="summary_load_quality_preference">Choose the quality of the images that are loaded</string>
+    <string name="title_download_quality_preference">Download Quality</string>
+    <string name="summary_download_quality_preference">Choose the quality of the images that are downloaded</string>
+    <string name="title_wallpaper_quality_preference">Wallpaper Quality</string>
+    <string name="summary_wallpaper_quality_preference">Choose the quality of the wallpapers set</string>
+    <array name="quality_options">
+        <item>Raw</item>
+        <item>Full</item>
+        <item>Regular</item>
+        <item>Small</item>
+        <item>Thumb</item>
+    </array>
+    <array name="quality_options_values">
+        <item>Raw</item>
+        <item>Full</item>
+        <item>Regular</item>
+        <item>Small</item>
+        <item>Thumb</item>
+    </array>
+    <string name="default_load_quality">Regular</string>
+    <string name="default_download_quality">Full</string>
+
+
 </resources>
 

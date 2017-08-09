@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+    <PreferenceCategory
+        android:title="Normal">
+        <ListPreference
+            android:key="@string/key_language"
+            android:title="@string/title_language"
+            android:dialogTitle="@string/title_language"
+            android:entries="@array/lan"
+            android:entryValues="@array/lan_values"
+            android:defaultValue="@string/default_language"
+            />
+        <Preference android:key="@string/key_clear_cache"
+            android:title="@string/key_clear_cache"
+            />
+    </PreferenceCategory>
+
+    <PreferenceCategory
+        android:title="@string/title_quality_section">
+
+    <ListPreference
+        android:key="load_quality"
+        android:title="@string/title_load_quality_preference"
+        android:summary="@string/summary_load_quality_preference"
+        android:dialogTitle="@string/title_load_quality_preference"
+        android:entries="@array/quality_options"
+        android:entryValues="@array/quality_options_values"
+        android:defaultValue="@string/default_load_quality"/>
+
+    <ListPreference
+        android:key="download_quality"
+        android:title="@string/title_download_quality_preference"
+        android:summary="@string/summary_download_quality_preference"
+        android:dialogTitle="@string/title_download_quality_preference"
+        android:entries="@array/quality_options"
+        android:entryValues="@array/quality_options_values"
+        android:defaultValue="@string/default_download_quality"/>
+
+    <ListPreference
+        android:key="wallpaper_quality"
+        android:title="@string/title_wallpaper_quality_preference"
+        android:summary="@string/summary_wallpaper_quality_preference"
+        android:dialogTitle="@string/title_wallpaper_quality_preference"
+        android:entries="@array/quality_options"
+        android:entryValues="@array/quality_options_values"
+        android:defaultValue="@string/default_download_quality"/>
+
+    </PreferenceCategory>
+
+</PreferenceScreen>

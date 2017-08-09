@@ -21,6 +21,7 @@ import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.masker.discover.R;
+import com.masker.discover.activity.SettingActivity;
 import com.masker.discover.global.UserManager;
 import com.masker.discover.activity.LoginActivity;
 import com.masker.discover.base.BaseMvpActivity;
@@ -106,6 +107,9 @@ public class HomeActivity extends BaseMvpActivity implements HomeContract.View,V
                     case R.id.item_tags:
                         switchFragment(FRAGMENT_TAG);
                         setTitle(R.string.item_tags);
+                        break;
+                    case R.id.item_settings:
+                        startActivity(new Intent(HomeActivity.this, SettingActivity.class));
                         break;
                     default:
                         break;
