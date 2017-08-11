@@ -15,7 +15,7 @@ import com.bumptech.glide.Glide;
 import com.masker.discover.R;
 import com.masker.discover.base.BaseActivity;
 import com.masker.discover.global.App;
-import com.orhanobut.logger.Logger;
+import com.masker.discover.global.Constans;
 
 import java.io.File;
 
@@ -77,6 +77,7 @@ public class SettingActivity extends BaseActivity {
         @Override
         public void onCreate(@Nullable Bundle savedInstanceState) {
             super.onCreate(savedInstanceState);
+            getPreferenceManager().setSharedPreferencesName(Constans.SETTING_SP_NAME);
             addPreferencesFromResource(R.xml.preference_setting);
             initData();
         }
@@ -88,7 +89,6 @@ public class SettingActivity extends BaseActivity {
             prefClearCache.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
                 @Override
                 public boolean onPreferenceClick(Preference preference) {
-                    Logger.i("clear cache clicked");
                     Observable.create(new Observable.OnSubscribe<Boolean>() {
                         @Override
                         public void call(Subscriber<? super Boolean> subscriber) {

@@ -7,7 +7,7 @@ package com.masker.discover.global;
  */
 
 
-public class AppConstants {
+public class Constans {
     public static final String BASE_URL = "https://api.unsplash.com";
     public static final String BASE_NEW_URL = "https://unsplash.com/";
     public static final String APP_ID = "8e0f33ff297a8c195959ba170b12151a9a781b4425425e9aa975017b7180398e";
@@ -31,4 +31,14 @@ public class AppConstants {
 
     public static final String TAG_SUFFIX = "?dpr=2&auto=compress,format&crop=entropy&fit=crop&w=376&h=251&q=80&cs=tinysrgb";
 
+    public static final String UTM_PARAMS = "?utm_source=discover&utm_medium=referral&utm_campaign=api-credit";
+
+    public static final String SETTING_SP_NAME = "sp_settings";
+
+    //quality
+    public static final String RAW = "Raw";
+    public static final String FULL = "Full";
+    public static final String REGULAR = "Regular";
+    public static final String SMALL = "Small";
+    public static final String THUMB = "Thumb";
 }

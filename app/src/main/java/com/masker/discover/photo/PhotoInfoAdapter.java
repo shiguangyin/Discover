@@ -10,7 +10,7 @@ import android.widget.RelativeLayout;
 
 import com.bumptech.glide.Glide;
 import com.masker.discover.collection.CollectionDetailActivity;
-import com.masker.discover.global.AppConstants;
+import com.masker.discover.global.Constans;
 import com.masker.discover.R;
 import com.masker.discover.base.BaseViewHolder;
 import com.masker.discover.global.UserManager;
@@ -145,7 +145,7 @@ public class PhotoInfoAdapter extends RecyclerView.Adapter<BaseViewHolder>{
         }
         else if(holder.getItemViewType() == TYPE_TAG){
             TagBean data = (TagBean) mDatas.get(position);
-            String url = data.getUrl()+ AppConstants.TAG_SUFFIX;
+            String url = data.getUrl()+ Constans.TAG_SUFFIX;
             ImageView ivCover = holder.getView(R.id.iv_cover);
             Glide.with(mContext).load(url).centerCrop().into(ivCover);
 

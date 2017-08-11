@@ -11,7 +11,7 @@ import android.widget.ImageView;
 import android.widget.RelativeLayout;
 
 import com.bumptech.glide.Glide;
-import com.masker.discover.global.AppConstants;
+import com.masker.discover.global.Constans;
 import com.masker.discover.R;
 import com.masker.discover.global.UserManager;
 import com.masker.discover.base.BaseActivity;
@@ -52,7 +52,7 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener{
         super.onNewIntent(intent);
         if(intent != null &&
                 intent.getData() != null &&
-                TextUtils.equals(intent.getData().getAuthority(),AppConstants.OATHU_HOST)){
+                TextUtils.equals(intent.getData().getAuthority(), Constans.OATHU_HOST)){
             String code = intent.getData().getQueryParameter("code");
             fetchToken(code);
         }
@@ -86,9 +86,9 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener{
     private void fetchToken(String code){
         mLoadingView.smoothToShow();
         HttpClient.getClient().create(TokenService.class)
-                .getToken(AppConstants.APP_ID,AppConstants.APP_SECRET,
-                        AppConstants.REDIRECT_URL,code,
-                        AppConstants.GRANT_TYPE)
+                .getToken(Constans.APP_ID, Constans.APP_SECRET,
+                        Constans.REDIRECT_URL,code,
+                        Constans.GRANT_TYPE)
                 .flatMap(new Func1<TokenBean, Observable<UserInfoBean>>() {
                     @Override
                     public Observable<UserInfoBean> call(TokenBean tokenBean) {
@@ -145,13 +145,13 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener{
     }
 
     private void login(){
-        Uri uri = Uri.parse(AppConstants.OAUTH_URL);
+        Uri uri = Uri.parse(Constans.OAUTH_URL);
         Intent intent = new Intent(Intent.ACTION_VIEW,uri);
         startActivity(intent);
     }
 
     private void join(){
-        Uri uri = Uri.parse(AppConstants.JOIN_URL);
+        Uri uri = Uri.parse(Constans.JOIN_URL);
         Intent intent = new Intent(Intent.ACTION_VIEW,uri);
         startActivity(intent);
     }

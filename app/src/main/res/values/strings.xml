@@ -45,6 +45,7 @@
 
     <!--photo info activity-->
     <string name="action_share">Share</string>
+    <string name="action_link">Link</string>
 
     <!--collection detail activity-->
     <string name="from">From</string>
@@ -71,6 +72,9 @@
         <item>cn</item>
     </array>
     <string name="default_language">en</string>
+    <string name="key_load_quality">load_quality</string>
+    <string name="key_download_quality">download_quality</string>
+    <string name="key_wallpaper_quality">wallpaper_quality</string>
     <string name="title_quality_section">Quality</string>
     <string name="title_load_quality_preference">Load Quality</string>
     <string name="summary_load_quality_preference">Choose the quality of the images that are loaded</string>

@@ -19,7 +19,7 @@
         android:title="@string/title_quality_section">
 
     <ListPreference
-        android:key="load_quality"
+        android:key="@string/key_load_quality"
         android:title="@string/title_load_quality_preference"
         android:summary="@string/summary_load_quality_preference"
         android:dialogTitle="@string/title_load_quality_preference"
@@ -28,7 +28,7 @@
         android:defaultValue="@string/default_load_quality"/>
 
     <ListPreference
-        android:key="download_quality"
+        android:key="@string/key_download_quality"
         android:title="@string/title_download_quality_preference"
         android:summary="@string/summary_download_quality_preference"
         android:dialogTitle="@string/title_download_quality_preference"
@@ -37,7 +37,7 @@
         android:defaultValue="@string/default_download_quality"/>
 
     <ListPreference
-        android:key="wallpaper_quality"
+        android:key="@string/key_wallpaper_quality"
         android:title="@string/title_wallpaper_quality_preference"
         android:summary="@string/summary_wallpaper_quality_preference"
         android:dialogTitle="@string/title_wallpaper_quality_preference"

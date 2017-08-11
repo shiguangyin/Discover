@@ -3,7 +3,7 @@ package com.masker.discover.model.http;
 
 import android.text.TextUtils;
 
-import com.masker.discover.global.AppConstants;
+import com.masker.discover.global.Constans;
 import com.masker.discover.global.UserManager;
 
 import java.io.IOException;
@@ -32,7 +32,7 @@ public class HeaderInterceptor implements Interceptor{
             newBuilder.addHeader("Authorization",val);
         }
         else{
-            String value = "Client-ID "+ AppConstants.APP_ID;
+            String value = "Client-ID "+ Constans.APP_ID;
             newBuilder.addHeader("Authorization",value);
         }
         Request newRequest = newBuilder.build();

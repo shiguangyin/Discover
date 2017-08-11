@@ -6,6 +6,7 @@ import android.animation.AnimatorSet;
 import android.animation.ObjectAnimator;
 import android.content.Context;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.ActivityOptionsCompat;
 import android.support.v4.app.Fragment;
@@ -28,6 +29,7 @@ import com.github.clans.fab.FloatingActionMenu;
 import com.masker.discover.R;
 import com.masker.discover.activity.PhotoDetailActivity;
 import com.masker.discover.base.BaseMvpActivity;
+import com.masker.discover.global.Constans;
 import com.masker.discover.model.entity.PhotoBean;
 import com.masker.discover.model.entity.TagBean;
 import com.masker.discover.utils.ScreenUtils;
@@ -236,6 +238,15 @@ public class PhotoInfoActivity extends BaseMvpActivity implements PhotoInfoContr
                 String content = "By "+mPhotoBean.getUser().getName()+" at "+mPhotoBean.getCreated_at()
                         +" "+mPhotoBean.getLinks().getHtml();
                 ShareUtils.share(this,getString(R.string.APP_NAME),content);
+            }
+        }
+        else if(item.getItemId() == R.id.action_link){
+            if(mPhotoBean != null){
+                String url = mPhotoBean.getLinks().getHtml()+ Constans.UTM_PARAMS;
+                Intent intent = new Intent();
+                intent.setAction(Intent.ACTION_VIEW);
+                intent.setData(Uri.parse(url));
+                startActivity(intent);
             }
         }
         else if(item.getItemId() == android.R.id.home){

@@ -3,6 +3,7 @@ package com.masker.discover.photo;
 import android.content.Context;
 import android.graphics.drawable.Drawable;
 import android.support.v4.content.ContextCompat;
+import android.text.TextUtils;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
@@ -10,9 +11,11 @@ import android.widget.RelativeLayout;
 import com.masker.discover.R;
 import com.masker.discover.base.BaseAdapter;
 import com.masker.discover.base.BaseViewHolder;
+import com.masker.discover.global.Constans;
 import com.masker.discover.model.entity.PhotoListBean;
 import com.masker.discover.utils.ImgLoader;
 import com.masker.discover.utils.ScreenUtils;
+import com.masker.discover.utils.SpUtils;
 
 import java.util.List;
 
@@ -52,7 +55,24 @@ public class PhotoListAdapter extends BaseAdapter<PhotoListBean> {
         RelativeLayout.LayoutParams lp = (RelativeLayout.LayoutParams) ivPhoto.getLayoutParams();
         lp.height = height;
         ivPhoto.setLayoutParams(lp);
-        String url = data.getUrls().getRegular();
+        String loadQuality = SpUtils.getString(Constans.SETTING_SP_NAME,
+                mContext.getString(R.string.key_load_quality));
+        String url = null;
+        if(TextUtils.isEmpty(loadQuality) || loadQuality.equals(Constans.REGULAR)){
+            url = data.getUrls().getRegular();
+        }
+        else if(loadQuality.equals(Constans.RAW)){
+            url = data.getUrls().getRaw();
+        }
+        else if(loadQuality.equals(Constans.FULL)){
+            url = data.getUrls().getFull();
+        }
+        else if(loadQuality.equals(Constans.SMALL)){
+            url = data.getUrls().getSmall();
+        }
+        else{
+            url = data.getUrls().getThumb();
+        }
         String color = data.getColor();
         ImgLoader.loadWithColor(mContext,url,ivPhoto,color);
 

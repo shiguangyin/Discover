@@ -1,6 +1,6 @@
 package com.masker.discover.model.http;
 
-import com.masker.discover.global.AppConstants;
+import com.masker.discover.global.Constans;
 
 import okhttp3.OkHttpClient;
 import retrofit2.Retrofit;
@@ -23,7 +23,7 @@ public class HttpClient {
                     .addInterceptor(new LoggingInterceptor())
                     .build();
             retrofit = new Retrofit.Builder()
-                 .baseUrl(AppConstants.BASE_URL)
+                 .baseUrl(Constans.BASE_URL)
                  .client(client)
                  .addCallAdapterFactory(RxJavaCallAdapterFactory.create())
                     .addConverterFactory(GsonConverterFactory.create())
@@ -40,7 +40,7 @@ public class HttpClient {
                 .addInterceptor(new LoggingInterceptor())
                 .build();
         sNewRetrofit = new Retrofit.Builder()
-                .baseUrl(AppConstants.BASE_NEW_URL)
+                .baseUrl(Constans.BASE_NEW_URL)
                 .client(client)
                 .build();
     }
