@@ -21,6 +21,7 @@ import com.masker.discover.model.api.PhotoService;
 import com.masker.discover.model.entity.LikeResponseBean;
 import com.masker.discover.model.entity.PhotoListBean;
 import com.masker.discover.model.entity.User;
+import com.masker.discover.rxbus.LikeEvent;
 import com.masker.discover.rxbus.ReOrderEvent;
 import com.masker.discover.rxbus.RxBus;
 import com.masker.discover.user.UserInfoActivity;
@@ -30,6 +31,7 @@ import java.util.List;
 
 import rx.Subscription;
 import rx.functions.Action1;
+import rx.subscriptions.CompositeSubscription;
 
 /**
  * CreatedBy: masker
@@ -55,7 +57,7 @@ public class PhotoListFragment extends BaseFragment implements PhotoListContract
 
 
     private PhotoListPresenter mPresenter;
-    private Subscription mSubcription;
+    private CompositeSubscription mSubscriptions = new CompositeSubscription();
 
     @Override
     protected int getLayoutId() {
@@ -65,13 +67,23 @@ public class PhotoListFragment extends BaseFragment implements PhotoListContract
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        mSubcription = RxBus.toObservable(ReOrderEvent.class)
+        Subscription reorderSubscription = RxBus.toObservable(ReOrderEvent.class)
                 .subscribe(new Action1<ReOrderEvent>() {
                     @Override
                     public void call(ReOrderEvent reOrderEvent) {
                         if(!mOrder.equals(reOrderEvent.getOrder())){
                             mOrder = reOrderEvent.getOrder();
                             initData();
+                        }
+                    }
+                });
+        mSubscriptions.add(reorderSubscription);
+        Subscription likeSubscription = RxBus.toObservable(LikeEvent.class)
+                .subscribe(new Action1<LikeEvent>() {
+                    @Override
+                    public void call(LikeEvent likeEvent) {
+                        if(likeEvent.getLikeResponse() != null){
+                            updatePhoto(likeEvent.getLikeResponse());
                         }
                     }
                 });
@@ -200,6 +212,7 @@ public class PhotoListFragment extends BaseFragment implements PhotoListContract
         }
     }
 
+
     @Override
     public void showLikeError(String message, String id) {
         Snackbar.make(mRlContent,message,Snackbar.LENGTH_SHORT).show();
@@ -233,8 +246,6 @@ public class PhotoListFragment extends BaseFragment implements PhotoListContract
     public void onDestroy() {
         super.onDestroy();
         mPresenter.onUnsubscribe();
-        if(!mSubcription.isUnsubscribed()){
-            mSubcription.unsubscribe();
-        }
+        mSubscriptions.clear();
     }
 }

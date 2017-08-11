@@ -46,6 +46,9 @@
     <!--photo info activity-->
     <string name="action_share">Share</string>
     <string name="action_link">Link</string>
+    <string name="like">Like</string>
+    <string name="dislike">Dislike</string>
+
 
     <!--collection detail activity-->
     <string name="from">From</string>
@@ -99,6 +102,8 @@
     <string name="default_load_quality">Regular</string>
     <string name="default_download_quality">Full</string>
 
+    <string name="downloading">Downloading</string>
+    <string name="start_download">Start to download</string>
 
 </resources>
 

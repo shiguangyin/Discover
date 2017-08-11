@@ -1,6 +1,6 @@
 package com.masker.discover.photo;
 
-import com.masker.discover.base.BaseView;
+import com.masker.discover.base.BaseLikeView;
 import com.masker.discover.model.entity.PhotoBean;
 
 /**
@@ -10,7 +10,7 @@ import com.masker.discover.model.entity.PhotoBean;
  */
 
 public interface PhotoInfoContract {
-    interface View extends BaseView{
+    interface View extends BaseLikeView{
         void showPhotoInfo(PhotoBean info);
     }
 

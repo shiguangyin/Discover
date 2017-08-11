@@ -2,17 +2,19 @@ package com.masker.discover.photo;
 
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
+import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
-import com.masker.discover.collection.CollectionDetailActivity;
-import com.masker.discover.global.Constans;
 import com.masker.discover.R;
 import com.masker.discover.base.BaseViewHolder;
+import com.masker.discover.collection.CollectionDetailActivity;
+import com.masker.discover.global.Constans;
 import com.masker.discover.global.UserManager;
 import com.masker.discover.model.entity.PhotoBean;
 import com.masker.discover.model.entity.TagBean;
@@ -71,93 +73,119 @@ public class PhotoInfoAdapter extends RecyclerView.Adapter<BaseViewHolder>{
 
     @Override
     public void onBindViewHolder(BaseViewHolder holder, final int position) {
-        if(holder.getItemViewType() == TYPE_HEADER){
-            PhotoBean info = (PhotoBean) mDatas.get(position);
-
-            CircleImageView ivAvatar = holder.getView(R.id.iv_avatar);
-            String avatarUrl = info.getUser().getProfile_image().getLarge();
-            ImgLoader.loadAvator(mContext,avatarUrl,ivAvatar);
-
-            RelativeLayout rlHeader = holder.getView(R.id.rl_header);
-            ImgLoader.loadBlurBackgroud(mContext,info.getUser().getProfile_image().getSmall(),rlHeader);
-
-            String name = String.format("By %s From Unsplash",info.getUser().getName());
-            holder.setText(R.id.tv_name,name);
-            holder.setText(R.id.tv_time, FormatUtils.transform(info.getUpdated_at()));
-
-            holder.setText(R.id.tv_views_num,FormatUtils.getNum(info.getViews()));
-            holder.setText(R.id.tv_download_num,FormatUtils.getNum(info.getDownloads()));
-            holder.setText(R.id.tv_likes_num,FormatUtils.getNum(info.getLikes()));
+        switch (holder.getItemViewType()){
+            case TYPE_HEADER:
+                bindHeader(holder,position);
+                break;
+            case TYPE_TITLE:
+                bindTitle(holder,position);
+                break;
+            case TYPE_COLLECTION:
+                bindCollections(holder,position);
+                break;
+            case TYPE_TAG:
+                bindTags(holder,position);
+                break;
         }
-
-        else if(holder.getItemViewType() == TYPE_TITLE){
-            String title = (String) mDatas.get(position);
-            holder.setText(R.id.tv_title,title);
-        }
-        else if(holder.getItemViewType() == TYPE_COLLECTION){
-            final PhotoBean.RelatedCollectionsBean.ResultsBean data
-                    = (PhotoBean.RelatedCollectionsBean.ResultsBean) mDatas.get(position);
-            ImageView ivPhoto = holder.getView(R.id.iv_photo);
-            int width = ScreenUtils.getScreenWidth(mContext);
-            int picWidth = data.getCover_photo().getWidth();
-            int picHeight = data.getCover_photo().getHeight();
-            int height = (width*picHeight)/picWidth;
-
-            RelativeLayout.LayoutParams lp = (RelativeLayout.LayoutParams) ivPhoto.getLayoutParams();
-            lp.height = height;
-            ivPhoto.setLayoutParams(lp);
-            ivPhoto.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    int id = data.getId();
-                    boolean curated = data.isCurated();
-                    int total = data.getTotal_photos();
-                    int width = data.getCover_photo().getWidth();
-                    int height = data.getCover_photo().getHeight();
-                    String url = data.getCover_photo().getUrls().getFull();
-                    CollectionDetailActivity.start(mContext,id,curated,total,height,width,url);
-                }
-            });
-
-            String url = data.getCover_photo().getUrls().getRegular();
-            Glide.with(mContext).load(url).into(ivPhoto);
-
-            CircleImageView ivAvatar = holder.getView(R.id.iv_avatar);
-            String avatarUrl = data.getUser().getProfile_image().getLarge();
-            Glide.with(mContext).load(avatarUrl).into(ivAvatar);
-            ivAvatar.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    User user = UserManager.transform(data.getUser());
-                    UserInfoActivity.start(mContext,user,UserInfoActivity.USER_OTHER);
-                }
-            });
-
-            String name = data.getUser().getName();
-            holder.setText(R.id.tv_name,name);
-
-            String title = data.getTitle().toUpperCase();
-            holder.setText(R.id.tv_title,title);
-
-            int num = data.getTotal_photos();
-            String strNum = num + " "+mContext.getString(R.string.photos);
-            holder.setText(R.id.tv_num,strNum);
-        }
-        else if(holder.getItemViewType() == TYPE_TAG){
-            TagBean data = (TagBean) mDatas.get(position);
-            String url = data.getUrl()+ Constans.TAG_SUFFIX;
-            ImageView ivCover = holder.getView(R.id.iv_cover);
-            Glide.with(mContext).load(url).centerCrop().into(ivCover);
-
-            String tag = data.getTitle().toUpperCase();
-            holder.setText(R.id.tv_tag,tag);
-        }
-
     }
+
+
 
     @Override
     public int getItemCount() {
-        return mDatas.size(); //header 1
+        return mDatas.size();
+    }
+
+
+    private void bindHeader(BaseViewHolder holder,int position){
+        PhotoBean info = (PhotoBean) mDatas.get(position);
+
+        CircleImageView ivAvatar = holder.getView(R.id.iv_avatar);
+        String avatarUrl = info.getUser().getProfile_image().getLarge();
+        ImgLoader.loadAvator(mContext,avatarUrl,ivAvatar);
+
+        RelativeLayout rlHeader = holder.getView(R.id.rl_header);
+        ImgLoader.loadBlurBackgroud(mContext,info.getUser().getProfile_image().getSmall(),rlHeader);
+
+        String name = String.format("By %s From Unsplash",info.getUser().getName());
+        holder.setText(R.id.tv_name,name);
+        holder.setText(R.id.tv_time, FormatUtils.transform(info.getUpdated_at()));
+
+        if(!TextUtils.isEmpty(info.getStory().getDescription())){
+            TextView tvStory = holder.getView(R.id.tv_story);
+            tvStory.setVisibility(View.VISIBLE);
+            holder.setText(R.id.tv_story,info.getStory().getDescription());
+            holder.setText(R.id.tv_story_title,info.getStory().getTitle());
+        }
+
+        holder.setText(R.id.tv_views_num,FormatUtils.getNum(info.getViews()));
+        holder.setText(R.id.tv_download_num,FormatUtils.getNum(info.getDownloads()));
+        holder.setText(R.id.tv_likes_num,FormatUtils.getNum(info.getLikes()));
+    }
+
+    private void bindTitle(BaseViewHolder holder,int position){
+        String title = (String) mDatas.get(position);
+        holder.setText(R.id.tv_title,title);
+    }
+
+    private void bindCollections(BaseViewHolder holder,int position){
+        final PhotoBean.RelatedCollectionsBean.ResultsBean data
+                = (PhotoBean.RelatedCollectionsBean.ResultsBean) mDatas.get(position);
+        ImageView ivPhoto = holder.getView(R.id.iv_photo);
+        int width = ScreenUtils.getScreenWidth(mContext);
+        int picWidth = data.getCover_photo().getWidth();
+        int picHeight = data.getCover_photo().getHeight();
+        int height = (width*picHeight)/picWidth;
+
+        RelativeLayout.LayoutParams lp = (RelativeLayout.LayoutParams) ivPhoto.getLayoutParams();
+        lp.height = height;
+        ivPhoto.setLayoutParams(lp);
+        ivPhoto.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                int id = data.getId();
+                boolean curated = data.isCurated();
+                int total = data.getTotal_photos();
+                int width = data.getCover_photo().getWidth();
+                int height = data.getCover_photo().getHeight();
+                String url = data.getCover_photo().getUrls().getFull();
+                CollectionDetailActivity.start(mContext,id,curated,total,height,width,url);
+            }
+        });
+
+        String url = data.getCover_photo().getUrls().getRegular();
+        Glide.with(mContext).load(url).into(ivPhoto);
+
+        CircleImageView ivAvatar = holder.getView(R.id.iv_avatar);
+        String avatarUrl = data.getUser().getProfile_image().getLarge();
+        Glide.with(mContext).load(avatarUrl).into(ivAvatar);
+        ivAvatar.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                User user = UserManager.transform(data.getUser());
+                UserInfoActivity.start(mContext,user,UserInfoActivity.USER_OTHER);
+            }
+        });
+
+        String name = data.getUser().getName();
+        holder.setText(R.id.tv_name,name);
+
+        String title = data.getTitle().toUpperCase();
+        holder.setText(R.id.tv_title,title);
+
+        int num = data.getTotal_photos();
+        String strNum = num + " "+mContext.getString(R.string.photos);
+        holder.setText(R.id.tv_num,strNum);
+    }
+
+    private void bindTags(BaseViewHolder holder, int position) {
+        TagBean data = (TagBean) mDatas.get(position);
+        String url = data.getUrl()+ Constans.TAG_SUFFIX;
+        ImageView ivCover = holder.getView(R.id.iv_cover);
+        Glide.with(mContext).load(url).centerCrop().into(ivCover);
+
+        String tag = data.getTitle().toUpperCase();
+        holder.setText(R.id.tv_tag,tag);
     }
 
     @Override

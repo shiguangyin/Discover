@@ -2,6 +2,7 @@ package com.masker.discover.photo;
 
 import android.support.annotation.NonNull;
 
+import com.masker.discover.base.BaseLikePresenter;
 import com.masker.discover.base.BasePresenter;
 import com.masker.discover.model.entity.PhotoBean;
 import com.masker.discover.model.repository.PhotoRepository;
@@ -17,7 +18,7 @@ import rx.schedulers.Schedulers;
  * Description:
  */
 
-public class PhotoInfoPresenter extends BasePresenter<PhotoInfoContract.View> implements PhotoInfoContract.Presenter {
+public class PhotoInfoPresenter extends BaseLikePresenter<PhotoInfoContract.View> implements PhotoInfoContract.Presenter {
 
 
     public PhotoInfoPresenter(@NonNull PhotoInfoContract.View view) {

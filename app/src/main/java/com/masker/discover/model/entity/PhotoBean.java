@@ -391,22 +391,22 @@ public class PhotoBean {
          * description : null
          */
 
-        private Object title;
-        private Object description;
+        private String title;
+        private String description;
 
-        public Object getTitle() {
+        public String getTitle() {
             return title;
         }
 
-        public void setTitle(Object title) {
+        public void setTitle(String title) {
             this.title = title;
         }
 
-        public Object getDescription() {
+        public String getDescription() {
             return description;
         }
 
-        public void setDescription(Object description) {
+        public void setDescription(String description) {
             this.description = description;
         }
     }

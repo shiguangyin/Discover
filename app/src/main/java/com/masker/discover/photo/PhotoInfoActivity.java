@@ -8,6 +8,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.design.widget.Snackbar;
 import android.support.v4.app.ActivityOptionsCompat;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -16,6 +17,7 @@ import android.support.v7.app.ActionBar;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.text.TextUtils;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -27,14 +29,23 @@ import com.bumptech.glide.Glide;
 import com.github.clans.fab.FloatingActionButton;
 import com.github.clans.fab.FloatingActionMenu;
 import com.masker.discover.R;
+import com.masker.discover.activity.LoginActivity;
 import com.masker.discover.activity.PhotoDetailActivity;
 import com.masker.discover.base.BaseMvpActivity;
+import com.masker.discover.global.App;
 import com.masker.discover.global.Constans;
+import com.masker.discover.global.PhotoManager;
+import com.masker.discover.global.UserManager;
+import com.masker.discover.model.entity.LikeResponseBean;
 import com.masker.discover.model.entity.PhotoBean;
 import com.masker.discover.model.entity.TagBean;
+import com.masker.discover.rxbus.LikeEvent;
+import com.masker.discover.rxbus.RxBus;
 import com.masker.discover.utils.ScreenUtils;
 import com.masker.discover.utils.ShareUtils;
+import com.masker.discover.utils.SpUtils;
 import com.masker.discover.widget.PhotoExifDialog;
+import com.orhanobut.logger.Logger;
 import com.wang.avi.AVLoadingIndicatorView;
 
 import java.util.ArrayList;
@@ -62,7 +73,9 @@ public class PhotoInfoActivity extends BaseMvpActivity implements PhotoInfoContr
     private Toolbar mToolbar;
     private ImageView mIvPhoto;
     private FloatingActionMenu mActionMenu;
+    private FloatingActionButton mFabLike;
     private FloatingActionButton mFabInfo;
+    private FloatingActionButton mFabDownload;
 
     private AVLoadingIndicatorView mLoadingView;
     private RecyclerView mRecyclerView;
@@ -71,6 +84,7 @@ public class PhotoInfoActivity extends BaseMvpActivity implements PhotoInfoContr
 
     private PhotoInfoPresenter mPresenter;
     private PhotoBean mPhotoBean;
+    private boolean mIsLiked;
 
 
 
@@ -104,8 +118,9 @@ public class PhotoInfoActivity extends BaseMvpActivity implements PhotoInfoContr
         mActionMenu = bind(R.id.fab_menu);
         mActionMenu.setClosedOnTouchOutside(true);
         createCustomAnimation();
+        mFabLike = bind(R.id.fab_like);
         mFabInfo = bind(R.id.fab_info);
-
+        mFabDownload = bind(R.id.fab_download);
 
         mLoadingView = bind(R.id.loading_view);
         mLoadingView.smoothToShow();
@@ -136,6 +151,58 @@ public class PhotoInfoActivity extends BaseMvpActivity implements PhotoInfoContr
                 }
             }
         });
+        mFabLike.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if(UserManager.getInstance().isLogin()){
+                    mFabLike.setIndeterminate(true);
+                    if(mIsLiked){
+                        mPresenter.unlikePhoto(mId);
+                    }
+                    else{
+                        mPresenter.likePhoto(mId);
+                    }
+                }
+                else{
+                    startActivity(new Intent(PhotoInfoActivity.this,
+                            LoginActivity.class));
+                }
+            }
+        });
+        mFabDownload.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if(mPhotoBean != null){
+                    String url = null;
+                    String quality  = SpUtils.getString(Constans.SETTING_SP_NAME,
+                            getString(R.string.key_download_quality));
+                    PhotoBean.UrlsBean urlsBean = mPhotoBean.getUrls();
+                    if(TextUtils.isEmpty(quality) || quality.equals(Constans.REGULAR)){
+                        quality = Constans.REGULAR;
+                        url = urlsBean.getRegular();
+                    }
+                    else if(quality.equals(Constans.RAW)){
+                        url = urlsBean.getRaw();
+                    }
+                    else if(quality.equals(Constans.FULL)){
+                        url = urlsBean.getFull();
+                    }
+                    else if(quality.equals(Constans.SMALL)){
+                        url = urlsBean.getSmall();
+                    }
+                    else{
+                        url = urlsBean.getThumb();
+                    }
+                    String name = mPhotoBean.getId()+"_"+quality+".jpg";
+                    Logger.i("url = "+url+" name = "+name);
+                    PhotoManager.getInstance(App.getApp()).download(url,name);
+                    Snackbar.make(mRecyclerView,R.string.start_download,
+                            Snackbar.LENGTH_SHORT).show();
+                }
+                mActionMenu.close(true);
+            }
+        });
+
     }
 
     @Override
@@ -180,6 +247,10 @@ public class PhotoInfoActivity extends BaseMvpActivity implements PhotoInfoContr
     public void showPhotoInfo(PhotoBean info) {
         mPhotoBean = info;
         mLoadingView.smoothToHide();
+
+        mIsLiked = info.isLiked_by_user();
+        setLike(mIsLiked);
+
         mRecyclerView.setVisibility(View.VISIBLE);
         mDatas.add(info);
 
@@ -300,4 +371,29 @@ public class PhotoInfoActivity extends BaseMvpActivity implements PhotoInfoContr
 
     }
 
+    @Override
+    public void updatePhoto(LikeResponseBean bean) {
+        mFabLike.hideProgress();
+        mActionMenu.close(true);
+        setLike(bean.getPhoto().isLiked_by_user());
+        RxBus.post(new LikeEvent(bean));
+    }
+
+    @Override
+    public void showLikeError(String message, String id) {
+        mFabLike.hideProgress();
+        mActionMenu.close(true);
+    }
+
+    private void setLike(boolean like){
+        mIsLiked = like;
+        if(like){
+            mFabLike.setImageResource(R.drawable.ic_like_red_24dp);
+            mFabLike.setLabelText(getString(R.string.dislike));
+        }
+        else{
+            mFabLike.setImageResource(R.drawable.ic_like_fill_white_24dp);
+            mFabLike.setLabelText(getString(R.string.like));
+        }
+    }
 }
