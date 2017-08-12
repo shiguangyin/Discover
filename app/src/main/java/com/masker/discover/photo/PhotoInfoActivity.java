@@ -109,7 +109,6 @@ public class PhotoInfoActivity extends BaseMvpActivity implements PhotoInfoContr
         ActionBar ab = getSupportActionBar();
         if(ab != null){
             ab.setDisplayHomeAsUpEnabled(true);
-            ab.setDisplayShowTitleEnabled(false);
         }
         mIvPhoto = bind(R.id.iv_photo);
         resetSize();

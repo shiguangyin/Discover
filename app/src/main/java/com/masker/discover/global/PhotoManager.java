@@ -56,4 +56,5 @@ public class PhotoManager {
             e.printStackTrace();
         }
     }
+
 }

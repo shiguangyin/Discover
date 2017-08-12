@@ -41,4 +41,7 @@ public class Constans {
     public static final String REGULAR = "Regular";
     public static final String SMALL = "Small";
     public static final String THUMB = "Thumb";
+
+    public static final String DOWNLOAD_DIR = "discover";
+
 }

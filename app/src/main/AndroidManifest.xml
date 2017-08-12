@@ -54,6 +54,7 @@
             android:theme="@style/PhotoViewTheme"/>
         <activity android:name=".user.UserInfoActivity"/>
         <activity android:name=".activity.SettingActivity"/>
+        <activity android:name=".downloads.DownloadsActivity"/>
     </application>
 
 </manifest>
