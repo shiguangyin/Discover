@@ -9,10 +9,10 @@ Discover is unoffical client of [Unsplash](https://unsplash.com)
 * ......
 
 ## Screenshots
-![Screenshots]("screenshots/screenshots1")
-![Screenshots]("screenshots/screenshots2")
-![Screenshots]("screenshots/screenshots3")
-![Screenshots]("screenshots/screenshots4")
-![Screenshots]("screenshots/screenshots5")
-![Screenshots]("screenshots/screenshots6")
-![Screenshots]("screenshots/screenshots7")
+![Screenshots1]("https://github.com/shiguangyin/Discover/blob/master/screenshots/screenshot1.png")
+![Screenshots2]("https://github.com/shiguangyin/Discover/blob/master/screenshots/screenshot2.png")
+![Screenshots3]("https://github.com/shiguangyin/Discover/blob/master/screenshots/screenshot3.png")
+![Screenshots4]("https://github.com/shiguangyin/Discover/blob/master/screenshots/screenshot4.png")
+![Screenshots5]("https://github.com/shiguangyin/Discover/blob/master/screenshots/screenshot5.png")
+![Screenshots6]("https://github.com/shiguangyin/Discover/blob/master/screenshots/screenshot6.png")
+![Screenshots7]("https://github.com/shiguangyin/Discover/blob/master/screenshots/screenshot7.png")
