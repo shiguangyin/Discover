@@ -33,7 +33,9 @@ public class Constans {
 
     public static final String UTM_PARAMS = "?utm_source=discover&utm_medium=referral&utm_campaign=api-credit";
 
-    public static final String SETTING_SP_NAME = "sp_settings";
+    public static final String SP_SETTINGS = "sp_settings";
+
+    public static final String SP_LOADING_URL = "sp_loading";
 
     //quality
     public static final String RAW = "Raw";
@@ -43,5 +45,7 @@ public class Constans {
     public static final String THUMB = "Thumb";
 
     public static final String DOWNLOAD_DIR = "discover";
+
+    public static final String ACTION_DOWNLOAD_COMPLETE = "android.intent.action.DOWNLOAD_COMPLETE";
 
 }

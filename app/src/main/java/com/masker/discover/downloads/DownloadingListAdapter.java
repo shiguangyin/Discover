@@ -7,6 +7,10 @@ import com.bumptech.glide.Glide;
 import com.masker.discover.R;
 import com.masker.discover.base.BaseAdapter;
 import com.masker.discover.base.BaseViewHolder;
+import com.masker.discover.global.Constans;
+import com.masker.discover.utils.SpUtils;
+import com.masker.discover.widget.CircleProgressView;
+import com.orhanobut.logger.Logger;
 
 import java.util.List;
 
@@ -30,9 +34,12 @@ public class DownloadingListAdapter extends BaseAdapter<DownloadingBean>{
     @Override
     public void convert(BaseViewHolder holder, int position, DownloadingBean data) {
         ImageView iv =  holder.getView(R.id.iv_photo);
-        Glide.with(mContext).load(data.getUri()).into(iv);
+        long id = data.getId();
+        String url = SpUtils.getString(Constans.SP_LOADING_URL,String.valueOf(id));
+        Glide.with(mContext).load(url).centerCrop().into(iv);
         int progress = (int) ((data.getCurBytes()*100)/data.getTotalBytes());
-        holder.setText(R.id.tv_progress,String.valueOf(progress)+"%");
+        CircleProgressView progressView = holder.getView(R.id.progress_view);
+        progressView.setProgress(progress);
     }
 
     @Override
@@ -41,7 +48,8 @@ public class DownloadingListAdapter extends BaseAdapter<DownloadingBean>{
             if(payloads.get(0) instanceof Integer){
                 DownloadingBean data = mDatas.get(position);
                 int progress = (int) ((data.getCurBytes()*100)/data.getTotalBytes());
-                holder.setText(R.id.tv_progress,String.valueOf(progress)+"%");
+                CircleProgressView progressView = holder.getView(R.id.progress_view);
+                progressView.setProgress(progress);
             }
         }
         else {

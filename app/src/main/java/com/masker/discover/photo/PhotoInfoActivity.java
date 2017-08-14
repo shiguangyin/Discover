@@ -45,7 +45,6 @@ import com.masker.discover.utils.ScreenUtils;
 import com.masker.discover.utils.ShareUtils;
 import com.masker.discover.utils.SpUtils;
 import com.masker.discover.widget.PhotoExifDialog;
-import com.orhanobut.logger.Logger;
 import com.wang.avi.AVLoadingIndicatorView;
 
 import java.util.ArrayList;
@@ -173,7 +172,7 @@ public class PhotoInfoActivity extends BaseMvpActivity implements PhotoInfoContr
             public void onClick(View view) {
                 if(mPhotoBean != null){
                     String url = null;
-                    String quality  = SpUtils.getString(Constans.SETTING_SP_NAME,
+                    String quality  = SpUtils.getString(Constans.SP_SETTINGS,
                             getString(R.string.key_download_quality));
                     PhotoBean.UrlsBean urlsBean = mPhotoBean.getUrls();
                     if(TextUtils.isEmpty(quality) || quality.equals(Constans.REGULAR)){
@@ -193,8 +192,8 @@ public class PhotoInfoActivity extends BaseMvpActivity implements PhotoInfoContr
                         url = urlsBean.getThumb();
                     }
                     String name = mPhotoBean.getId()+"_"+quality+".jpg";
-                    Logger.i("url = "+url+" name = "+name);
-                    PhotoManager.getInstance(App.getApp()).download(url,name);
+                    long id = PhotoManager.getInstance(App.getApp()).download(url,name);
+                    SpUtils.putString(Constans.SP_LOADING_URL,String.valueOf(id),mPhotoBean.getUrls().getThumb());
                     Snackbar.make(mRecyclerView,R.string.start_download,
                             Snackbar.LENGTH_SHORT).show();
                 }

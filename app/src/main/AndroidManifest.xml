@@ -55,6 +55,12 @@
         <activity android:name=".user.UserInfoActivity"/>
         <activity android:name=".activity.SettingActivity"/>
         <activity android:name=".downloads.DownloadsActivity"/>
+
+        <receiver android:name=".downloads.CompleteReceiver">
+            <intent-filter>
+                <action android:name="android.intent.action.DOWNLOAD_COMPLETE"></action>
+            </intent-filter>
+        </receiver>
     </application>
 
 </manifest>

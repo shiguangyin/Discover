@@ -3,14 +3,20 @@ package com.masker.discover.downloads;
 import android.app.DownloadManager;
 import android.content.Context;
 import android.database.Cursor;
+import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.support.annotation.Nullable;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 
 import com.masker.discover.R;
 import com.masker.discover.base.BaseFragment;
+import com.masker.discover.global.Constans;
+import com.masker.discover.rxbus.DownloadFinishEvent;
+import com.masker.discover.rxbus.RxBus;
+import com.masker.discover.utils.SpUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -18,6 +24,9 @@ import java.util.List;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.Unbinder;
+import rx.Subscription;
+import rx.functions.Action1;
+import rx.subscriptions.CompositeSubscription;
 
 /**
  * Author: masker
@@ -26,6 +35,7 @@ import butterknife.Unbinder;
  */
 
 public class DownloadingFragment extends BaseFragment{
+
     @BindView(R.id.recycler_view)
     RecyclerView mRecyclerView;
 
@@ -41,6 +51,22 @@ public class DownloadingFragment extends BaseFragment{
             mHandler.sendEmptyMessageDelayed(1,1000);
         }
     };
+    private CompositeSubscription mSubscriptions = new CompositeSubscription();
+
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        Subscription subscription = RxBus.toObservable(DownloadFinishEvent.class)
+                .subscribe(new Action1<DownloadFinishEvent>() {
+                    @Override
+                    public void call(DownloadFinishEvent downloadFinishEvent) {
+                        long id = downloadFinishEvent.getId();
+                        int pos = remove(id);
+                        mAdapter.notifyItemRemoved(pos);
+                        SpUtils.removeString(Constans.SP_LOADING_URL,String.valueOf(id));
+                    }
+                });
+    }
 
 
     private void refresh(){
@@ -51,7 +77,6 @@ public class DownloadingFragment extends BaseFragment{
         Cursor cursor = dm.query(query);
         cursor.moveToFirst();
         if(cursor != null) {
-            mDownloadingBeen.clear();
             for(cursor.moveToFirst();!cursor.isAfterLast();cursor.moveToNext()){
                 DownloadingBean bean = new DownloadingBean();
                 long id = cursor.getLong(cursor.getColumnIndex(DownloadManager.COLUMN_ID));
@@ -66,11 +91,45 @@ public class DownloadingFragment extends BaseFragment{
                 bean.setTotalBytes(total);
                 long cur = cursor.getLong(cursor.getColumnIndex(DownloadManager.COLUMN_BYTES_DOWNLOADED_SO_FAR));
                 bean.setCurBytes(cur);
-                mDownloadingBeen.add(bean);
+                if(!contains(bean)){
+                    mDownloadingBeen.add(bean);
+                    mAdapter.notifyItemInserted(mDownloadingBeen.size()-1);
+                }
+                else{
+                    mDownloadingBeen.set(getPosition(bean),bean);
+                    mAdapter.notifyItemChanged(getPosition(bean),1);
+                }
             }
             cursor.close();
         }
-        mAdapter.notifyDataSetChanged();
+    }
+
+    private int getPosition(DownloadingBean bean){
+        for (int i = 0;i < mDownloadingBeen.size();i++){
+            if(mDownloadingBeen.get(i).getId() == bean.getId()){
+                return i;
+            }
+        }
+        return -1;
+    }
+
+    private boolean contains(DownloadingBean bean){
+        for (int i = 0; i < mDownloadingBeen.size(); i++) {
+            if(mDownloadingBeen.get(i).getId() == bean.getId()){
+                return true;
+            }
+        }
+        return false;
+    }
+
+    private int remove(long id){
+        for (int i = 0; i < mDownloadingBeen.size(); i++) {
+            if(mDownloadingBeen.get(i).getId() == id){
+                mDownloadingBeen.remove(i);
+                return i;
+            }
+        }
+        return -1;
     }
 
     @Override
@@ -83,6 +142,7 @@ public class DownloadingFragment extends BaseFragment{
         mUnbinder = ButterKnife.bind(this,contentView);
         mDownloadingBeen = new ArrayList<>();
         mAdapter = new DownloadingListAdapter(mDownloadingBeen,getContext());
+        mAdapter.enableLoadMore(false);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         mRecyclerView.setAdapter(mAdapter);
     }
@@ -127,5 +187,6 @@ public class DownloadingFragment extends BaseFragment{
         super.onDestroy();
         mUnbinder.unbind();
         mHandler.removeCallbacksAndMessages(null);
+        mSubscriptions.clear();
     }
 }

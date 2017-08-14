@@ -3,7 +3,9 @@ package com.masker.discover.downloads;
 import android.app.DownloadManager;
 import android.content.Context;
 import android.database.Cursor;
+import android.os.Bundle;
 import android.os.Environment;
+import android.support.annotation.Nullable;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
@@ -11,6 +13,8 @@ import android.view.View;
 import com.masker.discover.R;
 import com.masker.discover.base.BaseFragment;
 import com.masker.discover.global.Constans;
+import com.masker.discover.rxbus.DownloadFinishEvent;
+import com.masker.discover.rxbus.RxBus;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -19,6 +23,9 @@ import java.util.List;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.Unbinder;
+import rx.Subscription;
+import rx.functions.Action1;
+import rx.subscriptions.CompositeSubscription;
 
 /**
  * Author: masker
@@ -36,6 +43,20 @@ public class FinishedFragment extends BaseFragment{
 
     private List<FinishedBean> mFinishedBeen;
     private FinishedListAdapter mAdapter;
+    private CompositeSubscription mSubscriptions  = new CompositeSubscription();
+
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        Subscription subscription = RxBus.toObservable(DownloadFinishEvent.class)
+                .subscribe(new Action1<DownloadFinishEvent>() {
+                    @Override
+                    public void call(DownloadFinishEvent downloadFinishEvent) {
+                        initData();
+                    }
+                });
+        mSubscriptions.add(subscription);
+    }
 
     @Override
     protected int getLayoutId() {
@@ -53,6 +74,8 @@ public class FinishedFragment extends BaseFragment{
 
     }
 
+
+
     @Override
     protected void initData() {
         DownloadManager dm = (DownloadManager) getContext()
@@ -62,6 +85,7 @@ public class FinishedFragment extends BaseFragment{
         Cursor cursor = dm.query(query);
         cursor.moveToFirst();
         if(cursor != null) {
+            mFinishedBeen.clear();
             for(cursor.moveToFirst();!cursor.isAfterLast();cursor.moveToNext()){
                 FinishedBean bean = new FinishedBean();
                 String localUri = cursor.getString(cursor.getColumnIndex(DownloadManager.COLUMN_LOCAL_URI));
@@ -84,5 +108,6 @@ public class FinishedFragment extends BaseFragment{
     public void onDestroy() {
         super.onDestroy();
         mUnbinder.unbind();
+        mSubscriptions.clear();
     }
 }

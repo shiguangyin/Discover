@@ -39,22 +39,18 @@ public class PhotoManager {
         return sInstance;
     }
 
-    public void download(String url,String name){
+    public long download(String url,String name){
         File dir = Environment.getExternalStoragePublicDirectory(DOWNLOAD_DIR);
         if(!dir.exists()){
             dir.mkdirs();
         }
-        try{
-            Uri uri = Uri.parse(url);
-            DownloadManager.Request request = new DownloadManager.Request(uri);
-            request.setDestinationInExternalPublicDir(DOWNLOAD_DIR,name);
-            request.setNotificationVisibility(DownloadManager.Request.VISIBILITY_VISIBLE);
-            request.setTitle(name);
-            request.setDescription(mContext.getString(R.string.downloading));
-            mDownloadManager.enqueue(request);
-        }catch (Exception e){
-            e.printStackTrace();
-        }
+        Uri uri = Uri.parse(url);
+        DownloadManager.Request request = new DownloadManager.Request(uri);
+        request.setDestinationInExternalPublicDir(DOWNLOAD_DIR,name);
+        request.setNotificationVisibility(DownloadManager.Request.VISIBILITY_VISIBLE);
+        request.setTitle(name);
+        request.setDescription(mContext.getString(R.string.downloading));
+        return mDownloadManager.enqueue(request);
     }
 
 }

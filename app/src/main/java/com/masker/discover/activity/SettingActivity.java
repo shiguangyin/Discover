@@ -77,7 +77,7 @@ public class SettingActivity extends BaseActivity {
         @Override
         public void onCreate(@Nullable Bundle savedInstanceState) {
             super.onCreate(savedInstanceState);
-            getPreferenceManager().setSharedPreferencesName(Constans.SETTING_SP_NAME);
+            getPreferenceManager().setSharedPreferencesName(Constans.SP_SETTINGS);
             addPreferencesFromResource(R.xml.preference_setting);
             initData();
         }

@@ -55,7 +55,7 @@ public class PhotoListAdapter extends BaseAdapter<PhotoListBean> {
         RelativeLayout.LayoutParams lp = (RelativeLayout.LayoutParams) ivPhoto.getLayoutParams();
         lp.height = height;
         ivPhoto.setLayoutParams(lp);
-        String loadQuality = SpUtils.getString(Constans.SETTING_SP_NAME,
+        String loadQuality = SpUtils.getString(Constans.SP_SETTINGS,
                 mContext.getString(R.string.key_load_quality));
         String url = null;
         if(TextUtils.isEmpty(loadQuality) || loadQuality.equals(Constans.REGULAR)){

@@ -27,6 +27,9 @@ public class DownloadsActivity extends BaseActivity{
     @BindView(R.id.view_pager)
     ViewPager mViewPager;
 
+
+
+
     @Override
     protected int getLayoutId() {
         return R.layout.activity_downloads;
@@ -58,5 +61,10 @@ public class DownloadsActivity extends BaseActivity{
             onBackPressed();
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
     }
 }

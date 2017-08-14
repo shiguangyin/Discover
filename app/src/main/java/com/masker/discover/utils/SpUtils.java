@@ -28,4 +28,11 @@ public class SpUtils {
         editor.commit();
     }
 
+    public static void removeString(String name,String key){
+        SharedPreferences sp = App.getApp().getSharedPreferences(name,Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = sp.edit();
+        editor.remove(key);
+        editor.commit();
+    }
+
 }
