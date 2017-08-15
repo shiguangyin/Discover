@@ -2,7 +2,7 @@ package com.masker.discover.collection;
 
 import android.content.Context;
 import android.content.Intent;
-import android.support.v4.app.ActivityOptionsCompat;
+import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.v7.app.ActionBar;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -10,8 +10,6 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.ViewGroup;
-import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -24,12 +22,9 @@ import com.masker.discover.global.UserManager;
 import com.masker.discover.model.entity.CollectionBean;
 import com.masker.discover.model.entity.LikeResponseBean;
 import com.masker.discover.model.entity.PhotoListBean;
-import com.masker.discover.model.entity.User;
-import com.masker.discover.photo.PhotoInfoActivity;
 import com.masker.discover.photo.PhotoListAdapter;
-import com.masker.discover.user.UserInfoActivity;
 import com.masker.discover.utils.ImgLoader;
-import com.masker.discover.utils.ScreenUtils;
+import com.orhanobut.logger.Logger;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -45,6 +40,7 @@ public class CollectionDetailActivity extends BaseMvpActivity
     public static final String HEIGHT = "height";
     public static final String WIDTH = "width";
     public static final String IMG_URL = "img_url";
+    public static final String TITLE = "title";
 
     public static final int START_PAGE = 1;
     public static final int PER_PAGE = 20;
@@ -55,9 +51,10 @@ public class CollectionDetailActivity extends BaseMvpActivity
     private int mImgHeight;
     private int mImgWidth;
     private String mImgUrl;
+    private String mTitle;
 
     private Toolbar mToolbar;
-    private ImageView mIvCover;
+    private CollapsingToolbarLayout mToolbarLayout;
     private TextView mTvTitle;
     private TextView mTvDesc;
     private CircleImageView mIvAvator;
@@ -80,11 +77,13 @@ public class CollectionDetailActivity extends BaseMvpActivity
 
     @Override
     protected void initViews() {
-        mTvTitle = bind(R.id.tv_title);
+        //mTvTitle = bind(R.id.tv_title);
         mTvDesc = bind(R.id.tv_desc);
         mIvAvator = bind(R.id.iv_avatar);
         mTvFrom = bind(R.id.tv_from);
         mToolbar = bind(R.id.tool_bar);
+        mToolbarLayout = bind(R.id.tool_bar_layout);
+        mToolbarLayout.setTitle(mTitle);
         mRlHeader = bind(R.id.rl_header);
         setSupportActionBar(mToolbar);
         ActionBar ab = getSupportActionBar();
@@ -92,11 +91,7 @@ public class CollectionDetailActivity extends BaseMvpActivity
             ab.setDisplayHomeAsUpEnabled(true);
         }
         mProgressBar = bind(R.id.progress_bar);
-        mIvCover = bind(R.id.iv_cover);
-//        resetSize();
-//        Glide.with(this).load(mImgUrl)
-//                .bitmapTransform(new BlurTransformation(this))
-//                .into(mIvCover);
+
 
         mRecyclerView = bind(R.id.recycler_view);
         mPhotos = new ArrayList<>();
@@ -127,29 +122,6 @@ public class CollectionDetailActivity extends BaseMvpActivity
                 onClickLike(position);
             }
         });
-        mPhotoAdapter.setOnAvatarClickListener(new PhotoListAdapter.OnAvatarClickListener() {
-            @Override
-            public void onAvatarClick(View view, int position) {
-                User user = UserManager.getInstance().transform(mPhotos.get(position).getUser());
-                UserInfoActivity.start(CollectionDetailActivity.this,user,UserInfoActivity.USER_OTHER);
-            }
-        });
-        mPhotoAdapter.setOnItemClickListener(new BaseAdapter.OnItemClickListener() {
-            @Override
-            public void onClick(View view, int position) {
-                PhotoListBean photo = mPhotos.get(position);
-                String id = photo.getId();
-                String imgUrl = photo.getUrls().getRegular();
-                int width = photo.getWidth();
-                int height = photo.getHeight();
-
-                ImageView ivPhoto = (ImageView) view.findViewById(R.id.iv_photo);
-                ActivityOptionsCompat options = ActivityOptionsCompat
-                        .makeSceneTransitionAnimation(CollectionDetailActivity.this,ivPhoto,"photo");
-                PhotoInfoActivity.start(CollectionDetailActivity.this,options.toBundle(),
-                        id,imgUrl,width,height);
-            }
-        });
     }
 
     /*
@@ -172,17 +144,6 @@ public class CollectionDetailActivity extends BaseMvpActivity
         }
     }
 
-
-
-    /*
-     * reset size of imageview
-     */
-    private void resetSize(){
-        ViewGroup.LayoutParams lp = mIvCover.getLayoutParams();
-        lp.width = ScreenUtils.getScreenWidth(this);
-        lp.height = (lp.width*mImgHeight)/mImgWidth;
-        mIvCover.setLayoutParams(lp);
-    }
 
 
     @Override
@@ -212,8 +173,8 @@ public class CollectionDetailActivity extends BaseMvpActivity
 
     @Override
     public void showCollection(CollectionBean bean) {
-        mTvTitle.setText(bean.getTitle());
         if(bean.getDescription() != null){
+            Logger.i("Set  " +bean.getDescription());
             mTvDesc.setText(bean.getDescription());
         }
         String url = bean.getUser().getProfile_image().getLarge();
@@ -258,10 +219,12 @@ public class CollectionDetailActivity extends BaseMvpActivity
         mImgHeight = intent.getIntExtra(HEIGHT,0);
         mImgWidth = intent.getIntExtra(WIDTH,0);
         mImgUrl = intent.getStringExtra(IMG_URL);
+        mTitle = intent.getStringExtra(TITLE);
+
     }
 
     public static void start(Context context, int id,boolean curated,int total,
-                             int height,int width,String url){
+                             int height,int width,String url,String title){
         Intent intent = new Intent(context,CollectionDetailActivity.class);
         intent.putExtra(ID,id);
         intent.putExtra(CURATED,curated);
@@ -269,6 +232,7 @@ public class CollectionDetailActivity extends BaseMvpActivity
         intent.putExtra(HEIGHT,height);
         intent.putExtra(WIDTH,width);
         intent.putExtra(IMG_URL,url);
+        intent.putExtra(TITLE,title);
         context.startActivity(intent);
     }
 

@@ -4,12 +4,10 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.Snackbar;
-import android.support.v4.app.ActivityOptionsCompat;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
-import android.widget.ImageView;
 import android.widget.RelativeLayout;
 
 import com.masker.discover.R;
@@ -20,11 +18,9 @@ import com.masker.discover.global.UserManager;
 import com.masker.discover.model.api.PhotoService;
 import com.masker.discover.model.entity.LikeResponseBean;
 import com.masker.discover.model.entity.PhotoListBean;
-import com.masker.discover.model.entity.User;
 import com.masker.discover.rxbus.LikeEvent;
 import com.masker.discover.rxbus.ReOrderEvent;
 import com.masker.discover.rxbus.RxBus;
-import com.masker.discover.user.UserInfoActivity;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -119,32 +115,7 @@ public class PhotoListFragment extends BaseFragment implements PhotoListContract
 
     @Override
     protected void initListeners() {
-        mPhotoAdapter.setOnItemClickListener(new BaseAdapter.OnItemClickListener() {
-            @Override
-            public void onClick(View view, int position) {
-                PhotoListBean photo = mPhotos.get(position);
-                String id = photo.getId();
-                String imgUrl = photo.getUrls().getRegular();
-                int width = photo.getWidth();
-                int height = photo.getHeight();
 
-                ImageView ivPhoto = (ImageView) view.findViewById(R.id.iv_photo);
-                ActivityOptionsCompat options = ActivityOptionsCompat
-                        .makeSceneTransitionAnimation(getActivity(),ivPhoto,"photo");
-                PhotoInfoActivity.start(getContext(),options.toBundle(),
-                        id,imgUrl,width,height);
-            }
-        });
-
-        mPhotoAdapter.setOnAvatarClickListener(new PhotoListAdapter.OnAvatarClickListener() {
-            @Override
-            public void onAvatarClick(View view, int position) {
-            User user = UserManager.getInstance()
-                  .transform(mPhotos.get(position).getUser());
-                UserInfoActivity.start(getContext(),user,UserInfoActivity.USER_OTHER);
-
-            }
-        });
 
         mPhotoAdapter.setOnLikeListener(new PhotoListAdapter.OnLikeListener() {
             @Override

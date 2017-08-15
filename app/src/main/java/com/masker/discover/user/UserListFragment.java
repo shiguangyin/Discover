@@ -95,7 +95,7 @@ public class UserListFragment extends BaseMvpFragment implements UserListContrac
             mPresenter.loadLikedPhotos(mUserName,mPage,PER_PAGE);
         }
         else if(mType == TYPE_COLLECTIONS){
-            mPresenter.loadLikedPhotos(mUserName,mPage,PER_PAGE);
+            mPresenter.loadCollections(mUserName,mPage,PER_PAGE);
         }
     }
 

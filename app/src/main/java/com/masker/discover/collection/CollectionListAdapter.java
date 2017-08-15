@@ -9,7 +9,10 @@ import com.bumptech.glide.Glide;
 import com.masker.discover.R;
 import com.masker.discover.base.BaseAdapter;
 import com.masker.discover.base.BaseViewHolder;
+import com.masker.discover.global.UserManager;
 import com.masker.discover.model.entity.CollectionListBean;
+import com.masker.discover.model.entity.User;
+import com.masker.discover.user.UserInfoActivity;
 import com.masker.discover.utils.ImgLoader;
 import com.masker.discover.utils.ScreenUtils;
 
@@ -35,7 +38,7 @@ public class CollectionListAdapter extends BaseAdapter<CollectionListBean> {
     }
 
     @Override
-    public void convert(BaseViewHolder holder, final int position, CollectionListBean data) {
+    public void convert(BaseViewHolder holder, final int position, final CollectionListBean data) {
         ImageView ivPhoto = holder.getView(R.id.iv_photo);
         int width = ScreenUtils.getScreenWidth(mContext);
         int picWidth = data.getCover_photo().getWidth();
@@ -49,18 +52,29 @@ public class CollectionListAdapter extends BaseAdapter<CollectionListBean> {
         String url = data.getCover_photo().getUrls().getRegular();
         String color = data.getCover_photo().getColor();
         ImgLoader.loadWithColor(mContext,url,ivPhoto,color);
+        holder.getItemView().setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                int id = data.getId();
+                int total = data.getTotal_photos();
+                int height = data.getCover_photo().getHeight();
+                int width = data.getCover_photo().getWidth();
+                String url = data.getCover_photo().getUrls().getRegular();
+                String title =  data.getTitle();
+                CollectionDetailActivity.start(mContext,id,data.isCurated(),total,height,width,url,title);
+            }
+        });
 
         CircleImageView ivAvatar = holder.getView(R.id.iv_avatar);
         String avatorUrl = data.getUser().getProfile_image().getLarge();
         Glide.with(mContext).load(avatorUrl).into(ivAvatar);
-        if(mOnAvatarClickListener != null){
-            ivAvatar.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    mOnAvatarClickListener.onAvatarClick(view,position);
-                }
-            });
-        }
+        ivAvatar.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                User user = UserManager.transform(data.getUser());
+                UserInfoActivity.start(mContext,user,UserInfoActivity.USER_OTHER);
+            }
+        });
 
         String name = data.getUser().getName();
         holder.setText(R.id.tv_name,name);
@@ -73,15 +87,4 @@ public class CollectionListAdapter extends BaseAdapter<CollectionListBean> {
         holder.setText(R.id.tv_num,strNum);
 
     }
-
-    public interface OnAvatarClickListener{
-        void onAvatarClick(View view,int position);
-    }
-
-    private OnAvatarClickListener mOnAvatarClickListener;
-
-    public void setOnAvatarClickListener(OnAvatarClickListener listener){
-        mOnAvatarClickListener = listener;
-    }
-
 }

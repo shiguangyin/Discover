@@ -1,6 +1,8 @@
 package com.masker.discover.photo;
 
+import android.app.Activity;
 import android.content.Context;
+import android.support.v4.app.ActivityOptionsCompat;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
@@ -98,11 +100,20 @@ public class PhotoInfoAdapter extends RecyclerView.Adapter<BaseViewHolder>{
 
 
     private void bindHeader(BaseViewHolder holder,int position){
-        PhotoBean info = (PhotoBean) mDatas.get(position);
+        final PhotoBean info = (PhotoBean) mDatas.get(position);
 
-        CircleImageView ivAvatar = holder.getView(R.id.iv_avatar);
+        final CircleImageView ivAvatar = holder.getView(R.id.iv_avatar);
         String avatarUrl = info.getUser().getProfile_image().getLarge();
         ImgLoader.loadAvator(mContext,avatarUrl,ivAvatar);
+        ivAvatar.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                User user = UserManager.getInstance().transform(info.getUser());
+                ActivityOptionsCompat optionsCompat = ActivityOptionsCompat
+                        .makeSceneTransitionAnimation((Activity) mContext,ivAvatar,"avatar");
+                UserInfoActivity.start(mContext,user,UserInfoActivity.USER_OTHER,optionsCompat.toBundle());
+            }
+        });
 
         RelativeLayout rlHeader = holder.getView(R.id.rl_header);
         ImgLoader.loadBlurBackgroud(mContext,info.getUser().getProfile_image().getSmall(),rlHeader);
@@ -149,7 +160,8 @@ public class PhotoInfoAdapter extends RecyclerView.Adapter<BaseViewHolder>{
                 int width = data.getCover_photo().getWidth();
                 int height = data.getCover_photo().getHeight();
                 String url = data.getCover_photo().getUrls().getFull();
-                CollectionDetailActivity.start(mContext,id,curated,total,height,width,url);
+                String title = data.getTitle();
+                CollectionDetailActivity.start(mContext,id,curated,total,height,width,url,title);
             }
         });
 

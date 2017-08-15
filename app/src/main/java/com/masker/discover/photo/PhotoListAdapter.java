@@ -1,7 +1,9 @@
 package com.masker.discover.photo;
 
+import android.app.Activity;
 import android.content.Context;
 import android.graphics.drawable.Drawable;
+import android.support.v4.app.ActivityOptionsCompat;
 import android.support.v4.content.ContextCompat;
 import android.text.TextUtils;
 import android.view.View;
@@ -12,7 +14,10 @@ import com.masker.discover.R;
 import com.masker.discover.base.BaseAdapter;
 import com.masker.discover.base.BaseViewHolder;
 import com.masker.discover.global.Constans;
+import com.masker.discover.global.UserManager;
 import com.masker.discover.model.entity.PhotoListBean;
+import com.masker.discover.model.entity.User;
+import com.masker.discover.user.UserInfoActivity;
 import com.masker.discover.utils.ImgLoader;
 import com.masker.discover.utils.ScreenUtils;
 import com.masker.discover.utils.SpUtils;
@@ -45,12 +50,12 @@ public class PhotoListAdapter extends BaseAdapter<PhotoListBean> {
     }
 
     @Override
-    public void convert(BaseViewHolder holder, final int position, PhotoListBean data) {
-        ImageView ivPhoto = holder.getView(R.id.iv_photo);
-        int width = ScreenUtils.getScreenWidth(mContext);
+    public void convert(BaseViewHolder holder, final int position, final PhotoListBean data) {
+        final ImageView ivPhoto = holder.getView(R.id.iv_photo);
+        final int width = ScreenUtils.getScreenWidth(mContext);
         int picWidth = data.getWidth();
         int picHeight = data.getHeight();
-        int height = (width*picHeight)/picWidth;
+        final int height = (width*picHeight)/picWidth;
 
         RelativeLayout.LayoutParams lp = (RelativeLayout.LayoutParams) ivPhoto.getLayoutParams();
         lp.height = height;
@@ -76,17 +81,28 @@ public class PhotoListAdapter extends BaseAdapter<PhotoListBean> {
         String color = data.getColor();
         ImgLoader.loadWithColor(mContext,url,ivPhoto,color);
 
+        final String finalUrl = url;
+        holder.getItemView().setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                String id = data.getId();
+                ActivityOptionsCompat options = ActivityOptionsCompat
+                        .makeSceneTransitionAnimation((Activity) mContext,ivPhoto,"photo");
+                PhotoInfoActivity.start(mContext,options.toBundle(),
+                        id, finalUrl,width,height);
+            }
+        });
+
         String avatarUrl = data.getUser().getProfile_image().getLarge();
         CircleImageView ivAvator = holder.getView(R.id.iv_avatar);
         ImgLoader.loadAvator(mContext,avatarUrl,ivAvator);
-        if(mAvatarClickListener != null){
-            ivAvator.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    mAvatarClickListener.onAvatarClick(view,position);
-                }
-            });
-        }
+        ivAvator.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                User user = UserManager.getInstance().transform(data.getUser());
+                UserInfoActivity.start(mContext,user,UserInfoActivity.USER_OTHER);
+            }
+        });
 
         String name = data.getUser().getName();
         holder.setText(R.id.tv_name,name);
@@ -157,15 +173,6 @@ public class PhotoListAdapter extends BaseAdapter<PhotoListBean> {
         mLikeListener = listener;
     }
 
-    public interface OnAvatarClickListener{
-        void onAvatarClick(View view,int position);
-    }
-
-    private OnAvatarClickListener mAvatarClickListener;
-
-    public void setOnAvatarClickListener(OnAvatarClickListener listener){
-        mAvatarClickListener = listener;
-    }
 
 
 }

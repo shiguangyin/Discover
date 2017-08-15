@@ -10,10 +10,7 @@ import android.view.View;
 import com.masker.discover.R;
 import com.masker.discover.base.BaseAdapter;
 import com.masker.discover.base.BaseMvpFragment;
-import com.masker.discover.global.UserManager;
 import com.masker.discover.model.entity.CollectionListBean;
-import com.masker.discover.model.entity.User;
-import com.masker.discover.user.UserInfoActivity;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -88,31 +85,8 @@ public class CollectionListFragment extends BaseMvpFragment
                 mPresenter.loadCollections(mPage,PER_PAGE,mType);
             }
         });
-        mAdapter.setOnItemClickListener(new BaseAdapter.OnItemClickListener() {
-            @Override
-            public void onClick(View view, int position) {
-                gotoDetail(position);
-            }
-        });
-        mAdapter.setOnAvatarClickListener(new CollectionListAdapter.OnAvatarClickListener() {
-            @Override
-            public void onAvatarClick(View view, int position) {
-                User user = UserManager.transform(mCollections.get(position).getUser());
-                UserInfoActivity.start(getContext(),user,UserInfoActivity.USER_SELF);
-            }
-        });
     }
 
-    private void gotoDetail(int position){
-        CollectionListBean bean = mCollections.get(position);
-        int id = bean.getId();
-        boolean isCurated = (mType == CURATED);
-        int total = bean.getTotal_photos();
-        int height = bean.getCover_photo().getHeight();
-        int width = bean.getCover_photo().getWidth();
-        String url = bean.getCover_photo().getUrls().getRegular();
-        CollectionDetailActivity.start(getContext(),id,isCurated,total,height,width,url);
-    }
 
     @Override
     protected void initData() {

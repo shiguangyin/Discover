@@ -189,4 +189,16 @@ public class UserManager {
     }
 
 
+    public User transform(PhotoBean.UserBeanXX userBean) {
+        User user = new User();
+        user.setName(userBean.getName());
+        user.setUserName(userBean.getUsername());
+        user.setAvatorUrl(userBean.getProfile_image().getLarge());
+        user.setLocation(userBean.getLocation());
+        user.setBio(userBean.getBio());
+        user.setTotalPhotos(userBean.getTotal_photos());
+        user.setTotalLikes(userBean.getTotal_likes());
+        user.setTotalCollections(userBean.getTotal_collections());
+        return user;
+    }
 }

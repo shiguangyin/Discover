@@ -3,6 +3,7 @@ package com.masker.discover.user;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.os.Bundle;
 import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.design.widget.TabLayout;
@@ -230,12 +231,6 @@ public class UserInfoActivity extends BaseMvpActivity implements UserInfoContrac
         mUserType = getIntent().getIntExtra(KEY_USER_TYPE,USER_SELF);
     }
 
-    public static void start(Context context, User user,int userType) {
-        Intent intent = new Intent(context, UserInfoActivity.class);
-        intent.putExtra(KEY_USER, user);
-        intent.putExtra(KEY_USER_TYPE,userType);
-        context.startActivity(intent);
-    }
 
     @Override
     public void showError() {
@@ -322,5 +317,19 @@ public class UserInfoActivity extends BaseMvpActivity implements UserInfoContrac
                 }
                 break;
         }
+    }
+
+    public static void start(Context context, User user, int userType) {
+        Intent intent = new Intent(context, UserInfoActivity.class);
+        intent.putExtra(KEY_USER, user);
+        intent.putExtra(KEY_USER_TYPE,userType);
+        context.startActivity(intent);
+    }
+
+    public static void start(Context context, User user, int userType, Bundle bundle){
+        Intent intent = new Intent(context,UserInfoActivity.class);
+        intent.putExtra(KEY_USER,user);
+        intent.putExtra(KEY_USER_TYPE,userType);
+        context.startActivity(intent,bundle);
     }
 }
