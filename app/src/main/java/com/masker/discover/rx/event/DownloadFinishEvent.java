@@ -1,4 +1,4 @@
-package com.masker.discover.rxbus;
+package com.masker.discover.rx.event;
 
 /**
  * Author: masker

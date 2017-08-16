@@ -17,7 +17,7 @@ import com.masker.discover.global.Constans;
 import com.masker.discover.global.UserManager;
 import com.masker.discover.model.entity.PhotoListBean;
 import com.masker.discover.model.entity.User;
-import com.masker.discover.user.UserInfoActivity;
+import com.masker.discover.user.view.UserInfoActivity;
 import com.masker.discover.utils.ImgLoader;
 import com.masker.discover.utils.ScreenUtils;
 import com.masker.discover.utils.SpUtils;

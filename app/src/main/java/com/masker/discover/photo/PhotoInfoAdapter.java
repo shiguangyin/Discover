@@ -21,7 +21,7 @@ import com.masker.discover.global.UserManager;
 import com.masker.discover.model.entity.PhotoBean;
 import com.masker.discover.model.entity.TagBean;
 import com.masker.discover.model.entity.User;
-import com.masker.discover.user.UserInfoActivity;
+import com.masker.discover.user.view.UserInfoActivity;
 import com.masker.discover.utils.FormatUtils;
 import com.masker.discover.utils.ImgLoader;
 import com.masker.discover.utils.ScreenUtils;
@@ -144,9 +144,14 @@ public class PhotoInfoAdapter extends RecyclerView.Adapter<BaseViewHolder>{
                 = (PhotoBean.RelatedCollectionsBean.ResultsBean) mDatas.get(position);
         ImageView ivPhoto = holder.getView(R.id.iv_photo);
         int width = ScreenUtils.getScreenWidth(mContext);
-        int picWidth = data.getCover_photo().getWidth();
-        int picHeight = data.getCover_photo().getHeight();
-        int height = (width*picHeight)/picWidth;
+        PhotoBean.RelatedCollectionsBean.ResultsBean.CoverPhotoBean cover = data.getCover_photo();
+
+        int height = 600;
+        if(cover != null){
+            int picWidth = data.getCover_photo().getWidth();
+            int picHeight = data.getCover_photo().getHeight();
+            height  = (width*picHeight)/picWidth;
+        }
 
         RelativeLayout.LayoutParams lp = (RelativeLayout.LayoutParams) ivPhoto.getLayoutParams();
         lp.height = height;
@@ -157,16 +162,15 @@ public class PhotoInfoAdapter extends RecyclerView.Adapter<BaseViewHolder>{
                 int id = data.getId();
                 boolean curated = data.isCurated();
                 int total = data.getTotal_photos();
-                int width = data.getCover_photo().getWidth();
-                int height = data.getCover_photo().getHeight();
-                String url = data.getCover_photo().getUrls().getFull();
                 String title = data.getTitle();
-                CollectionDetailActivity.start(mContext,id,curated,total,height,width,url,title);
+                CollectionDetailActivity.start(mContext,id,curated,total,title);
             }
         });
 
-        String url = data.getCover_photo().getUrls().getRegular();
-        Glide.with(mContext).load(url).into(ivPhoto);
+        if(cover != null ){
+            String url = data.getCover_photo().getUrls().getRegular();
+            Glide.with(mContext).load(url).into(ivPhoto);
+        }
 
         CircleImageView ivAvatar = holder.getView(R.id.iv_avatar);
         String avatarUrl = data.getUser().getProfile_image().getLarge();

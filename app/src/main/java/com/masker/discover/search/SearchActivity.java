@@ -19,8 +19,8 @@ import android.widget.ImageView;
 
 import com.masker.discover.R;
 import com.masker.discover.base.BaseActivity;
-import com.masker.discover.rxbus.RxBus;
-import com.masker.discover.rxbus.SearchEvent;
+import com.masker.discover.rx.RxBus;
+import com.masker.discover.rx.event.SearchEvent;
 
 public class SearchActivity extends BaseActivity {
     public static final String SEARCH_KEY = "key";

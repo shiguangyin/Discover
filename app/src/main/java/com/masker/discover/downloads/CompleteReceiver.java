@@ -5,8 +5,8 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 
-import com.masker.discover.rxbus.DownloadFinishEvent;
-import com.masker.discover.rxbus.RxBus;
+import com.masker.discover.rx.event.DownloadFinishEvent;
+import com.masker.discover.rx.RxBus;
 
 /**
  * Author: masker

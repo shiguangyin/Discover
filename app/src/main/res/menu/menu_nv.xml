@@ -25,8 +25,5 @@
         android:title="About"
         android:icon="@drawable/ic_about_white_24dp"/>
 
-    <item android:id="@+id/item_exit"
-        android:title="@string/item_exit"
-        android:icon="@drawable/ic_exit_black_24dp"/>
 
 </menu>

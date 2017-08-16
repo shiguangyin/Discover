@@ -110,5 +110,25 @@
     <string name="title_downloading">Downloading</string>
     <string name="title_finished">Finished</string>
     <!--activity downloads end-->
+
+
+    <!--activity user start-->
+    <string name="unknown">Unknown</string>
+    <!--activity user end-->
+
+    <!--activity edit profile start-->
+    <string name="user_name">Username</string>
+    <string name="first_name">First name</string>
+    <string name="last_name">Last name</string>
+    <string name="email">Email</string>
+    <string name="personal_site">Personal site</string>
+    <string name="instagram_user_name">Instagram username</string>
+    <string name="location">Location</string>
+    <string name="biography">Biography</string>
+    <string name="save">Save</string>
+    <string name="edit_profile">Edit profile</string>
+    <string name="edit_success">Success</string>
+    <string name="edit_error">Error</string>
+    <!--activity edit profile end-->
 </resources>
 

@@ -1,4 +1,4 @@
-package com.masker.discover.rxbus;
+package com.masker.discover.rx.event;
 
 import com.masker.discover.model.entity.LikeResponseBean;
 

@@ -5,6 +5,7 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 
 import com.masker.discover.model.entity.User;
+import com.masker.discover.user.view.UserListFragment;
 
 /**
  * Author: masker
@@ -29,11 +30,11 @@ public class UserVpAdapter extends FragmentPagerAdapter{
     public Fragment getItem(int position) {
         switch (position){
             case 0:
-                return UserListFragment.newInstance(UserListFragment.TYPE_PHOTOS,mUser.getUserName());
+                return UserListFragment.newInstance(UserListFragment.TYPE_PHOTOS,mUser.getUserName(),mUser.getTotalPhotos());
             case 1:
-                return UserListFragment.newInstance(UserListFragment.TYPE_LIKES,mUser.getUserName());
+                return UserListFragment.newInstance(UserListFragment.TYPE_LIKES,mUser.getUserName(),mUser.getTotalLikes());
             default:
-                return UserListFragment.newInstance(UserListFragment.TYPE_COLLECTIONS,mUser.getUserName());
+                return UserListFragment.newInstance(UserListFragment.TYPE_COLLECTIONS,mUser.getUserName(),mUser.getTotalCollections());
         }
     }
 

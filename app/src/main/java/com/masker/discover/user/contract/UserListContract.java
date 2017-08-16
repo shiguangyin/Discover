@@ -1,4 +1,4 @@
-package com.masker.discover.user;
+package com.masker.discover.user.contract;
 
 import com.masker.discover.base.BaseView;
 import com.masker.discover.model.entity.CollectionListBean;
@@ -13,13 +13,13 @@ import java.util.List;
  */
 
 public class UserListContract {
-    interface View extends BaseView{
+    public interface View extends BaseView{
         void showPhotos(List<PhotoListBean> photos);
         void showLikedPhotos(List<PhotoListBean> photos);
         void showCollections(List<CollectionListBean> collections);
     }
 
-    interface Presenter{
+    public interface Presenter{
         void loadPhotos(String userName,int page,int perPage);
         void loadLikedPhotos(String userName,int page,int perPage);
         void loadCollections(String userName,int page,int perPage);

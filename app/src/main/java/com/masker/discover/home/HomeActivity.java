@@ -2,7 +2,9 @@ package com.masker.discover.home;
 
 import android.content.Context;
 import android.content.Intent;
+import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.NavigationView;
 import android.support.design.widget.TabLayout;
@@ -21,23 +23,27 @@ import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.masker.discover.R;
-import com.masker.discover.activity.SettingActivity;
-import com.masker.discover.downloads.DownloadsActivity;
-import com.masker.discover.global.UserManager;
 import com.masker.discover.activity.LoginActivity;
+import com.masker.discover.activity.SettingActivity;
 import com.masker.discover.base.BaseMvpActivity;
 import com.masker.discover.collection.CollectionFragment;
+import com.masker.discover.downloads.DownloadsActivity;
+import com.masker.discover.global.UserManager;
 import com.masker.discover.model.api.PhotoService;
 import com.masker.discover.model.entity.User;
 import com.masker.discover.photo.PhotoListFragment;
-import com.masker.discover.rxbus.ReOrderEvent;
-import com.masker.discover.rxbus.RxBus;
+import com.masker.discover.rx.RxBus;
+import com.masker.discover.rx.event.ProfileChangeEvent;
+import com.masker.discover.rx.event.ReOrderEvent;
 import com.masker.discover.search.SearchActivity;
 import com.masker.discover.tag.TagListFragment;
-import com.masker.discover.user.UserInfoActivity;
+import com.masker.discover.user.view.UserInfoActivity;
 import com.orhanobut.logger.Logger;
 
 import de.hdodenhof.circleimageview.CircleImageView;
+import rx.Subscription;
+import rx.functions.Action1;
+import rx.subscriptions.CompositeSubscription;
 
 public class HomeActivity extends BaseMvpActivity implements HomeContract.View,View.OnClickListener{
 
@@ -73,10 +79,28 @@ public class HomeActivity extends BaseMvpActivity implements HomeContract.View,V
     private HomePresenter mPrensenter;
     private User mUser;
 
+    private CompositeSubscription mSubscriptions =  new CompositeSubscription();
 
     @Override
     protected int getLayoutId() {
         return R.layout.activity_home;
+    }
+
+
+    @Override
+    protected void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        Subscription subscription = RxBus.toObservable(ProfileChangeEvent.class)
+                .subscribe(new Action1<ProfileChangeEvent>() {
+                    @Override
+                    public void call(ProfileChangeEvent profileChangeEvent) {
+                        Logger.i("onEvent");
+                        mTvBio.setText(profileChangeEvent.getInfo().getBio());
+                        mTvName.setText(profileChangeEvent.getInfo().getName());
+                        mTvEmail.setText(profileChangeEvent.getInfo().getEmail());
+                    }
+                });
+        mSubscriptions.add(subscription);
     }
 
     @Override
@@ -290,7 +314,7 @@ public class HomeActivity extends BaseMvpActivity implements HomeContract.View,V
         mRlUnLogin.setVisibility(View.GONE);
 
         mTvName.setVisibility(View.VISIBLE);
-        mTvName.setText(user.getUserName());
+        mTvName.setText(user.getName());
 
         mTvEmail.setVisibility(View.VISIBLE);
         mTvEmail.setText(user.getEmail());
@@ -315,6 +339,13 @@ public class HomeActivity extends BaseMvpActivity implements HomeContract.View,V
                     UserInfoActivity.start(this,mUser,UserInfoActivity.USER_SELF);
                 }
         }
+    }
+
+    @Override
+    protected void onDestroy() {
+        Logger.i("home activity destroy");
+        super.onDestroy();
+        mSubscriptions.clear();
     }
 
     public static void reStart(Context context){

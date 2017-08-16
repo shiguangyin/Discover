@@ -42,6 +42,7 @@ public class LoggingInterceptor implements Interceptor{
         Buffer buffer = source.buffer();
         String strRes = buffer.clone().readString(Charset.forName("UTF-8"));
         Logger.json(strRes);
+       // Log.i(TAG, "intercept: "+strRes);
 
 
 //        long t2 = System.nanoTime();

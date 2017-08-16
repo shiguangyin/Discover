@@ -1,4 +1,4 @@
-package com.masker.discover.user;
+package com.masker.discover.user.view;
 
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
@@ -7,11 +7,14 @@ import android.text.TextUtils;
 import android.view.View;
 
 import com.masker.discover.R;
+import com.masker.discover.base.BaseAdapter;
 import com.masker.discover.base.BaseMvpFragment;
 import com.masker.discover.collection.CollectionListAdapter;
 import com.masker.discover.model.entity.CollectionListBean;
 import com.masker.discover.model.entity.PhotoListBean;
 import com.masker.discover.photo.PhotoListAdapter;
+import com.masker.discover.user.contract.UserListContract;
+import com.masker.discover.user.presenter.UserListPresenter;
 import com.orhanobut.logger.Logger;
 import com.wang.avi.AVLoadingIndicatorView;
 
@@ -48,6 +51,7 @@ public class UserListFragment extends BaseMvpFragment implements UserListContrac
 
     private String mUserName;
     private int mPage = 1;
+    private int mTotal = 0;
 
     @Override
     protected void attach() {
@@ -77,7 +81,15 @@ public class UserListFragment extends BaseMvpFragment implements UserListContrac
             mCollectionAdapter = new CollectionListAdapter(mCollections,getContext());
             mRecyclerView.setAdapter(mCollectionAdapter);
         }
-
+        if(mTotal == 0){
+            if(mType == TYPE_COLLECTIONS){
+                Logger.i("1");
+                mCollectionAdapter.enableLoadMore(false);
+            }
+            else{
+                mPhotoAdapter.enableLoadMore(false);
+            }
+        }
     }
 
 
@@ -100,6 +112,33 @@ public class UserListFragment extends BaseMvpFragment implements UserListContrac
     }
 
     @Override
+    protected void initListeners() {
+        if(mPhotoAdapter != null){
+            mPhotoAdapter.setLoadMoreListener(new BaseAdapter.LoadMoreListener() {
+                @Override
+                public void onLoadMore() {
+                    if(mType == TYPE_PHOTOS){
+                        mPresenter.loadPhotos(mUserName,mPage,PER_PAGE);
+                    }
+                    else if(mType == TYPE_LIKES){
+                        mPresenter.loadPhotos(mUserName,mPage,PER_PAGE);
+                    }
+                }
+            });
+        }
+        if(mCollectionAdapter != null){
+            mCollectionAdapter.setLoadMoreListener(new BaseAdapter.LoadMoreListener() {
+                @Override
+                public void onLoadMore() {
+                    if(mType == TYPE_COLLECTIONS){
+                        mPresenter.loadCollections(mUserName,mPage,PER_PAGE);
+                    }
+                }
+            });
+        }
+    }
+
+    @Override
     public void showError() {
         Logger.e("error");
     }
@@ -112,22 +151,35 @@ public class UserListFragment extends BaseMvpFragment implements UserListContrac
     @Override
     public void showPhotos(List<PhotoListBean> photos) {
         mLoadingView.smoothToHide();
+        mPage++;
         mPhotos.addAll(photos);
+        if(mPhotos.size() >= mTotal){
+            mPhotoAdapter.enableLoadMore(false);
+        }
         mPhotoAdapter.notifyDataSetChanged();
     }
 
     @Override
     public void showLikedPhotos(List<PhotoListBean> photos) {
         mLoadingView.smoothToHide();
+        mPage++;
         mPhotos.addAll(photos);
+        if(mPhotos.size() >= mTotal){
+            mPhotoAdapter.enableLoadMore(false);
+        }
         mPhotoAdapter.notifyDataSetChanged();
     }
 
     @Override
     public void showCollections(List<CollectionListBean> collections) {
         mLoadingView.smoothToHide();
+        mPage++;
         mCollections.addAll(collections);
+        if(mCollections.size() >= mTotal){
+            mCollectionAdapter.enableLoadMore(false);
+        }
         mCollectionAdapter.notifyDataSetChanged();
+
     }
 
 
@@ -135,12 +187,14 @@ public class UserListFragment extends BaseMvpFragment implements UserListContrac
     protected void handleArgs(Bundle args) {
         mType = args.getInt("type",TYPE_PHOTOS);
         mUserName = args.getString("userName",null);
+        mTotal = args.getInt("total");
     }
 
-    public static UserListFragment newInstance(int type,String userName){
+    public static UserListFragment newInstance(int type,String userName,int total){
         Bundle args = new Bundle();
         args.putInt("type",type);
         args.putString("userName",userName);
+        args.putInt("total",total);
         UserListFragment fragment = new UserListFragment();
         fragment.setArguments(args);
         return fragment;

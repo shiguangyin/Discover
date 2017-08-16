@@ -1,4 +1,4 @@
-package com.masker.discover.user;
+package com.masker.discover.user.presenter;
 
 import android.support.annotation.NonNull;
 
@@ -7,6 +7,7 @@ import com.masker.discover.model.api.UserService;
 import com.masker.discover.model.entity.UserInfoBean;
 import com.masker.discover.model.http.HttpClient;
 import com.masker.discover.model.repository.UserRepository;
+import com.masker.discover.user.contract.UserInfoContract;
 import com.orhanobut.logger.Logger;
 
 import okhttp3.ResponseBody;

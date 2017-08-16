@@ -1,4 +1,4 @@
-package com.masker.discover.user;
+package com.masker.discover.user.view;
 
 import android.content.Context;
 import android.content.DialogInterface;
@@ -27,6 +27,9 @@ import com.masker.discover.global.UserManager;
 import com.masker.discover.home.HomeActivity;
 import com.masker.discover.model.entity.User;
 import com.masker.discover.model.entity.UserInfoBean;
+import com.masker.discover.user.contract.UserInfoContract;
+import com.masker.discover.user.presenter.UserInfoPresenter;
+import com.masker.discover.user.UserVpAdapter;
 import com.masker.discover.utils.ImgLoader;
 import com.masker.discover.utils.ShareUtils;
 import com.orhanobut.logger.Logger;
@@ -131,20 +134,9 @@ public class UserInfoActivity extends BaseMvpActivity implements UserInfoContrac
 
     @Override
     protected void initListeners() {
-        mAppBar.addOnOffsetChangedListener(new AppBarLayout.OnOffsetChangedListener() {
-            @Override
-            public void onOffsetChanged(AppBarLayout appBarLayout, int verticalOffset) {
-                if(verticalOffset <= ((-mRlHeader.getHeight()/3)*2)){
-                    mCollapsingToolbarLayout.setTitle(mUser.getName());
-                }
-                else{
-                    mCollapsingToolbarLayout.setTitle("");
-                }
-            }
-        });
-
+        mCollapsingToolbarLayout.setTitle(mUser.getName());
         mRlFocus.setOnClickListener(this);
-
+        mBtnEdit.setOnClickListener(this);
     }
 
     @Override
@@ -152,7 +144,6 @@ public class UserInfoActivity extends BaseMvpActivity implements UserInfoContrac
         if (mUser != null) {
             ImgLoader.loadAvator(this, mUser.getAvatorUrl(), mIvAvatar);
             ImgLoader.loadBlurBackgroud(this,mUser.getAvatorUrl(),mRlHeader);
-            mTvName.setText(mUser.getName());
             if(TextUtils.isEmpty(mUser.getLocation())){
                 mTvLocation.setText("Unknown");
             }
@@ -289,12 +280,16 @@ public class UserInfoActivity extends BaseMvpActivity implements UserInfoContrac
         }
         ImgLoader.loadAvator(this, infoBean.getProfile_image().getLarge(), mIvAvatar);
         ImgLoader.loadBlurBackgroud(this,infoBean.getProfile_image().getSmall(),mRlHeader);
-        mTvName.setText(infoBean.getName());
-        mTvLocation.setText(infoBean.getLocation());
+        //mTvName.setText(infoBean.getName());
+        if(TextUtils.isEmpty(infoBean.getLocation())){
+           mTvLocation.setText(getString(R.string.unknown));
+        }
+        else{
+            mTvLocation.setText(infoBean.getLocation());
+        }
         mTabLayout.getTabAt(0).setText(infoBean.getTotal_photos()+" PHOTOS");
         mTabLayout.getTabAt(1).setText(infoBean.getTotal_likes()+" LIKES");
         mTabLayout.getTabAt(2).setText(infoBean.getTotal_collections()+" COLLECTIONS");
-
         mFollowersCount = infoBean.getFollowers_count();
         mTvFollowers.setText("Followers "+infoBean.getFollowers_count());
         mTvFollowing.setText("Following "+infoBean.getFollowing_count());
@@ -316,6 +311,37 @@ public class UserInfoActivity extends BaseMvpActivity implements UserInfoContrac
                     mPresenter.deleteFollow(mUser.getUserName());
                 }
                 break;
+            case R.id.btn_edit:
+                EditProfileActivity.start(this,mUserInfoBean);
+                break;
+        }
+    }
+
+    private void update(){
+        mCollapsingToolbarLayout.setTitle(mUserInfoBean.getName());
+        if(TextUtils.isEmpty(mUserInfoBean.getLocation())){
+            mTvLocation.setText(getString(R.string.unknown));
+        }
+        else{
+            mTvLocation.setText(mUserInfoBean.getLocation());
+        }
+    }
+
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode,resultCode,data);
+        if(requestCode == EditProfileActivity.CODE){
+            if(resultCode == RESULT_OK){
+                UserInfoBean bean = data.getParcelableExtra(EditProfileActivity.KEY_USER);
+                if(bean != null){
+                    mUserInfoBean = bean;
+                    update();
+                }
+            }
+        }
+        else{
+            super.onActivityResult(requestCode, resultCode, data);
         }
     }
 

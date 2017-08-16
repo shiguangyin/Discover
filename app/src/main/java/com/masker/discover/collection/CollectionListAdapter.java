@@ -12,7 +12,7 @@ import com.masker.discover.base.BaseViewHolder;
 import com.masker.discover.global.UserManager;
 import com.masker.discover.model.entity.CollectionListBean;
 import com.masker.discover.model.entity.User;
-import com.masker.discover.user.UserInfoActivity;
+import com.masker.discover.user.view.UserInfoActivity;
 import com.masker.discover.utils.ImgLoader;
 import com.masker.discover.utils.ScreenUtils;
 
@@ -41,27 +41,28 @@ public class CollectionListAdapter extends BaseAdapter<CollectionListBean> {
     public void convert(BaseViewHolder holder, final int position, final CollectionListBean data) {
         ImageView ivPhoto = holder.getView(R.id.iv_photo);
         int width = ScreenUtils.getScreenWidth(mContext);
-        int picWidth = data.getCover_photo().getWidth();
-        int picHeight = data.getCover_photo().getHeight();
-        int height = (width*picHeight)/picWidth;
-
+        CollectionListBean.CoverPhotoBean cover = data.getCover_photo();
+        int height = 600;
+        if(cover != null){
+            int picWidth = data.getCover_photo().getWidth();
+            int picHeight = data.getCover_photo().getHeight();
+            height = (width*picHeight)/picWidth;
+        }
         RelativeLayout.LayoutParams lp = (RelativeLayout.LayoutParams) ivPhoto.getLayoutParams();
         lp.height = height;
         ivPhoto.setLayoutParams(lp);
-
-        String url = data.getCover_photo().getUrls().getRegular();
-        String color = data.getCover_photo().getColor();
-        ImgLoader.loadWithColor(mContext,url,ivPhoto,color);
+        if(cover != null){
+            String url = cover.getUrls().getRegular();
+            String color = cover.getColor();
+            ImgLoader.loadWithColor(mContext,url,ivPhoto,color);
+        }
         holder.getItemView().setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 int id = data.getId();
                 int total = data.getTotal_photos();
-                int height = data.getCover_photo().getHeight();
-                int width = data.getCover_photo().getWidth();
-                String url = data.getCover_photo().getUrls().getRegular();
                 String title =  data.getTitle();
-                CollectionDetailActivity.start(mContext,id,data.isCurated(),total,height,width,url,title);
+                CollectionDetailActivity.start(mContext,id,data.isCurated(),total,title);
             }
         });
 

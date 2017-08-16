@@ -11,6 +11,7 @@ import retrofit2.Call;
 import retrofit2.http.DELETE;
 import retrofit2.http.GET;
 import retrofit2.http.POST;
+import retrofit2.http.PUT;
 import retrofit2.http.Path;
 import retrofit2.http.Query;
 import rx.Observable;
@@ -25,6 +26,17 @@ public interface UserService {
 
     @GET("/me")
     Observable<UserInfoBean> getMyInfo();
+
+
+    @PUT("/me")
+    Observable<UserInfoBean> updateMyInfo(@Query("username")String userName,
+                                          @Query("first_name")String firstName,
+                                          @Query("last_name")String lastName,
+                                          @Query("email")String email,
+                                          @Query("url")String url,
+                                          @Query("location")String location,
+                                          @Query("bio")String bio,
+                                          @Query("instagram_username")String instagramUsername);
 
     @GET("/users/{username}")
     Observable<UserInfoBean> getUserInfo(@Path("username")String userName);

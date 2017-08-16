@@ -48,9 +48,6 @@ public class CollectionDetailActivity extends BaseMvpActivity
     private int mId;
     private boolean mIsCurated;
     private int mTotalCount;
-    private int mImgHeight;
-    private int mImgWidth;
-    private String mImgUrl;
     private String mTitle;
 
     private Toolbar mToolbar;
@@ -216,22 +213,15 @@ public class CollectionDetailActivity extends BaseMvpActivity
         mId = intent.getIntExtra(ID,-1);
         mIsCurated = intent.getBooleanExtra(CURATED,false);
         mTotalCount = intent.getIntExtra(TOTAL,0);
-        mImgHeight = intent.getIntExtra(HEIGHT,0);
-        mImgWidth = intent.getIntExtra(WIDTH,0);
-        mImgUrl = intent.getStringExtra(IMG_URL);
         mTitle = intent.getStringExtra(TITLE);
 
     }
 
-    public static void start(Context context, int id,boolean curated,int total,
-                             int height,int width,String url,String title){
+    public static void start(Context context, int id,boolean curated,int total,String title){
         Intent intent = new Intent(context,CollectionDetailActivity.class);
         intent.putExtra(ID,id);
         intent.putExtra(CURATED,curated);
         intent.putExtra(TOTAL,total);
-        intent.putExtra(HEIGHT,height);
-        intent.putExtra(WIDTH,width);
-        intent.putExtra(IMG_URL,url);
         intent.putExtra(TITLE,title);
         context.startActivity(intent);
     }

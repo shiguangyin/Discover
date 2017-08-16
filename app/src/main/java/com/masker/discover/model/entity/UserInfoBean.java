@@ -34,6 +34,19 @@ public class UserInfoBean implements Parcelable {
     private String instagram_username;
     private String email;
     private LinksBean links;
+    private String portfolio_url;
+
+    public String getPortfolio_url() {
+        return portfolio_url;
+    }
+
+    public void setPortfolio_url(String portfolio_url) {
+        this.portfolio_url = portfolio_url;
+    }
+
+    public static Creator<UserInfoBean> getCREATOR() {
+        return CREATOR;
+    }
 
     public String getUid() {
         return uid;

@@ -13,8 +13,8 @@ import android.view.View;
 import com.masker.discover.R;
 import com.masker.discover.base.BaseFragment;
 import com.masker.discover.global.Constans;
-import com.masker.discover.rxbus.DownloadFinishEvent;
-import com.masker.discover.rxbus.RxBus;
+import com.masker.discover.rx.event.DownloadFinishEvent;
+import com.masker.discover.rx.RxBus;
 
 import java.io.File;
 import java.util.ArrayList;

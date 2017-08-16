@@ -27,6 +27,14 @@ public class UserRepository {
                 .getMyInfo();
     }
 
+
+    public static Observable<UserInfoBean> updateMyInfo(String userName, String firstName, String lastName,
+                                                        String email, String url, String location, String bio, String instagramUsername){
+        return HttpClient.getClient()
+                .create(UserService.class)
+                .updateMyInfo(userName,firstName,lastName,email,url,location,bio,instagramUsername);
+    }
+
     public static Observable<UserInfoBean> getUserInfo(String userName){
         return HttpClient.getClient()
                 .create(UserService.class)
@@ -51,5 +59,7 @@ public class UserRepository {
                 .create(UserService.class)
                 .getUserCollections(userName,page,perPage);
     }
+
+
 
 }

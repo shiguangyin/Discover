@@ -1,4 +1,4 @@
-package com.masker.discover.user;
+package com.masker.discover.user.presenter;
 
 import android.support.annotation.NonNull;
 
@@ -6,6 +6,8 @@ import com.masker.discover.base.BasePresenter;
 import com.masker.discover.model.entity.CollectionListBean;
 import com.masker.discover.model.entity.PhotoListBean;
 import com.masker.discover.model.repository.UserRepository;
+import com.masker.discover.user.contract.UserListContract;
+import com.orhanobut.logger.Logger;
 
 import java.util.List;
 
@@ -40,7 +42,7 @@ public class UserListPresenter extends BasePresenter<UserListContract.View> impl
                 }, new Action1<Throwable>() {
                     @Override
                     public void call(Throwable throwable) {
-
+                        Logger.i(throwable.getMessage());
                     }
                 });
         mSubscriptions.add(subscription);
@@ -59,7 +61,7 @@ public class UserListPresenter extends BasePresenter<UserListContract.View> impl
                 }, new Action1<Throwable>() {
                     @Override
                     public void call(Throwable throwable) {
-
+                        Logger.i(throwable.getMessage());
                     }
                 });
         mSubscriptions.add(subscription);
@@ -67,6 +69,7 @@ public class UserListPresenter extends BasePresenter<UserListContract.View> impl
 
     @Override
     public void loadCollections(String userName, int page, int perPage) {
+        Logger.i("userName = "+userName+"  page = "+page+"  perPage "+perPage);
         Subscription subscription = UserRepository.getUserCollections(userName,page,perPage)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
@@ -78,7 +81,7 @@ public class UserListPresenter extends BasePresenter<UserListContract.View> impl
                 }, new Action1<Throwable>() {
                     @Override
                     public void call(Throwable throwable) {
-
+                        Logger.i(throwable.getMessage());
                     }
                 });
     }

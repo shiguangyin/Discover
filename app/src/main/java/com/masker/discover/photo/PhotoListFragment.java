@@ -18,9 +18,9 @@ import com.masker.discover.global.UserManager;
 import com.masker.discover.model.api.PhotoService;
 import com.masker.discover.model.entity.LikeResponseBean;
 import com.masker.discover.model.entity.PhotoListBean;
-import com.masker.discover.rxbus.LikeEvent;
-import com.masker.discover.rxbus.ReOrderEvent;
-import com.masker.discover.rxbus.RxBus;
+import com.masker.discover.rx.event.LikeEvent;
+import com.masker.discover.rx.event.ReOrderEvent;
+import com.masker.discover.rx.RxBus;
 
 import java.util.ArrayList;
 import java.util.List;

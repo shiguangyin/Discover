@@ -1,6 +1,4 @@
-package com.masker.discover.rxbus;
-
-import android.text.style.TtsSpan;
+package com.masker.discover.rx;
 
 import rx.Observable;
 import rx.subjects.PublishSubject;

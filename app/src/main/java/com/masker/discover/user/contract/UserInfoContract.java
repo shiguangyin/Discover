@@ -1,4 +1,4 @@
-package com.masker.discover.user;
+package com.masker.discover.user.contract;
 
 import com.masker.discover.base.BaseView;
 import com.masker.discover.model.entity.UserInfoBean;
@@ -10,12 +10,12 @@ import com.masker.discover.model.entity.UserInfoBean;
  */
 
 public class UserInfoContract {
-    interface View extends BaseView{
+    public interface View extends BaseView{
         void showMyInfo(UserInfoBean infoBean);
         void showUserInfo(UserInfoBean infoBean);
         void showFollowStatusChange();
     }
-    interface Presenter{
+    public interface Presenter{
         void loadMyInfo();
         void loadUserInfo(String userName);
         void followUser(String userName);
