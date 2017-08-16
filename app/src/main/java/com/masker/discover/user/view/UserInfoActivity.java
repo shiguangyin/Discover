@@ -22,14 +22,15 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.masker.discover.R;
+import com.masker.discover.activity.LoginActivity;
 import com.masker.discover.base.BaseMvpActivity;
 import com.masker.discover.global.UserManager;
 import com.masker.discover.home.HomeActivity;
 import com.masker.discover.model.entity.User;
 import com.masker.discover.model.entity.UserInfoBean;
+import com.masker.discover.user.UserVpAdapter;
 import com.masker.discover.user.contract.UserInfoContract;
 import com.masker.discover.user.presenter.UserInfoPresenter;
-import com.masker.discover.user.UserVpAdapter;
 import com.masker.discover.utils.ImgLoader;
 import com.masker.discover.utils.ShareUtils;
 import com.orhanobut.logger.Logger;
@@ -278,8 +279,8 @@ public class UserInfoActivity extends BaseMvpActivity implements UserInfoContrac
         if(isFollowedByUser != infoBean.isFollowed_by_user()){
             showFollowStatusChange();
         }
-        ImgLoader.loadAvator(this, infoBean.getProfile_image().getLarge(), mIvAvatar);
-        ImgLoader.loadBlurBackgroud(this,infoBean.getProfile_image().getSmall(),mRlHeader);
+//        ImgLoader.loadAvator(this, infoBean.getProfile_image().getLarge(), mIvAvatar);
+//        ImgLoader.loadBlurBackgroud(this,infoBean.getProfile_image().getSmall(),mRlHeader);
         //mTvName.setText(infoBean.getName());
         if(TextUtils.isEmpty(infoBean.getLocation())){
            mTvLocation.setText(getString(R.string.unknown));
@@ -299,16 +300,21 @@ public class UserInfoActivity extends BaseMvpActivity implements UserInfoContrac
     public void onClick(View view) {
         switch (view.getId()){
             case R.id.rl_focus:
-                if(mPbFocus.getVisibility() == View.VISIBLE){
-                    return ;
-                }
-                mIvFocus.setVisibility(View.GONE);
-                mPbFocus.setVisibility(View.VISIBLE);
-                if(!isFollowedByUser){
-                    mPresenter.followUser(mUser.getUserName());
+                if(UserManager.getInstance().isLogin()){
+                    if(mPbFocus.getVisibility() == View.VISIBLE){
+                        return ;
+                    }
+                    mIvFocus.setVisibility(View.GONE);
+                    mPbFocus.setVisibility(View.VISIBLE);
+                    if(!isFollowedByUser){
+                        mPresenter.followUser(mUser.getUserName());
+                    }
+                    else{
+                        mPresenter.deleteFollow(mUser.getUserName());
+                    }
                 }
                 else{
-                    mPresenter.deleteFollow(mUser.getUserName());
+                    startActivity(new Intent(UserInfoActivity.this, LoginActivity.class));
                 }
                 break;
             case R.id.btn_edit:

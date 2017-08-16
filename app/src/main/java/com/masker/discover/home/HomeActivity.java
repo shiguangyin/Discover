@@ -23,6 +23,7 @@ import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.masker.discover.R;
+import com.masker.discover.activity.AboutActivity;
 import com.masker.discover.activity.LoginActivity;
 import com.masker.discover.activity.SettingActivity;
 import com.masker.discover.base.BaseMvpActivity;
@@ -138,6 +139,9 @@ public class HomeActivity extends BaseMvpActivity implements HomeContract.View,V
                         break;
                     case R.id.item_settings:
                         startActivity(new Intent(HomeActivity.this, SettingActivity.class));
+                        break;
+                    case R.id.item_about:
+                        startActivity(new Intent(HomeActivity.this, AboutActivity.class));
                         break;
                     default:
                         break;

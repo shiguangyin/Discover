@@ -130,5 +130,9 @@
     <string name="edit_success">Success</string>
     <string name="edit_error">Error</string>
     <!--activity edit profile end-->
+
+    <string name="developer">Developer</string>
+    <string name="about">About</string>
+    <string name="libs">Libraries</string>
 </resources>
 

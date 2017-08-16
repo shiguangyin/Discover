@@ -15,4 +15,6 @@
 
     <color name="color_translucent">#FFFFFFFF</color>
 
+    <color name="color_divider">#444444</color>
+
 </resources>

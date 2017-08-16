@@ -56,4 +56,25 @@ N
         <item name="android:textStyle">bold</item>
     </style>
 
+    <style name="LibTitleStyle">
+        <item name="android:textSize">18sp</item>
+        <item name="android:textColor">@color/color_text_white</item>
+        <item name="android:layout_marginStart">20dp</item>
+        <item name="android:layout_marginEnd">20dp</item>
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+    </style>
+
+    <style name="LibDescStyle">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_marginStart">20dp</item>
+        <item name="android:layout_marginEnd">20dp</item>
+        <item name="android:layout_marginTop">5dp</item>
+        <item name="android:textSize">16sp</item>
+        <item name="android:textColor">@color/color_text_white</item>
+
+
+    </style>
+
 </resources>

@@ -56,6 +56,7 @@
         <activity android:name=".activity.SettingActivity"/>
         <activity android:name=".downloads.DownloadsActivity"/>
         <activity android:name=".user.view.EditProfileActivity"/>
+        <activity android:name=".activity.AboutActivity"/>
 
         <receiver android:name=".downloads.CompleteReceiver">
             <intent-filter>

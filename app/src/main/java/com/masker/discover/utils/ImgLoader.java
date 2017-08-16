@@ -31,7 +31,7 @@ public class ImgLoader {
 
 
     public static void loadAvator(Context context, String url, ImageView iv){
-        Glide.with(context).load(url).dontAnimate().into(iv);
+        Glide.with(context).load(url).placeholder(R.drawable.ic_unlogin_white_24dp).dontAnimate().into(iv);
     }
 
     public static void loadBlurBackgroud(Context context, String url, final View view){

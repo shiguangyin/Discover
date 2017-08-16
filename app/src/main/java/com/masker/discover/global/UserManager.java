@@ -9,6 +9,7 @@ import com.masker.discover.model.entity.PhotoBean;
 import com.masker.discover.model.entity.PhotoListBean;
 import com.masker.discover.model.entity.User;
 import com.masker.discover.model.entity.UserInfoBean;
+import com.masker.discover.model.entity.UserListBean;
 import com.masker.discover.utils.SpUtils;
 import com.orhanobut.logger.Logger;
 
@@ -190,6 +191,19 @@ public class UserManager {
 
 
     public User transform(PhotoBean.UserBeanXX userBean) {
+        User user = new User();
+        user.setName(userBean.getName());
+        user.setUserName(userBean.getUsername());
+        user.setAvatorUrl(userBean.getProfile_image().getLarge());
+        user.setLocation(userBean.getLocation());
+        user.setBio(userBean.getBio());
+        user.setTotalPhotos(userBean.getTotal_photos());
+        user.setTotalLikes(userBean.getTotal_likes());
+        user.setTotalCollections(userBean.getTotal_collections());
+        return user;
+    }
+
+    public static User transform(UserListBean userBean) {
         User user = new User();
         user.setName(userBean.getName());
         user.setUserName(userBean.getUsername());

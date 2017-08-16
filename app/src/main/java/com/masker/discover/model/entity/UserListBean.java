@@ -33,9 +33,9 @@ public class UserListBean {
     private String name;
     private String first_name;
     private String last_name;
-    private Object portfolio_url;
+    private String portfolio_url;
     private String bio;
-    private Object location;
+    private String location;
     private boolean followed_by_user;
     private int total_likes;
     private int total_photos;
@@ -92,13 +92,6 @@ public class UserListBean {
         this.last_name = last_name;
     }
 
-    public Object getPortfolio_url() {
-        return portfolio_url;
-    }
-
-    public void setPortfolio_url(Object portfolio_url) {
-        this.portfolio_url = portfolio_url;
-    }
 
     public String getBio() {
         return bio;
@@ -108,11 +101,19 @@ public class UserListBean {
         this.bio = bio;
     }
 
-    public Object getLocation() {
+    public String getPortfolio_url() {
+        return portfolio_url;
+    }
+
+    public void setPortfolio_url(String portfolio_url) {
+        this.portfolio_url = portfolio_url;
+    }
+
+    public String getLocation() {
         return location;
     }
 
-    public void setLocation(Object location) {
+    public void setLocation(String location) {
         this.location = location;
     }
 
