@@ -61,8 +61,10 @@
             android:id="@+id/loading_view"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_centerInParent="true"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="100dp"
             app:indicatorName="LineScalePulseOutIndicator"/>
+
     </RelativeLayout>
 
     <com.github.clans.fab.FloatingActionMenu
@@ -88,7 +90,9 @@
             app:fab_progress_color="@color/colorAccent"
             app:fab_colorNormal="@color/colorPrimary"
             app:fab_colorPressed="@color/colorPrimaryDark"
-            app:fab_label="Like" />
+            app:fab_label="Like"
+            app:fab_size="mini"
+            />
 
         <com.github.clans.fab.FloatingActionButton
             android:id="@+id/fab_info"
@@ -97,7 +101,9 @@
             android:src="@drawable/ic_info_outline_white_24dp"
             app:fab_colorNormal="@color/colorPrimary"
             app:fab_colorPressed="@color/colorPrimaryDark"
-            app:fab_label="Exif"/>
+            app:fab_label="Exif"
+            app:fab_size="mini"
+            />
 
         <com.github.clans.fab.FloatingActionButton
             android:id="@+id/fab_wallpaper"
@@ -106,7 +112,8 @@
             android:src="@drawable/ic_wallpaper_white_24dp"
             app:fab_colorNormal="@color/colorPrimary"
             app:fab_colorPressed="@color/colorPrimaryDark"
-            app:fab_label="SetWallPaper" />
+            app:fab_label="SetWallPaper"
+            app:fab_size="mini"/>
 
         <com.github.clans.fab.FloatingActionButton
             android:id="@+id/fab_download"
@@ -115,8 +122,21 @@
             android:src="@drawable/ic_download_white_20dp"
             app:fab_colorNormal="@color/colorPrimary"
             app:fab_colorPressed="@color/colorPrimaryDark"
-            app:fab_label="Download"/>
+            app:fab_label="Download"
+            app:fab_size="mini"
+            />
     </com.github.clans.fab.FloatingActionMenu>
+
+    <ProgressBar
+        android:id="@+id/progress_bar"
+        android:indeterminateOnly="true"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        style="@style/Widget.AppCompat.ProgressBar.Horizontal"
+        android:visibility="gone"
+        android:layout_gravity="bottom"
+        />
 
 
 </android.support.design.widget.CoordinatorLayout>

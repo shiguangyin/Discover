@@ -4,15 +4,19 @@ import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.animation.AnimatorSet;
 import android.animation.ObjectAnimator;
+import android.app.WallpaperManager;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Environment;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.ActivityOptionsCompat;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
+import android.support.v4.content.FileProvider;
 import android.support.v7.app.ActionBar;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -24,8 +28,13 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.OvershootInterpolator;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
+import com.bumptech.glide.request.animation.GlideAnimation;
+import com.bumptech.glide.request.target.SimpleTarget;
+import com.bumptech.glide.request.target.Target;
 import com.github.clans.fab.FloatingActionButton;
 import com.github.clans.fab.FloatingActionMenu;
 import com.masker.discover.R;
@@ -39,16 +48,25 @@ import com.masker.discover.global.UserManager;
 import com.masker.discover.model.entity.LikeResponseBean;
 import com.masker.discover.model.entity.PhotoBean;
 import com.masker.discover.model.entity.TagBean;
-import com.masker.discover.rx.event.LikeEvent;
 import com.masker.discover.rx.RxBus;
+import com.masker.discover.rx.RxTransformer;
+import com.masker.discover.rx.event.LikeEvent;
+import com.masker.discover.utils.FileUtils;
+import com.masker.discover.utils.ImgLoader;
 import com.masker.discover.utils.ScreenUtils;
 import com.masker.discover.utils.ShareUtils;
 import com.masker.discover.utils.SpUtils;
 import com.masker.discover.widget.PhotoExifDialog;
+import com.orhanobut.logger.Logger;
 import com.wang.avi.AVLoadingIndicatorView;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
+
+import rx.Observable;
+import rx.Subscriber;
+import rx.functions.Action1;
 
 
 /**
@@ -75,8 +93,10 @@ public class PhotoInfoActivity extends BaseMvpActivity implements PhotoInfoContr
     private FloatingActionButton mFabLike;
     private FloatingActionButton mFabInfo;
     private FloatingActionButton mFabDownload;
+    private FloatingActionButton mFabWallPaper;
 
     private AVLoadingIndicatorView mLoadingView;
+    private ProgressBar mProgressBar;
     private RecyclerView mRecyclerView;
     private List<Object> mDatas;
     private PhotoInfoAdapter mAdapter;
@@ -111,7 +131,7 @@ public class PhotoInfoActivity extends BaseMvpActivity implements PhotoInfoContr
         }
         mIvPhoto = bind(R.id.iv_photo);
         resetSize();
-        Glide.with(this).load(mImgUrl).into(mIvPhoto);
+        ImgLoader.loadDontAnimate(this,mImgUrl,mIvPhoto);
 
         mActionMenu = bind(R.id.fab_menu);
         mActionMenu.setClosedOnTouchOutside(true);
@@ -119,15 +139,15 @@ public class PhotoInfoActivity extends BaseMvpActivity implements PhotoInfoContr
         mFabLike = bind(R.id.fab_like);
         mFabInfo = bind(R.id.fab_info);
         mFabDownload = bind(R.id.fab_download);
+        mFabWallPaper = bind(R.id.fab_wallpaper);
 
         mLoadingView = bind(R.id.loading_view);
-        mLoadingView.smoothToShow();
+        mProgressBar = bind(R.id.progress_bar);
         mRecyclerView = bind(R.id.recycler_view);
         mDatas = new ArrayList<>();
         mAdapter = new PhotoInfoAdapter(this,mDatas);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
         mRecyclerView.setAdapter(mAdapter);
-
     }
 
     @Override
@@ -200,11 +220,77 @@ public class PhotoInfoActivity extends BaseMvpActivity implements PhotoInfoContr
                 mActionMenu.close(true);
             }
         });
+        mFabWallPaper.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                mActionMenu.close(true);
+                if(mPhotoBean != null){
+                    Logger.i(" wallpaper click");
+                    String url = null;
+                    String quality  = SpUtils.getString(Constans.SP_SETTINGS,
+                            getString(R.string.key_wallpaper_quality));
+                    PhotoBean.UrlsBean urlsBean = mPhotoBean.getUrls();
+                    if(TextUtils.isEmpty(quality) || quality.equals(Constans.REGULAR)){
+                        quality = Constans.REGULAR;
+                        url = urlsBean.getRegular();
+                    }
+                    else if(quality.equals(Constans.RAW)){
+                        url = urlsBean.getRaw();
+                    }
+                    else if(quality.equals(Constans.FULL)){
+                        url = urlsBean.getFull();
+                    }
+                    else if(quality.equals(Constans.SMALL)){
+                        url = urlsBean.getSmall();
+                    }
+                    else{
+                        url = urlsBean.getThumb();
+                    }
+                    final String name = mPhotoBean.getId()+"_"+quality+".jpg";
+                    mProgressBar.setVisibility(View.VISIBLE);
+                    Glide.with(PhotoInfoActivity.this).load(url)
+                            .asBitmap()
+                            .diskCacheStrategy(DiskCacheStrategy.NONE)
+                            .into(new SimpleTarget<Bitmap>(Target.SIZE_ORIGINAL,Target.SIZE_ORIGINAL) {
+                                @Override
+                                public void onResourceReady(final Bitmap resource, GlideAnimation<? super Bitmap> glideAnimation) {
+                                    Logger.i("ready");
+                                    mProgressBar.setVisibility(View.GONE);
+                                    final Bitmap.CompressFormat format = Bitmap.CompressFormat.JPEG;
+                                    final File imgFile = new File(Environment.getExternalStorageDirectory(),Constans.DOWNLOAD_DIR+File.separator+"wallpaper"+
+                                            File.separator+name);
+                                    final Uri contentUri = FileProvider.getUriForFile(App.getApp(), getApplicationContext().getPackageName() + ".provider", imgFile);
+                                    Observable.create(new Observable.OnSubscribe<Boolean>() {
+                                        @Override
+                                        public void call(Subscriber<? super Boolean> subscriber) {
+                                            boolean success = FileUtils.saveBitmap(resource,imgFile, format);
+                                            subscriber.onNext(success);
+                                        }
+                                    }).compose(RxTransformer.<Boolean>ioMain())
+                                    .subscribe(new Action1<Boolean>() {
+                                        @Override
+                                        public void call(Boolean aBoolean) {
+                                            if(aBoolean == true){
+                                                Logger.i("true");
+                                                Intent intent = WallpaperManager.getInstance(PhotoInfoActivity.this)
+                                                        .getCropAndSetWallpaperIntent(contentUri);
+                                                startActivity(intent);
+                                                mProgressBar.setVisibility(View.GONE);
+                                            }
+                                        }
+                                    });
+                                }
+                            });
+
+                }
+            }
+        });
 
     }
 
     @Override
     protected void initData() {
+        mLoadingView.smoothToShow();
         mPresenter.loadPhotoInfo(mId);
     }
 
@@ -394,4 +480,5 @@ public class PhotoInfoActivity extends BaseMvpActivity implements PhotoInfoContr
             mFabLike.setLabelText(getString(R.string.like));
         }
     }
+
 }
