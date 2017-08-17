@@ -49,13 +49,26 @@ public class ImgLoader {
     }
 
 
-    public static void loadAvator(Context context, String url, ImageView iv){
+    public static void loadAvatar(Context context, String url, ImageView iv){
         Glide.with(context)
                 .load(url)
                 .diskCacheStrategy(DiskCacheStrategy.SOURCE)
                 .placeholder(R.drawable.ic_unlogin_white_24dp)
                 .dontAnimate()
                 .into(iv);
+    }
+
+    public static void loadAvatar(Context context,String url,ImageView iv,boolean usePlaceholder){
+        if(usePlaceholder){
+            loadAvatar(context,url,iv);
+        }
+        else{
+            Glide.with(context)
+                    .load(url)
+                    .diskCacheStrategy(DiskCacheStrategy.SOURCE)
+                    .dontAnimate()
+                    .into(iv);
+        }
     }
 
 

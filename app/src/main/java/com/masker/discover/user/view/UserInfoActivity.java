@@ -143,7 +143,7 @@ public class UserInfoActivity extends BaseMvpActivity implements UserInfoContrac
     @Override
     protected void initData() {
         if (mUser != null) {
-            ImgLoader.loadAvator(this, mUser.getAvatorUrl(), mIvAvatar);
+            ImgLoader.loadAvatar(this, mUser.getAvatorUrl(), mIvAvatar,false);
             ImgLoader.loadBlurBackgroud(this,mUser.getAvatorUrl(),mRlHeader);
             if(TextUtils.isEmpty(mUser.getLocation())){
                 mTvLocation.setText("Unknown");
@@ -151,9 +151,7 @@ public class UserInfoActivity extends BaseMvpActivity implements UserInfoContrac
             else{
                 mTvLocation.setText(mUser.getLocation());
             }
-
         }
-        mLoadingView.smoothToShow();
         if(mUserType == USER_SELF){
             mPresenter.loadMyInfo();
         }
@@ -226,7 +224,6 @@ public class UserInfoActivity extends BaseMvpActivity implements UserInfoContrac
 
     @Override
     public void showError() {
-        mLoadingView.smoothToHide();
         mPbFocus.setVisibility(View.GONE);
         mIvFocus.setVisibility(View.VISIBLE);
     }
@@ -273,13 +270,12 @@ public class UserInfoActivity extends BaseMvpActivity implements UserInfoContrac
     }
 
     private void show(UserInfoBean infoBean){
-        mLoadingView.hide();
         mUserInfoBean = infoBean;
         Logger.i("is followed by user = "+infoBean.isFollowed_by_user());
         if(isFollowedByUser != infoBean.isFollowed_by_user()){
             showFollowStatusChange();
         }
-//        ImgLoader.loadAvator(this, infoBean.getProfile_image().getLarge(), mIvAvatar);
+//        ImgLoader.loadAvatar(this, infoBean.getProfile_image().getLarge(), mIvAvatar);
 //        ImgLoader.loadBlurBackgroud(this,infoBean.getProfile_image().getSmall(),mRlHeader);
         //mTvName.setText(infoBean.getName());
         if(TextUtils.isEmpty(infoBean.getLocation())){

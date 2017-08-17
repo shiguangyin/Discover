@@ -95,7 +95,7 @@ public class PhotoListAdapter extends BaseAdapter<PhotoListBean> {
 
         String avatarUrl = data.getUser().getProfile_image().getLarge();
         CircleImageView ivAvator = holder.getView(R.id.iv_avatar);
-        ImgLoader.loadAvator(mContext,avatarUrl,ivAvator);
+        ImgLoader.loadAvatar(mContext,avatarUrl,ivAvator);
         ivAvator.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

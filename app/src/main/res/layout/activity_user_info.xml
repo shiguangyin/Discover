@@ -176,6 +176,7 @@
                     android:layout_height="wrap_content"
                     android:layout_centerInParent="true"
                     app:indicatorName="LineSpinFadeLoaderIndicator"
+                    android:visibility="gone"
                     />
 
             </RelativeLayout>

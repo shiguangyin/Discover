@@ -104,7 +104,7 @@ public class PhotoInfoAdapter extends RecyclerView.Adapter<BaseViewHolder>{
 
         final CircleImageView ivAvatar = holder.getView(R.id.iv_avatar);
         String avatarUrl = info.getUser().getProfile_image().getLarge();
-        ImgLoader.loadAvator(mContext,avatarUrl,ivAvatar);
+        ImgLoader.loadAvatar(mContext,avatarUrl,ivAvatar);
         ivAvatar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

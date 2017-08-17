@@ -48,6 +48,7 @@
     <string name="action_link">Link</string>
     <string name="like">Like</string>
     <string name="dislike">Dislike</string>
+    <string name="wallpaper_success">Set wallpaper success</string>
 
 
     <!--collection detail activity-->
@@ -134,5 +135,6 @@
     <string name="developer">Developer</string>
     <string name="about">About</string>
     <string name="libs">Libraries</string>
+
 </resources>
 

@@ -4,7 +4,6 @@ import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.animation.AnimatorSet;
 import android.animation.ObjectAnimator;
-import android.app.WallpaperManager;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
@@ -16,7 +15,6 @@ import android.support.v4.app.ActivityOptionsCompat;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
-import android.support.v4.content.FileProvider;
 import android.support.v7.app.ActionBar;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -29,6 +27,7 @@ import android.view.ViewGroup;
 import android.view.animation.OvershootInterpolator;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
+import android.widget.RelativeLayout;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
@@ -81,6 +80,9 @@ public class PhotoInfoActivity extends BaseMvpActivity implements PhotoInfoContr
     public static final String IMG_URL = "img_url";
     public static final String WIDTH = "width";
     public static final String HEIGHT = "height";
+    public static final String MINE_TYPE = "mimeType";
+    public static final String TYPE_JPG = "image/jpg";
+    public static final int CODE_WALL_PAPER = 0x10;
 
     private String mId;
     private String mImgUrl;
@@ -89,6 +91,7 @@ public class PhotoInfoActivity extends BaseMvpActivity implements PhotoInfoContr
 
     private Toolbar mToolbar;
     private ImageView mIvPhoto;
+    private RelativeLayout mRlContent;
     private FloatingActionMenu mActionMenu;
     private FloatingActionButton mFabLike;
     private FloatingActionButton mFabInfo;
@@ -133,6 +136,7 @@ public class PhotoInfoActivity extends BaseMvpActivity implements PhotoInfoContr
         resetSize();
         ImgLoader.loadDontAnimate(this,mImgUrl,mIvPhoto);
 
+        mRlContent = bind(R.id.rl_content);
         mActionMenu = bind(R.id.fab_menu);
         mActionMenu.setClosedOnTouchOutside(true);
         createCustomAnimation();
@@ -259,7 +263,6 @@ public class PhotoInfoActivity extends BaseMvpActivity implements PhotoInfoContr
                                     final Bitmap.CompressFormat format = Bitmap.CompressFormat.JPEG;
                                     final File imgFile = new File(Environment.getExternalStorageDirectory(),Constans.DOWNLOAD_DIR+File.separator+"wallpaper"+
                                             File.separator+name);
-                                    final Uri contentUri = FileProvider.getUriForFile(App.getApp(), getApplicationContext().getPackageName() + ".provider", imgFile);
                                     Observable.create(new Observable.OnSubscribe<Boolean>() {
                                         @Override
                                         public void call(Subscriber<? super Boolean> subscriber) {
@@ -270,12 +273,10 @@ public class PhotoInfoActivity extends BaseMvpActivity implements PhotoInfoContr
                                     .subscribe(new Action1<Boolean>() {
                                         @Override
                                         public void call(Boolean aBoolean) {
+                                            mProgressBar.setVisibility(View.GONE);
                                             if(aBoolean == true){
-                                                Logger.i("true");
-                                                Intent intent = WallpaperManager.getInstance(PhotoInfoActivity.this)
-                                                        .getCropAndSetWallpaperIntent(contentUri);
-                                                startActivity(intent);
-                                                mProgressBar.setVisibility(View.GONE);
+                                                Uri uri = Uri.parse(imgFile.getAbsolutePath());
+                                                setWallpaper(uri);
                                             }
                                         }
                                     });
@@ -286,6 +287,13 @@ public class PhotoInfoActivity extends BaseMvpActivity implements PhotoInfoContr
             }
         });
 
+    }
+
+    private void setWallpaper(Uri uri){
+        Intent intent = new Intent(Intent.ACTION_ATTACH_DATA);
+        intent.setDataAndType(uri, TYPE_JPG);
+        intent.putExtra(MINE_TYPE,TYPE_JPG);
+        startActivityForResult(intent,CODE_WALL_PAPER);
     }
 
     @Override
@@ -479,6 +487,19 @@ public class PhotoInfoActivity extends BaseMvpActivity implements PhotoInfoContr
             mFabLike.setImageResource(R.drawable.ic_like_fill_white_24dp);
             mFabLike.setLabelText(getString(R.string.like));
         }
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if(resultCode == CODE_WALL_PAPER && resultCode == RESULT_OK){
+            showSnackbar(getString(R.string.wallpaper_success));
+        }else{
+            super.onActivityResult(requestCode, resultCode, data);
+        }
+    }
+
+    private void showSnackbar(String msg){
+        Snackbar.make(mRlContent,msg,Snackbar.LENGTH_SHORT).show();
     }
 
 }

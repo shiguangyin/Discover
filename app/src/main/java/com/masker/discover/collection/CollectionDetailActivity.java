@@ -176,7 +176,7 @@ public class CollectionDetailActivity extends BaseMvpActivity
         }
         String url = bean.getUser().getProfile_image().getLarge();
         String backgroudUrl = bean.getUser().getProfile_image().getSmall();
-        ImgLoader.loadAvator(this,url,mIvAvator);
+        ImgLoader.loadAvatar(this,url,mIvAvator);
         ImgLoader.loadBlurBackgroud(this,backgroudUrl,mRlHeader);
         String from = getString(R.string.from)+" "+bean.getUser().getName();
         mTvFrom.setText(from);
