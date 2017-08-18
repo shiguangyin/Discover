@@ -5,6 +5,7 @@ import android.content.res.TypedArray;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
+import android.graphics.Rect;
 import android.graphics.RectF;
 import android.support.annotation.Nullable;
 import android.util.AttributeSet;
@@ -74,6 +75,16 @@ public class CircleProgressView extends View{
         float angle = MAX_ANGLE*mProgress/100;
         RectF rectF = new RectF(-r,-r,r,r);
         canvas.drawArc(rectF,-90f,angle,false,mPaint);
+
+        //draw text
+        String text = String.valueOf(mProgress);
+        mPaint.setColor(Color.WHITE);
+        mPaint.setTextSize(8);
+        Rect textBounds = new Rect();
+        mPaint.getTextBounds(text,0,text.length(),textBounds);
+        int w = textBounds.width();
+        int h = textBounds.height();
+        canvas.drawText(text,-w/2,h/2,mPaint);
     }
 
     @Override

@@ -49,6 +49,9 @@
     <string name="like">Like</string>
     <string name="dislike">Dislike</string>
     <string name="wallpaper_success">Set wallpaper success</string>
+    <string name="wait">Please wait...</string>
+    <string name="featured_in">Featured in %1$d collections</string>
+    <string name="related_tags">Related tags</string>
 
 
     <!--collection detail activity-->
@@ -115,6 +118,16 @@
 
     <!--activity user start-->
     <string name="unknown">Unknown</string>
+    <string name="sure_to_logout">Are you sure to log out?</string>
+    <string name="sure">Sure</string>
+    <string name="cancel">Cancel</string>
+    <string name="follow">Follow</string>
+    <string name="followed">Followed</string>
+    <string name="photos_count">%1$d Photos</string>
+    <string name="collections_count">%1$d Collections</string>
+    <string name="likes_count">%1$d Likes</string>
+    <string name="followers_count">%1$d Followers</string>
+    <string name="following_count">%1$d Following</string>
     <!--activity user end-->
 
     <!--activity edit profile start-->

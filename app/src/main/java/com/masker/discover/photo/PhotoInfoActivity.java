@@ -10,6 +10,7 @@ import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
+import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.ActivityOptionsCompat;
 import android.support.v4.app.Fragment;
@@ -38,7 +39,7 @@ import com.github.clans.fab.FloatingActionButton;
 import com.github.clans.fab.FloatingActionMenu;
 import com.masker.discover.R;
 import com.masker.discover.activity.LoginActivity;
-import com.masker.discover.activity.PhotoDetailActivity;
+import com.masker.discover.activity.PhotoPreviewActivity;
 import com.masker.discover.base.BaseMvpActivity;
 import com.masker.discover.global.App;
 import com.masker.discover.global.Constans;
@@ -56,13 +57,15 @@ import com.masker.discover.utils.ScreenUtils;
 import com.masker.discover.utils.ShareUtils;
 import com.masker.discover.utils.SpUtils;
 import com.masker.discover.widget.PhotoExifDialog;
-import com.orhanobut.logger.Logger;
 import com.wang.avi.AVLoadingIndicatorView;
 
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
+import butterknife.OnClick;
 import rx.Observable;
 import rx.Subscriber;
 import rx.functions.Action1;
@@ -74,7 +77,7 @@ import rx.functions.Action1;
  * Description: show photo detail infomation
  */
 
-public class PhotoInfoActivity extends BaseMvpActivity implements PhotoInfoContract.View{
+public class PhotoInfoActivity extends BaseMvpActivity implements PhotoInfoContract.View {
     public static final String DIALOG = "dialog";
     public static final String ID = "id";
     public static final String IMG_URL = "img_url";
@@ -84,24 +87,37 @@ public class PhotoInfoActivity extends BaseMvpActivity implements PhotoInfoContr
     public static final String TYPE_JPG = "image/jpg";
     public static final int CODE_WALL_PAPER = 0x10;
 
+
+    @BindView(R.id.iv_photo)
+    ImageView mIvPhoto;
+    @BindView(R.id.tool_bar)
+    Toolbar mToolBar;
+    @BindView(R.id.app_bar)
+    AppBarLayout mAppBar;
+    @BindView(R.id.recycler_view)
+    RecyclerView mRecyclerView;
+    @BindView(R.id.loading_view)
+    AVLoadingIndicatorView mLoadingView;
+    @BindView(R.id.rl_content)
+    RelativeLayout mRlContent;
+    @BindView(R.id.fab_like)
+    FloatingActionButton mFabLike;
+    @BindView(R.id.fab_info)
+    FloatingActionButton mFabInfo;
+    @BindView(R.id.fab_wallpaper)
+    FloatingActionButton mFabWallpaper;
+    @BindView(R.id.fab_download)
+    FloatingActionButton mFabDownload;
+    @BindView(R.id.fab_menu)
+    FloatingActionMenu mActionMenu;
+    @BindView(R.id.progress_bar)
+    ProgressBar mProgressBar;
+
     private String mId;
     private String mImgUrl;
     private int mImgWidth;
     private int mImgHeight;
-
-    private Toolbar mToolbar;
-    private ImageView mIvPhoto;
-    private RelativeLayout mRlContent;
-    private FloatingActionMenu mActionMenu;
-    private FloatingActionButton mFabLike;
-    private FloatingActionButton mFabInfo;
-    private FloatingActionButton mFabDownload;
-    private FloatingActionButton mFabWallPaper;
-
-    private AVLoadingIndicatorView mLoadingView;
-    private ProgressBar mProgressBar;
-    private RecyclerView mRecyclerView;
-    private List<Object> mDatas;
+    private List<Object> mObjects;
     private PhotoInfoAdapter mAdapter;
 
     private PhotoInfoPresenter mPresenter;
@@ -109,14 +125,13 @@ public class PhotoInfoActivity extends BaseMvpActivity implements PhotoInfoContr
     private boolean mIsLiked;
 
 
-
     @Override
     protected void handleIntent() {
         Intent intent = getIntent();
         mId = intent.getStringExtra(ID);
         mImgUrl = intent.getStringExtra(IMG_URL);
-        mImgWidth = intent.getIntExtra(WIDTH,0);
-        mImgHeight = intent.getIntExtra(HEIGHT,0);
+        mImgWidth = intent.getIntExtra(WIDTH, 0);
+        mImgHeight = intent.getIntExtra(HEIGHT, 0);
     }
 
     @Override
@@ -126,174 +141,143 @@ public class PhotoInfoActivity extends BaseMvpActivity implements PhotoInfoContr
 
     @Override
     protected void initViews() {
-        mToolbar = bind(R.id.tool_bar);
-        setSupportActionBar(mToolbar);
+        ButterKnife.bind(this);
+        createCustomAnimation();
+        setSupportActionBar(mToolBar);
         ActionBar ab = getSupportActionBar();
-        if(ab != null){
+        if (ab != null) {
             ab.setDisplayHomeAsUpEnabled(true);
         }
-        mIvPhoto = bind(R.id.iv_photo);
         resetSize();
-        ImgLoader.loadDontAnimate(this,mImgUrl,mIvPhoto);
-
-        mRlContent = bind(R.id.rl_content);
-        mActionMenu = bind(R.id.fab_menu);
-        mActionMenu.setClosedOnTouchOutside(true);
-        createCustomAnimation();
-        mFabLike = bind(R.id.fab_like);
-        mFabInfo = bind(R.id.fab_info);
-        mFabDownload = bind(R.id.fab_download);
-        mFabWallPaper = bind(R.id.fab_wallpaper);
-
-        mLoadingView = bind(R.id.loading_view);
-        mProgressBar = bind(R.id.progress_bar);
-        mRecyclerView = bind(R.id.recycler_view);
-        mDatas = new ArrayList<>();
-        mAdapter = new PhotoInfoAdapter(this,mDatas);
+        ImgLoader.loadDontAnimate(this, mImgUrl, mIvPhoto);
+        mObjects = new ArrayList<>();
+        mAdapter = new PhotoInfoAdapter(this,mObjects);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
         mRecyclerView.setAdapter(mAdapter);
     }
 
-    @Override
-    protected void initListeners() {
-        mIvPhoto.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                ActivityOptionsCompat options = ActivityOptionsCompat
-                        .makeSceneTransitionAnimation(PhotoInfoActivity.this,mIvPhoto,"photo");
-                PhotoDetailActivity.start(PhotoInfoActivity.this,mImgUrl,options.toBundle());
 
+
+    @OnClick(R.id.iv_photo)
+    void preview(){
+        ActivityOptionsCompat options = ActivityOptionsCompat
+                .makeSceneTransitionAnimation(PhotoInfoActivity.this, mIvPhoto, Constans.TRANSITION_PHOTO);
+        PhotoPreviewActivity.start(PhotoInfoActivity.this, mImgUrl, options.toBundle());
+    }
+
+    @OnClick(R.id.fab_info)
+    void showExifDialog() {
+        mActionMenu.close(true);
+        if(mPhotoBean != null){
+            FragmentManager fm = getSupportFragmentManager();
+            Fragment fragment = fm.findFragmentByTag(DIALOG);
+            if (fragment != null) {
+                FragmentTransaction ft = fm.beginTransaction();
+                ft.remove(fragment);
+                ft.commit();
             }
-        });
-        mFabInfo.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if(mPhotoBean != null){
-                    showExifDialog(mPhotoBean);
-                }
+            PhotoExifDialog dialog = new PhotoExifDialog();
+            dialog.setData(mPhotoBean);
+            dialog.show(fm, DIALOG);
+        }
+        else{
+            showSnackbar(getString(R.string.wait));
+        }
+    }
+
+    @OnClick(R.id.fab_like)
+    void onLikeClick(){
+        if (UserManager.getInstance().isLogin()) {
+            mFabLike.setIndeterminate(true);
+            if (mIsLiked) {
+                mPresenter.unlikePhoto(mId);
+            } else {
+                mPresenter.likePhoto(mId);
             }
-        });
-        mFabLike.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if(UserManager.getInstance().isLogin()){
-                    mFabLike.setIndeterminate(true);
-                    if(mIsLiked){
-                        mPresenter.unlikePhoto(mId);
-                    }
-                    else{
-                        mPresenter.likePhoto(mId);
-                    }
-                }
-                else{
-                    startActivity(new Intent(PhotoInfoActivity.this,
-                            LoginActivity.class));
-                }
-            }
-        });
-        mFabDownload.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if(mPhotoBean != null){
-                    String url = null;
-                    String quality  = SpUtils.getString(Constans.SP_SETTINGS,
-                            getString(R.string.key_download_quality));
-                    PhotoBean.UrlsBean urlsBean = mPhotoBean.getUrls();
-                    if(TextUtils.isEmpty(quality) || quality.equals(Constans.REGULAR)){
-                        quality = Constans.REGULAR;
-                        url = urlsBean.getRegular();
-                    }
-                    else if(quality.equals(Constans.RAW)){
-                        url = urlsBean.getRaw();
-                    }
-                    else if(quality.equals(Constans.FULL)){
-                        url = urlsBean.getFull();
-                    }
-                    else if(quality.equals(Constans.SMALL)){
-                        url = urlsBean.getSmall();
-                    }
-                    else{
-                        url = urlsBean.getThumb();
-                    }
-                    String name = mPhotoBean.getId()+"_"+quality+".jpg";
-                    long id = PhotoManager.getInstance(App.getApp()).download(url,name);
-                    SpUtils.putString(Constans.SP_LOADING_URL,String.valueOf(id),mPhotoBean.getUrls().getThumb());
-                    Snackbar.make(mRecyclerView,R.string.start_download,
-                            Snackbar.LENGTH_SHORT).show();
-                }
-                mActionMenu.close(true);
-            }
-        });
-        mFabWallPaper.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                mActionMenu.close(true);
-                if(mPhotoBean != null){
-                    Logger.i(" wallpaper click");
-                    String url = null;
-                    String quality  = SpUtils.getString(Constans.SP_SETTINGS,
-                            getString(R.string.key_wallpaper_quality));
-                    PhotoBean.UrlsBean urlsBean = mPhotoBean.getUrls();
-                    if(TextUtils.isEmpty(quality) || quality.equals(Constans.REGULAR)){
-                        quality = Constans.REGULAR;
-                        url = urlsBean.getRegular();
-                    }
-                    else if(quality.equals(Constans.RAW)){
-                        url = urlsBean.getRaw();
-                    }
-                    else if(quality.equals(Constans.FULL)){
-                        url = urlsBean.getFull();
-                    }
-                    else if(quality.equals(Constans.SMALL)){
-                        url = urlsBean.getSmall();
-                    }
-                    else{
-                        url = urlsBean.getThumb();
-                    }
-                    final String name = mPhotoBean.getId()+"_"+quality+".jpg";
-                    mProgressBar.setVisibility(View.VISIBLE);
-                    Glide.with(PhotoInfoActivity.this).load(url)
-                            .asBitmap()
-                            .diskCacheStrategy(DiskCacheStrategy.NONE)
-                            .into(new SimpleTarget<Bitmap>(Target.SIZE_ORIGINAL,Target.SIZE_ORIGINAL) {
+        } else {
+            startActivity(new Intent(PhotoInfoActivity.this,
+                    LoginActivity.class));
+        }
+    }
+
+    @OnClick(R.id.fab_download)
+    void download(){
+        mActionMenu.close(true);
+        if (mPhotoBean != null) {
+            String quality = SpUtils.getString(Constans.SP_SETTINGS, getString(R.string.key_download_quality));
+            String url = getUrl(quality);
+            String name = mPhotoBean.getId() + "_" + quality + ".jpg";
+            long id = PhotoManager.getInstance(App.getApp()).download(url, name);
+            SpUtils.putString(Constans.SP_LOADING_URL, String.valueOf(id), mPhotoBean.getUrls().getThumb());
+            Snackbar.make(mRecyclerView, R.string.start_download,
+                    Snackbar.LENGTH_SHORT).show();
+        }
+    }
+
+    @OnClick(R.id.fab_wallpaper)
+    void setWallpaper(){
+        mActionMenu.close(true);
+        if (mPhotoBean != null) {
+            String quality = SpUtils.getString(Constans.SP_SETTINGS, getString(R.string.key_wallpaper_quality));
+            String url = getUrl(quality);
+            final String name = mPhotoBean.getId() + "_" + quality + ".jpg";
+            mProgressBar.setVisibility(View.VISIBLE);
+            Glide.with(PhotoInfoActivity.this).load(url)
+                    .asBitmap()
+                    .diskCacheStrategy(DiskCacheStrategy.NONE)
+                    .into(new SimpleTarget<Bitmap>(Target.SIZE_ORIGINAL, Target.SIZE_ORIGINAL) {
+                        @Override
+                        public void onResourceReady(final Bitmap resource, GlideAnimation<? super Bitmap> glideAnimation) {
+                            mProgressBar.setVisibility(View.GONE);
+                            final Bitmap.CompressFormat format = Bitmap.CompressFormat.JPEG;
+                            final File imgFile = new File(Environment.getExternalStorageDirectory(), Constans.DOWNLOAD_DIR + File.separator + "wallpaper" +
+                                    File.separator + name);
+                            Observable.create(new Observable.OnSubscribe<Boolean>() {
                                 @Override
-                                public void onResourceReady(final Bitmap resource, GlideAnimation<? super Bitmap> glideAnimation) {
-                                    Logger.i("ready");
-                                    mProgressBar.setVisibility(View.GONE);
-                                    final Bitmap.CompressFormat format = Bitmap.CompressFormat.JPEG;
-                                    final File imgFile = new File(Environment.getExternalStorageDirectory(),Constans.DOWNLOAD_DIR+File.separator+"wallpaper"+
-                                            File.separator+name);
-                                    Observable.create(new Observable.OnSubscribe<Boolean>() {
-                                        @Override
-                                        public void call(Subscriber<? super Boolean> subscriber) {
-                                            boolean success = FileUtils.saveBitmap(resource,imgFile, format);
-                                            subscriber.onNext(success);
-                                        }
-                                    }).compose(RxTransformer.<Boolean>ioMain())
+                                public void call(Subscriber<? super Boolean> subscriber) {
+                                    boolean success = FileUtils.saveBitmap(resource, imgFile, format);
+                                    subscriber.onNext(success);
+                                }
+                            }).compose(RxTransformer.<Boolean>ioMain())
                                     .subscribe(new Action1<Boolean>() {
                                         @Override
                                         public void call(Boolean aBoolean) {
                                             mProgressBar.setVisibility(View.GONE);
-                                            if(aBoolean == true){
+                                            if (aBoolean == true) {
                                                 Uri uri = Uri.parse(imgFile.getAbsolutePath());
                                                 setWallpaper(uri);
                                             }
                                         }
                                     });
-                                }
-                            });
+                        }
+                    });
 
-                }
-            }
-        });
-
+        }
     }
 
-    private void setWallpaper(Uri uri){
+    private String getUrl(String quality){
+        String url = null;
+        PhotoBean.UrlsBean urlsBean = mPhotoBean.getUrls();
+        if (TextUtils.isEmpty(quality) || quality.equals(Constans.REGULAR)) {
+            quality = Constans.REGULAR;
+            url = urlsBean.getRegular();
+        } else if (quality.equals(Constans.RAW)) {
+            url = urlsBean.getRaw();
+        } else if (quality.equals(Constans.FULL)) {
+            url = urlsBean.getFull();
+        } else if (quality.equals(Constans.SMALL)) {
+            url = urlsBean.getSmall();
+        } else {
+            url = urlsBean.getThumb();
+        }
+        return url;
+    }
+
+    private void setWallpaper(Uri uri) {
         Intent intent = new Intent(Intent.ACTION_ATTACH_DATA);
         intent.setDataAndType(uri, TYPE_JPG);
-        intent.putExtra(MINE_TYPE,TYPE_JPG);
-        startActivityForResult(intent,CODE_WALL_PAPER);
+        intent.putExtra(MINE_TYPE, TYPE_JPG);
+        startActivityForResult(intent, CODE_WALL_PAPER);
     }
 
     @Override
@@ -305,32 +289,32 @@ public class PhotoInfoActivity extends BaseMvpActivity implements PhotoInfoContr
     /*
     * start the activity
      */
-    public static void start(Context context,String id,String imgUrl,int width,int height){
-        Intent intent = new Intent(context,PhotoInfoActivity.class);
-        intent.putExtra(ID,id);
-        intent.putExtra(IMG_URL,imgUrl);
-        intent.putExtra(WIDTH,width);
-        intent.putExtra(HEIGHT,height);
+    public static void start(Context context, String id, String imgUrl, int width, int height) {
+        Intent intent = new Intent(context, PhotoInfoActivity.class);
+        intent.putExtra(ID, id);
+        intent.putExtra(IMG_URL, imgUrl);
+        intent.putExtra(WIDTH, width);
+        intent.putExtra(HEIGHT, height);
         context.startActivity(intent);
     }
 
-    public static void start(Context context,Bundle bundle,String id,String imgUrl,int width,int height){
-        Intent intent = new Intent(context,PhotoInfoActivity.class);
-        intent.putExtra(ID,id);
-        intent.putExtra(IMG_URL,imgUrl);
-        intent.putExtra(WIDTH,width);
-        intent.putExtra(HEIGHT,height);
-        context.startActivity(intent,bundle);
+    public static void start(Context context, Bundle bundle, String id, String imgUrl, int width, int height) {
+        Intent intent = new Intent(context, PhotoInfoActivity.class);
+        intent.putExtra(ID, id);
+        intent.putExtra(IMG_URL, imgUrl);
+        intent.putExtra(WIDTH, width);
+        intent.putExtra(HEIGHT, height);
+        context.startActivity(intent, bundle);
     }
 
 
     /*
     * reset size of imageview
      */
-    private void resetSize(){
+    private void resetSize() {
         ViewGroup.LayoutParams lp = mIvPhoto.getLayoutParams();
         lp.width = ScreenUtils.getScreenWidth(this);
-        lp.height = (lp.width*mImgHeight)/mImgWidth;
+        lp.height = (lp.width * mImgHeight) / mImgWidth;
         mIvPhoto.setLayoutParams(lp);
     }
 
@@ -344,22 +328,17 @@ public class PhotoInfoActivity extends BaseMvpActivity implements PhotoInfoContr
         setLike(mIsLiked);
 
         mRecyclerView.setVisibility(View.VISIBLE);
-        mDatas.add(info);
-
-        List<PhotoBean.RelatedCollectionsBean.ResultsBean> collections
-                = info.getRelated_collections().getResults();
-        if(collections != null && collections.size()>0){
+        mObjects.add(info);
+        List<PhotoBean.RelatedCollectionsBean.ResultsBean> collections = info.getRelated_collections().getResults();
+        if (collections != null && collections.size() > 0) {
             int total = info.getRelated_collections().getTotal();
-            String titleCollection = "Featured in "+total+" collections";
-            mDatas.add(titleCollection);
-            mDatas.addAll(collections);
+            mObjects.add(getString(R.string.featured_in,total));
+            mObjects.addAll(collections);
         }
-
         List<TagBean> tags = info.getTags();
-        if(tags != null && tags.size() > 0){
-            String titleTag = "Related Tags";
-            mDatas.add(titleTag);
-            mDatas.addAll(tags);
+        if (tags != null && tags.size() > 0) {
+            mObjects.add(getString(R.string.related_tags));
+            mObjects.addAll(tags);
         }
         mAdapter.notifyDataSetChanged();
     }
@@ -382,7 +361,7 @@ public class PhotoInfoActivity extends BaseMvpActivity implements PhotoInfoContr
 
     @Override
     protected void detach() {
-        if(mPresenter != null){
+        if (mPresenter != null) {
             mPresenter.onUnsubscribe();
             mPresenter = null;
         }
@@ -390,29 +369,27 @@ public class PhotoInfoActivity extends BaseMvpActivity implements PhotoInfoContr
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.menu_photo_info,menu);
+        getMenuInflater().inflate(R.menu.menu_photo_info, menu);
         return true;
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        if(item.getItemId() == R.id.action_share){
-            if(mPhotoBean != null){
-                String content = "By "+mPhotoBean.getUser().getName()+" at "+mPhotoBean.getCreated_at()
-                        +" "+mPhotoBean.getLinks().getHtml();
-                ShareUtils.share(this,getString(R.string.APP_NAME),content);
+        if (item.getItemId() == R.id.action_share) {
+            if (mPhotoBean != null) {
+                String content = "By " + mPhotoBean.getUser().getName() + " at " + mPhotoBean.getCreated_at()
+                        + " " + mPhotoBean.getLinks().getHtml();
+                ShareUtils.share(this, getString(R.string.APP_NAME), content);
             }
-        }
-        else if(item.getItemId() == R.id.action_link){
-            if(mPhotoBean != null){
-                String url = mPhotoBean.getLinks().getHtml()+ Constans.UTM_PARAMS;
+        } else if (item.getItemId() == R.id.action_link) {
+            if (mPhotoBean != null) {
+                String url = mPhotoBean.getLinks().getHtml() + Constans.UTM_PARAMS;
                 Intent intent = new Intent();
                 intent.setAction(Intent.ACTION_VIEW);
                 intent.setData(Uri.parse(url));
                 startActivity(intent);
             }
-        }
-        else if(item.getItemId() == android.R.id.home){
+        } else if (item.getItemId() == android.R.id.home) {
             onBackPressed();
         }
         return super.onOptionsItemSelected(item);
@@ -448,20 +425,7 @@ public class PhotoInfoActivity extends BaseMvpActivity implements PhotoInfoContr
         mActionMenu.setIconToggleAnimatorSet(set);
     }
 
-    private void showExifDialog(PhotoBean photoBean){
-        mActionMenu.close(true);
-        FragmentManager fm = getSupportFragmentManager();
-        Fragment fragment = fm.findFragmentByTag(DIALOG);
-        if(fragment != null){
-            FragmentTransaction ft = fm.beginTransaction();
-            ft.remove(fragment);
-            ft.commit();
-        }
-        PhotoExifDialog dialog = new PhotoExifDialog();
-        dialog.setData(photoBean);
-        dialog.show(fm,DIALOG);
 
-    }
 
     @Override
     public void updatePhoto(LikeResponseBean bean) {
@@ -477,13 +441,12 @@ public class PhotoInfoActivity extends BaseMvpActivity implements PhotoInfoContr
         mActionMenu.close(true);
     }
 
-    private void setLike(boolean like){
+    private void setLike(boolean like) {
         mIsLiked = like;
-        if(like){
+        if (like) {
             mFabLike.setImageResource(R.drawable.ic_like_red_24dp);
             mFabLike.setLabelText(getString(R.string.dislike));
-        }
-        else{
+        } else {
             mFabLike.setImageResource(R.drawable.ic_like_fill_white_24dp);
             mFabLike.setLabelText(getString(R.string.like));
         }
@@ -491,15 +454,15 @@ public class PhotoInfoActivity extends BaseMvpActivity implements PhotoInfoContr
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if(resultCode == CODE_WALL_PAPER && resultCode == RESULT_OK){
+        if (resultCode == CODE_WALL_PAPER && resultCode == RESULT_OK) {
             showSnackbar(getString(R.string.wallpaper_success));
-        }else{
+        } else {
             super.onActivityResult(requestCode, resultCode, data);
         }
     }
 
-    private void showSnackbar(String msg){
-        Snackbar.make(mRlContent,msg,Snackbar.LENGTH_SHORT).show();
+    private void showSnackbar(String msg) {
+        Snackbar.make(mRlContent, msg, Snackbar.LENGTH_SHORT).show();
     }
 
 }

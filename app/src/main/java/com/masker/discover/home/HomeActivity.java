@@ -327,7 +327,7 @@ public class HomeActivity extends BaseMvpActivity implements HomeContract.View,V
         mTvBio.setText(user.getBio());
 
         mIvAvatar.setVisibility(View.VISIBLE);
-        Glide.with(this).load(user.getAvatorUrl()).dontAnimate()
+        Glide.with(this).load(user.getAvatarUrl()).dontAnimate()
                 .into(mIvAvatar);
     }
 

@@ -53,7 +53,7 @@ public class ImgLoader {
         Glide.with(context)
                 .load(url)
                 .diskCacheStrategy(DiskCacheStrategy.SOURCE)
-                .placeholder(R.drawable.ic_unlogin_white_24dp)
+                .placeholder(new ColorDrawable(Color.LTGRAY))
                 .dontAnimate()
                 .into(iv);
     }

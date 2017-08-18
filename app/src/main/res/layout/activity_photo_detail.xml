@@ -13,11 +13,13 @@
         android:transitionName="photo"
         />
 
-    <com.wang.avi.AVLoadingIndicatorView
-        android:id="@+id/loading_view"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        app:indicatorName="BallPulseIndicator"
-        android:layout_centerInParent="true"/>
+    <com.github.chrisbanes.photoview.PhotoView
+        android:id="@+id/photo_view_avatar"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="#b8ffffff"
+        android:transitionName="avatar"
+        android:visibility="gone"
+        />
 
 </RelativeLayout>

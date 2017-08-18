@@ -83,6 +83,7 @@ public class PhotoListFragment extends BaseFragment implements PhotoListContract
                         }
                     }
                 });
+        mSubscriptions.add(likeSubscription);
         //setHasOptionsMenu(true);
     }
 

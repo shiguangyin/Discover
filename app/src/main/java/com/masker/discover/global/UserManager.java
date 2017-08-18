@@ -78,7 +78,7 @@ public class UserManager {
         editor.putString(KEY_NAME,user.getName());
         editor.putString(KEY_USER_NAME,user.getUserName());
         editor.putString(KEY_BIO,user.getBio());
-        editor.putString(KEY_AVATOR,user.getAvatorUrl());
+        editor.putString(KEY_AVATOR,user.getAvatarUrl());
         editor.putString(KEY_LOCATION,user.getLocation());
         editor.putString(KEY_EMAIL,user.getEmail());
         editor.putInt(KEY_TOTAL_PHOTOS,user.getTotalPhotos());
@@ -100,7 +100,7 @@ public class UserManager {
             user.setId(sp.getString(KEY_ID,null));
             user.setName(sp.getString(KEY_NAME,null));
             user.setUserName(sp.getString(KEY_USER_NAME,null));
-            user.setAvatorUrl(sp.getString(KEY_AVATOR,null));
+            user.setAvatarUrl(sp.getString(KEY_AVATOR,null));
             user.setBio(sp.getString(KEY_BIO,null));
             user.setEmail(sp.getString(KEY_EMAIL,null));
             user.setLocation(sp.getString(KEY_LOCATION,null));
@@ -122,7 +122,7 @@ public class UserManager {
         user.setLocation(bean.getLocation());
         user.setEmail(bean.getEmail());
         user.setBio(bean.getBio());
-        user.setAvatorUrl(bean.getProfile_image().getLarge());
+        user.setAvatarUrl(bean.getProfile_image().getLarge());
         user.setTotalPhotos(bean.getTotal_photos());
         user.setTotalLikes(bean.getTotal_likes());
         user.setTotalCollections(bean.getTotal_collections());
@@ -153,7 +153,8 @@ public class UserManager {
         User user = new User();
         user.setName(userBean.getName());
         user.setUserName(userBean.getUsername());
-        user.setAvatorUrl(userBean.getProfile_image().getLarge());
+        user.setAvatarUrl(userBean.getProfile_image().getLarge());
+        user.setBgUrl(userBean.getProfile_image().getSmall());
         user.setLocation(userBean.getLocation());
         user.setBio(userBean.getBio());
         user.setTotalPhotos(userBean.getTotal_photos());
@@ -166,7 +167,8 @@ public class UserManager {
         User user = new User();
         user.setName(userBean.getName());
         user.setUserName(userBean.getUsername());
-        user.setAvatorUrl(userBean.getProfile_image().getLarge());
+        user.setAvatarUrl(userBean.getProfile_image().getLarge());
+        user.setBgUrl(userBean.getProfile_image().getSmall());
         user.setLocation(userBean.getLocation());
         user.setBio(userBean.getBio());
         user.setTotalPhotos(userBean.getTotal_photos());
@@ -180,7 +182,8 @@ public class UserManager {
         User user = new User();
         user.setName(userBean.getName());
         user.setUserName(userBean.getUsername());
-        user.setAvatorUrl(userBean.getProfile_image().getLarge());
+        user.setAvatarUrl(userBean.getProfile_image().getLarge());
+        user.setBgUrl(userBean.getProfile_image().getSmall());
         user.setLocation(userBean.getLocation());
         user.setBio(userBean.getBio());
         user.setTotalPhotos(userBean.getTotal_photos());
@@ -194,7 +197,8 @@ public class UserManager {
         User user = new User();
         user.setName(userBean.getName());
         user.setUserName(userBean.getUsername());
-        user.setAvatorUrl(userBean.getProfile_image().getLarge());
+        user.setAvatarUrl(userBean.getProfile_image().getLarge());
+        user.setBgUrl(userBean.getProfile_image().getSmall());
         user.setLocation(userBean.getLocation());
         user.setBio(userBean.getBio());
         user.setTotalPhotos(userBean.getTotal_photos());
@@ -207,7 +211,8 @@ public class UserManager {
         User user = new User();
         user.setName(userBean.getName());
         user.setUserName(userBean.getUsername());
-        user.setAvatorUrl(userBean.getProfile_image().getLarge());
+        user.setAvatarUrl(userBean.getProfile_image().getLarge());
+        user.setBgUrl(userBean.getProfile_image().getSmall());
         user.setLocation(userBean.getLocation());
         user.setBio(userBean.getBio());
         user.setTotalPhotos(userBean.getTotal_photos());

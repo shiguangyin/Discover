@@ -48,4 +48,7 @@ public class Constans {
 
     public static final String ACTION_DOWNLOAD_COMPLETE = "android.intent.action.DOWNLOAD_COMPLETE";
 
+    public static final String TRANSITION_PHOTO = "photo";
+    public static final String TRANSITION_AVATAR = "avatar";
+
 }

@@ -16,11 +16,23 @@ public class User implements Parcelable {
     private String name;
     private String bio;
     private String location;
-    private String avatorUrl;
+    private String avatarUrl;
+    private String bgUrl;
+
+
+
     private String email;
     private int totalLikes;
     private int totalPhotos;
     private int totalCollections;
+
+    public String getBgUrl() {
+        return bgUrl;
+    }
+
+    public void setBgUrl(String bgUrl) {
+        this.bgUrl = bgUrl;
+    }
 
     public String getEmail() {
         return email;
@@ -54,12 +66,12 @@ public class User implements Parcelable {
         this.location = location;
     }
 
-    public String getAvatorUrl() {
-        return avatorUrl;
+    public String getAvatarUrl() {
+        return avatarUrl;
     }
 
-    public void setAvatorUrl(String avatorUrl) {
-        this.avatorUrl = avatorUrl;
+    public void setAvatarUrl(String avatarUrl) {
+        this.avatarUrl = avatarUrl;
     }
 
 
@@ -122,7 +134,8 @@ public class User implements Parcelable {
         dest.writeString(this.name);
         dest.writeString(this.bio);
         dest.writeString(this.location);
-        dest.writeString(this.avatorUrl);
+        dest.writeString(this.avatarUrl);
+        dest.writeString(this.bgUrl);
         dest.writeString(this.email);
         dest.writeInt(this.totalLikes);
         dest.writeInt(this.totalPhotos);
@@ -135,7 +148,8 @@ public class User implements Parcelable {
         this.name = in.readString();
         this.bio = in.readString();
         this.location = in.readString();
-        this.avatorUrl = in.readString();
+        this.avatarUrl = in.readString();
+        this.bgUrl = in.readString();
         this.email = in.readString();
         this.totalLikes = in.readInt();
         this.totalPhotos = in.readInt();

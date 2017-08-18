@@ -94,13 +94,15 @@ public class PhotoListAdapter extends BaseAdapter<PhotoListBean> {
         });
 
         String avatarUrl = data.getUser().getProfile_image().getLarge();
-        CircleImageView ivAvator = holder.getView(R.id.iv_avatar);
+        final CircleImageView ivAvator = holder.getView(R.id.iv_avatar);
         ImgLoader.loadAvatar(mContext,avatarUrl,ivAvator);
         ivAvator.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 User user = UserManager.getInstance().transform(data.getUser());
-                UserInfoActivity.start(mContext,user,UserInfoActivity.USER_OTHER);
+                ActivityOptionsCompat options = ActivityOptionsCompat
+                        .makeSceneTransitionAnimation((Activity) mContext,ivAvator,Constans.TRANSITION_AVATAR);
+                UserInfoActivity.start(mContext,user,UserInfoActivity.USER_OTHER,options.toBundle());
             }
         });
 

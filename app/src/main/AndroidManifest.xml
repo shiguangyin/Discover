@@ -51,7 +51,7 @@
         <activity android:name=".search.SearchActivity"
             android:theme="@style/NormalTheme"
             ></activity>
-        <activity android:name=".activity.PhotoDetailActivity"
+        <activity android:name=".activity.PhotoPreviewActivity"
             android:theme="@style/PhotoViewTheme"/>
         <activity android:name=".user.view.UserInfoActivity"/>
         <activity android:name=".activity.SettingActivity"/>

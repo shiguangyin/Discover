@@ -55,8 +55,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_centerHorizontal="true"
-                    android:text="Xian China"
-                    android:textSize="16sp"
+                    android:textSize="18sp"
                     android:drawableLeft="@drawable/ic_location_white_24dp"
                     android:layout_below="@id/tv_name"
                     android:layout_marginTop="20dp"
@@ -151,7 +150,6 @@
                                 />
                         </RelativeLayout>
 
-
                         <TextView
                             android:id="@+id/tv_focus"
                             android:layout_width="wrap_content"
@@ -162,9 +160,6 @@
                             android:layout_toRightOf="@id/rl_1"
                             android:layout_marginLeft="2dp"
                             />
-
-
-
                     </RelativeLayout>
 
 
