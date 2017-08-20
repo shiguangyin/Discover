@@ -29,10 +29,9 @@ public class CircleProgressView extends View{
     private int mHeight;
 
     private Paint mPaint;
+    private Paint mTextPaint;
     private int mProgressColor;
-    private int mIconColor;
     private float mProgressWidth;
-    private float mIconWidth;
     private int mProgress;
 
     public CircleProgressView(Context context) {
@@ -47,9 +46,7 @@ public class CircleProgressView extends View{
         super(context, attrs, defStyleAttr);
         TypedArray ta = context.obtainStyledAttributes(attrs, R.styleable.CircleImageView);
         mProgressColor = ta.getColor(R.styleable.CircleProgressView_progress_color, Color.BLACK);
-        mIconColor = ta.getColor(R.styleable.CircleProgressView_icon_color,Color.WHITE);
         mProgressWidth = ta.getDimension(R.styleable.CircleProgressView_progress_width,DEFAULT_PROGRESS_WIDTH);
-        mIconWidth = ta.getDimension(R.styleable.CircleProgressView_icon_width,DEFAULT_ICON_WIDTH);
         ta.recycle();
         init();
     }
@@ -57,6 +54,8 @@ public class CircleProgressView extends View{
 
     private void init(){
         mPaint = new Paint();
+        mPaint.setAntiAlias(true);
+        mTextPaint = new Paint();
         mPaint.setAntiAlias(true);
     }
 
@@ -78,13 +77,13 @@ public class CircleProgressView extends View{
 
         //draw text
         String text = String.valueOf(mProgress);
-        mPaint.setColor(Color.WHITE);
-        mPaint.setTextSize(8);
+        mTextPaint.setColor(Color.WHITE);
+        mTextPaint.setTextSize(sp2px(getContext(),12));
         Rect textBounds = new Rect();
-        mPaint.getTextBounds(text,0,text.length(),textBounds);
+        mTextPaint.getTextBounds(text,0,text.length(),textBounds);
         int w = textBounds.width();
         int h = textBounds.height();
-        canvas.drawText(text,-w/2,h/2,mPaint);
+        canvas.drawText(text,-w/2,h/2,mTextPaint);
     }
 
     @Override
@@ -105,5 +104,10 @@ public class CircleProgressView extends View{
             mProgress = progress;
         }
         invalidate();
+    }
+
+    public int sp2px(Context context, float spValue) {
+        final float fontScale = context.getResources().getDisplayMetrics().scaledDensity;
+        return (int) (spValue * fontScale + 0.5f);
     }
 }

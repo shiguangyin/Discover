@@ -18,6 +18,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.FrameLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
@@ -52,6 +53,7 @@ public class HomeActivity extends BaseMvpActivity implements HomeContract.View,V
     public static final int FRAGMENT_HOME = 0;
     public static final int FRAGMENT_COLLECTION = 1;
     public static final int FRAGMENT_TAG = 2;
+    public static final int TIME_INTERVAL = 2500;
 
     private int currentId = -1;
 
@@ -71,6 +73,7 @@ public class HomeActivity extends BaseMvpActivity implements HomeContract.View,V
     private TextView mTvEmail;
     private RelativeLayout mRlUnLogin;
     private Button mBtnLogin;
+    private FrameLayout mLayoutContent;
 
 
     private PhotoListFragment mPhotoFragment;
@@ -81,6 +84,7 @@ public class HomeActivity extends BaseMvpActivity implements HomeContract.View,V
     private User mUser;
 
     private CompositeSubscription mSubscriptions =  new CompositeSubscription();
+
 
     @Override
     protected int getLayoutId() {
@@ -143,6 +147,9 @@ public class HomeActivity extends BaseMvpActivity implements HomeContract.View,V
                     case R.id.item_about:
                         startActivity(new Intent(HomeActivity.this, AboutActivity.class));
                         break;
+                    case R.id.item_exit:
+                        finish();
+                        break;
                     default:
                         break;
                 }
@@ -151,7 +158,7 @@ public class HomeActivity extends BaseMvpActivity implements HomeContract.View,V
                 return true;
             }
         });
-
+        mLayoutContent = bind(R.id.layout_content);
         mNavHeader = mNavView.getHeaderView(0);
         mTvBio = (TextView) mNavHeader.findViewById(R.id.tv_bio);
         mTvName = (TextView) mNavHeader.findViewById(R.id.tv_name);
@@ -173,7 +180,6 @@ public class HomeActivity extends BaseMvpActivity implements HomeContract.View,V
 
     @Override
     protected void initData() {
-        Logger.i(" is login = "+UserManager.getInstance().isLogin());
         if(UserManager.getInstance().isLogin()){
             mUser = UserManager.getInstance().getUser();
             if(mUser != null){
@@ -347,7 +353,6 @@ public class HomeActivity extends BaseMvpActivity implements HomeContract.View,V
 
     @Override
     protected void onDestroy() {
-        Logger.i("home activity destroy");
         super.onDestroy();
         mSubscriptions.clear();
     }
@@ -356,5 +361,18 @@ public class HomeActivity extends BaseMvpActivity implements HomeContract.View,V
         Intent intent = new Intent(context,HomeActivity.class);
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
         context.startActivity(intent);
+    }
+
+    @Override
+    public void onBackPressed() {
+        if(mDrawer.isDrawerOpen(mNavView)){
+            mDrawer.closeDrawer(mNavView);
+        }
+        else{
+            Intent intent = new Intent(Intent.ACTION_MAIN);
+            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            intent.addCategory(Intent.CATEGORY_HOME);
+            startActivity(intent);
+        }
     }
 }

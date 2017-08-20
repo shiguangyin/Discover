@@ -161,7 +161,8 @@ public class PhotoInfoActivity extends BaseMvpActivity implements PhotoInfoContr
         mAppBar.addOnOffsetChangedListener(new AppBarLayout.OnOffsetChangedListener() {
             @Override
             public void onOffsetChanged(AppBarLayout appBarLayout, int verticalOffset) {
-                if (Math.abs(verticalOffset) >= appBarLayout.getTotalScrollRange()-30) {
+                boolean collapsed = (mToolbarLayout.getHeight() + verticalOffset < mToolbarLayout.getScrimVisibleHeightTrigger());
+                if (collapsed) {
                     mToolbarLayout.setTitle(getString(R.string.APP_NAME));
                 } else {
                     mToolbarLayout.setTitle("");
@@ -221,9 +222,9 @@ public class PhotoInfoActivity extends BaseMvpActivity implements PhotoInfoContr
         if (mPhotoBean != null) {
             String quality = SpUtils.getString(Constans.SP_SETTINGS, getString(R.string.key_download_quality));
             String url = getUrl(quality);
-            String name = mPhotoBean.getId() + "_" + quality + ".jpg";
+            String name = mPhotoBean.getId() + "_quality=" + quality + ".jpg";
             long id = PhotoManager.getInstance(App.getApp()).download(url, name);
-            SpUtils.putString(Constans.SP_LOADING_URL, String.valueOf(id), mPhotoBean.getUrls().getThumb());
+            SpUtils.putString(Constans.SP_LOADING_URL, String.valueOf(id), mImgUrl);
             Snackbar.make(mRecyclerView, R.string.start_download,
                     Snackbar.LENGTH_SHORT).show();
         }

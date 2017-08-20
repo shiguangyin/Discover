@@ -130,11 +130,17 @@ public class CollectionDetailActivity extends BaseMvpActivity
         mAppBar.addOnOffsetChangedListener(new AppBarLayout.OnOffsetChangedListener() {
             @Override
             public void onOffsetChanged(AppBarLayout appBarLayout, int verticalOffset) {
-                if (Math.abs(verticalOffset) >= appBarLayout.getTotalScrollRange()-30) {
-                    mToolBarLayout.setTitle(mTitle);
-                } else {
-                    mToolBarLayout.setTitle("");
-                }
+                mAppBar.addOnOffsetChangedListener(new AppBarLayout.OnOffsetChangedListener() {
+                    @Override
+                    public void onOffsetChanged(AppBarLayout appBarLayout, int verticalOffset) {
+                        boolean collapsed = (mToolBarLayout.getHeight() + verticalOffset < mToolBarLayout.getScrimVisibleHeightTrigger());
+                        if (collapsed) {
+                            mToolBarLayout.setTitle(mTitle);
+                        } else {
+                            mToolBarLayout.setTitle("");
+                        }
+                    }
+                });
             }
         });
     }

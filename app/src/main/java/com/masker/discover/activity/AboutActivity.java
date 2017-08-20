@@ -59,12 +59,17 @@ public class AboutActivity extends BaseActivity {
     LinearLayout mLlButterKnife;
     @BindView(R.id.ll_fab)
     LinearLayout mLlFab;
+    @BindView(R.id.ll_leak_canary)
+    LinearLayout mLlLeakCanary;
+    @BindView(R.id.ll_calligraphy)
+    LinearLayout mLlCalligraphy;
 
 
 
     @OnClick({R.id.ll_unsplash,R.id.ll_github,R.id.ll_email,R.id.ll_retrofit,R.id.ll_rx_java,
             R.id.ll_rx_android,R.id.ll_glide,R.id.ll_glide_tranformations,R.id.ll_logger,R.id.ll_circle_iv,
-            R.id.ll_photo_view,R.id.ll_avloading_view,R.id.ll_butter_knife,R.id.ll_fab})
+            R.id.ll_photo_view,R.id.ll_avloading_view,R.id.ll_butter_knife,R.id.ll_fab,R.id.ll_leak_canary,
+            R.id.ll_calligraphy})
     void click(View view){
         switch (view.getId()){
             case R.id.ll_unsplash:
@@ -108,6 +113,12 @@ public class AboutActivity extends BaseActivity {
                 break;
             case R.id.ll_fab:
                 gotoUrl("https://github.com/Clans/FloatingActionButton");
+                break;
+            case R.id.ll_leak_canary:
+                gotoUrl("https://github.com/square/leakcanary");
+                break;
+            case R.id.ll_calligraphy:
+                gotoUrl("https://github.com/chrisjenx/Calligraphy");
                 break;
         }
     }

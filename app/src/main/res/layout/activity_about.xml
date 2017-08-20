@@ -387,6 +387,44 @@
                        />
                </LinearLayout>
 
+               <LinearLayout
+                   android:id="@+id/ll_leak_canary"
+                   android:layout_width="match_parent"
+                   android:layout_height="wrap_content"
+                   android:orientation="vertical"
+                   android:layout_marginTop="20dp"
+                   android:clickable="true"
+                   >
+                   <TextView
+                       style="@style/LibTitleStyle"
+                       android:text="leakcanary"
+                       />
+
+                   <TextView
+                       style="@style/LibDescStyle"
+                       android:text="A memory leak detection library for Android and Java."
+                       />
+               </LinearLayout>
+
+               <LinearLayout
+                   android:id="@+id/ll_calligraphy"
+                   android:layout_width="match_parent"
+                   android:layout_height="wrap_content"
+                   android:orientation="vertical"
+                   android:layout_marginTop="20dp"
+                   android:clickable="true"
+                   >
+                   <TextView
+                       style="@style/LibTitleStyle"
+                       android:text="Calligraphy"
+                       />
+
+                   <TextView
+                       style="@style/LibDescStyle"
+                       android:text="Custom fonts in Android the easy way..."
+                       />
+               </LinearLayout>
+
            </LinearLayout>
         </ScrollView>
 

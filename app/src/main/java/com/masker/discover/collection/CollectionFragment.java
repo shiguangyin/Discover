@@ -34,6 +34,7 @@ public class CollectionFragment extends BaseFragment {
         mViewPager = bind(R.id.vp_collection);
         mAdapter = new CollectionFragmentAdapter(getChildFragmentManager(),getContext());
         mViewPager.setAdapter(mAdapter);
+        mViewPager.setOffscreenPageLimit(3);
         mTabLayout.setupWithViewPager(mViewPager);
     }
 

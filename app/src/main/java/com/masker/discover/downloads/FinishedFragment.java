@@ -11,10 +11,17 @@ import android.support.v7.widget.RecyclerView;
 import android.view.View;
 
 import com.masker.discover.R;
+import com.masker.discover.base.BaseAdapter;
 import com.masker.discover.base.BaseFragment;
 import com.masker.discover.global.Constans;
-import com.masker.discover.rx.event.DownloadFinishEvent;
+import com.masker.discover.model.entity.PhotoBean;
+import com.masker.discover.model.repository.PhotoRepository;
+import com.masker.discover.photo.PhotoInfoActivity;
 import com.masker.discover.rx.RxBus;
+import com.masker.discover.rx.RxTransformer;
+import com.masker.discover.rx.event.DownloadFinishEvent;
+import com.masker.discover.widget.LoadingDialog;
+import com.orhanobut.logger.Logger;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -44,6 +51,7 @@ public class FinishedFragment extends BaseFragment{
     private List<FinishedBean> mFinishedBeen;
     private FinishedListAdapter mAdapter;
     private CompositeSubscription mSubscriptions  = new CompositeSubscription();
+    private LoadingDialog mDialog;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -71,10 +79,50 @@ public class FinishedFragment extends BaseFragment{
         mAdapter.enableLoadMore(false);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         mRecyclerView.setAdapter(mAdapter);
+        mDialog = new LoadingDialog();
 
     }
 
 
+    @Override
+    protected void initListeners() {
+        mAdapter.setOnItemClickListener(new BaseAdapter.OnItemClickListener() {
+            @Override
+            public void onClick(View view, int position) {
+                FinishedBean data = mFinishedBeen.get(position);
+                int index = data.getTitle().indexOf("_quality=");
+                if(index > 0){
+                    mDialog.show(getChildFragmentManager(),null);
+                    final String id = data.getTitle().substring(0,index);
+                    Subscription subscription = PhotoRepository.getPhotoInfo(id)
+                            .compose(RxTransformer.<PhotoBean>ioMain())
+                            .subscribe(new Action1<PhotoBean>() {
+                                @Override
+                                public void call(PhotoBean photoBean) {
+                                    mDialog.dismiss();
+                                    PhotoInfoActivity.start(getContext(),id,photoBean.getUrls().getRegular(),
+                                            photoBean.getWidth(),photoBean.getHeight());
+                                }
+                            }, new Action1<Throwable>() {
+                                @Override
+                                public void call(Throwable throwable) {
+                                    mDialog.dismiss();
+                                }
+                            });
+                    mSubscriptions.add(subscription);
+                }
+            }
+        });
+    }
+
+    @Override
+    public void onHiddenChanged(boolean hidden) {
+        super.onHiddenChanged(hidden);
+        if(!hidden){
+            initData();
+            Logger.i("init data");
+        }
+    }
 
     @Override
     protected void initData() {

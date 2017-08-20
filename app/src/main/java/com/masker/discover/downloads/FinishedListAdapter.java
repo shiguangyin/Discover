@@ -7,6 +7,7 @@ import com.bumptech.glide.Glide;
 import com.masker.discover.R;
 import com.masker.discover.base.BaseAdapter;
 import com.masker.discover.base.BaseViewHolder;
+import com.orhanobut.logger.Logger;
 
 import java.util.List;
 
@@ -29,6 +30,12 @@ public class FinishedListAdapter extends BaseAdapter<FinishedBean>{
     @Override
     public void convert(BaseViewHolder holder, int position, FinishedBean data) {
         ImageView iv = holder.getView(R.id.iv_photo);
+        Logger.i(data.getTitle());
         Glide.with(mContext).load(data.getLocalUri()).into(iv);
+        int index = data.getTitle().indexOf("_quality=");
+        if(index > 0){
+            String id = data.getTitle().substring(0,index);
+            holder.setText(R.id.tv_id,id);
+        }
     }
 }

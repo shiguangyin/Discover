@@ -36,7 +36,6 @@ import com.masker.discover.user.contract.UserInfoContract;
 import com.masker.discover.user.presenter.UserInfoPresenter;
 import com.masker.discover.utils.ImgLoader;
 import com.masker.discover.utils.ShareUtils;
-import com.wang.avi.AVLoadingIndicatorView;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -83,8 +82,6 @@ public class UserInfoActivity extends BaseMvpActivity implements UserInfoContrac
     TabLayout mTabLayout;
     @BindView(R.id.view_pager)
     ViewPager mViewPager;
-    @BindView(R.id.loading_view)
-    AVLoadingIndicatorView mLoadingView;
     @BindView(R.id.btn_edit)
     Button mBtnEdit;
     @BindView(R.id.rl_focus)
@@ -99,9 +96,6 @@ public class UserInfoActivity extends BaseMvpActivity implements UserInfoContrac
     TextView mTvFollowers;
     @BindView(R.id.tv_following)
     TextView mTvFollowing;
-
-
-
 
     @Override
     protected int getLayoutId() {
@@ -131,9 +125,27 @@ public class UserInfoActivity extends BaseMvpActivity implements UserInfoContrac
         mTabLayout.addTab(mTabLayout.newTab());
         mTabLayout.addTab(mTabLayout.newTab());
         mViewPager.setAdapter(new UserVpAdapter(getSupportFragmentManager(),mUser));
+        mViewPager.setOffscreenPageLimit(3);
         mTabLayout.setupWithViewPager(mViewPager);
+        mAppBar.addOnOffsetChangedListener(new AppBarLayout.OnOffsetChangedListener() {
+            @Override
+            public void onOffsetChanged(AppBarLayout appBarLayout, int verticalOffset) {
+                mAppBar.addOnOffsetChangedListener(new AppBarLayout.OnOffsetChangedListener() {
+                    @Override
+                    public void onOffsetChanged(AppBarLayout appBarLayout, int verticalOffset) {
+                        boolean collapsed = (mCollapsingToolbarLayout.getHeight() + verticalOffset < mCollapsingToolbarLayout.getScrimVisibleHeightTrigger());
+                        if (collapsed) {
+                            mCollapsingToolbarLayout.setTitle(mUser.getName());
+                        } else {
+                            mCollapsingToolbarLayout.setTitle("");
+                        }
+                    }
+                });
+            }
+        });
 
     }
+
 
     @OnClick(R.id.rl_focus)
     void focus(){
@@ -172,13 +184,14 @@ public class UserInfoActivity extends BaseMvpActivity implements UserInfoContrac
     protected void initData() {
         if (mUser != null) {
             ImgLoader.loadAvatar(this, mUser.getAvatarUrl(), mIvAvatar,false);
-            ImgLoader.loadBlurBackgroud(this,mUser.getBgUrl(),mRlHeader);
+            ImgLoader.loadBlurBackgroud(this,mUser.getBgUrl(),mAppBar);
             if(TextUtils.isEmpty(mUser.getLocation())){
                 mTvLocation.setText(getString(R.string.unknown));
             }
             else{
                 mTvLocation.setText(mUser.getLocation());
             }
+            mTvName.setText(mUser.getName());
         }
         if(mUserType == USER_SELF){
             mPresenter.loadMyInfo();
