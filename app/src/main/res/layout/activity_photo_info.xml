@@ -13,12 +13,15 @@
         android:fitsSystemWindows="true">
 
         <android.support.design.widget.CollapsingToolbarLayout
+            android:id="@+id/tool_bar_layout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             app:layout_scrollFlags="scroll|exitUntilCollapsed"
             app:contentScrim="#cc000000"
             app:statusBarScrim="@color/transparent"
             android:fitsSystemWindows="true"
+            app:collapsedTitleTextAppearance="@style/CollapsedTextAppearance"
+            app:expandedTitleTextAppearance="@style/TitleTextAppearance"
             >
 
             <ImageView
@@ -50,14 +53,6 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <android.support.v7.widget.RecyclerView
-            android:id="@+id/recycler_view"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:visibility="gone">
-
-        </android.support.v7.widget.RecyclerView>
-
         <com.wang.avi.AVLoadingIndicatorView
             android:id="@+id/loading_view"
             android:layout_width="wrap_content"
@@ -66,6 +61,16 @@
             android:layout_marginTop="100dp"
             android:visibility="gone"
             app:indicatorName="LineScalePulseOutIndicator"/>
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/recycler_view"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:visibility="gone">
+
+        </android.support.v7.widget.RecyclerView>
+
+
 
     </RelativeLayout>
 

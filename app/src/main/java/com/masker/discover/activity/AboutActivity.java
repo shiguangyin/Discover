@@ -7,6 +7,7 @@ import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.support.v7.app.ActionBar;
 import android.support.v7.widget.Toolbar;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -144,10 +145,6 @@ public class AboutActivity extends BaseActivity {
     protected void initListeners() {
 
     }
-
-
-
-
     private void gotoUrl(String url){
         Uri uri = Uri.parse(url);
         Intent intent = new Intent(Intent.ACTION_VIEW,uri);
@@ -159,5 +156,13 @@ public class AboutActivity extends BaseActivity {
         intent.setType("message/rfc822");
         intent.putExtra(Intent.EXTRA_EMAIL,new String[]{"shiguangyin928@gmail.com"});
         startActivity(intent);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        if(item.getItemId() == android.R.id.home){
+            onBackPressed();
+        }
+        return super.onOptionsItemSelected(item);
     }
 }

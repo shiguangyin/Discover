@@ -49,10 +49,18 @@ N
     <style name="TitleTextAppearance" parent="TextAppearance.AppCompat">
         <item name="android:textSize">26sp</item>
         <item name="android:textStyle">bold</item>
+        <item name="fontPath">Effra.ttf</item>
     </style>
 
     <style name="NameTextAppearance" parent="TextAppearance.AppCompat">
         <item name="android:textSize">20sp</item>
+        <item name="android:textStyle">bold</item>
+        <item name="fontPath">Effra.ttf</item>
+    </style>
+
+    <style name="CollapsedTextAppearance" parent="TextAppearance.AppCompat">
+        <item name="fontPath">Effra.ttf</item>
+        <item name="android:textSize">18sp</item>
         <item name="android:textStyle">bold</item>
     </style>
 

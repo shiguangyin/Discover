@@ -66,6 +66,7 @@ public class DownloadingFragment extends BaseFragment{
                         SpUtils.removeString(Constans.SP_LOADING_URL,String.valueOf(id));
                     }
                 });
+        mSubscriptions.add(subscription);
     }
 
 

@@ -3,7 +3,10 @@ package com.masker.discover.global;
 import android.app.Application;
 import android.content.Context;
 
+import com.masker.discover.R;
 import com.squareup.leakcanary.LeakCanary;
+
+import uk.co.chrisjenx.calligraphy.CalligraphyConfig;
 
 /**
  * CreatedBy: masker
@@ -28,6 +31,11 @@ public class App extends Application{
         }
         LeakCanary.install(this);
         mApp = this;
+        CalligraphyConfig.initDefault(new CalligraphyConfig.Builder()
+                .setDefaultFontPath("Effra.ttf")
+                .setFontAttrId(R.attr.fontPath)
+                .build()
+        );
     }
 
 }

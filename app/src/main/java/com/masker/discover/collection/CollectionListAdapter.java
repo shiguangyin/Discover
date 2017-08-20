@@ -1,6 +1,8 @@
 package com.masker.discover.collection;
 
+import android.app.Activity;
 import android.content.Context;
+import android.support.v4.app.ActivityOptionsCompat;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
@@ -9,6 +11,7 @@ import com.bumptech.glide.Glide;
 import com.masker.discover.R;
 import com.masker.discover.base.BaseAdapter;
 import com.masker.discover.base.BaseViewHolder;
+import com.masker.discover.global.Constans;
 import com.masker.discover.global.UserManager;
 import com.masker.discover.model.entity.CollectionListBean;
 import com.masker.discover.model.entity.User;
@@ -56,17 +59,7 @@ public class CollectionListAdapter extends BaseAdapter<CollectionListBean> {
             String color = cover.getColor();
             ImgLoader.loadWithColor(mContext,url,ivPhoto,color);
         }
-        holder.getItemView().setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                int id = data.getId();
-                int total = data.getTotal_photos();
-                String title =  data.getTitle();
-                CollectionDetailActivity.start(mContext,id,data.isCurated(),total,title);
-            }
-        });
-
-        CircleImageView ivAvatar = holder.getView(R.id.iv_avatar);
+        final CircleImageView ivAvatar = holder.getView(R.id.iv_avatar);
         String avatorUrl = data.getUser().getProfile_image().getLarge();
         Glide.with(mContext).load(avatorUrl).into(ivAvatar);
         ivAvatar.setOnClickListener(new View.OnClickListener() {
@@ -86,6 +79,20 @@ public class CollectionListAdapter extends BaseAdapter<CollectionListBean> {
         int num = data.getTotal_photos();
         String strNum = num + " "+ mContext.getString(R.string.photos);
         holder.setText(R.id.tv_num,strNum);
+
+        holder.getItemView().setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                int id = data.getId();
+                int total = data.getTotal_photos();
+                String title =  data.getTitle();
+                ActivityOptionsCompat options = ActivityOptionsCompat
+                        .makeSceneTransitionAnimation((Activity) mContext,ivAvatar, Constans.TRANSITION_AVATAR);
+                CollectionDetailActivity.start(mContext,id,data.isCurated(),total,title,
+                        data.getDescription(),data.getUser().getProfile_image().getLarge(),data.getUser().getName(),
+                        data.getUser().getProfile_image().getSmall(),options.toBundle());
+            }
+        });
 
     }
 }

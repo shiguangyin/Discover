@@ -156,23 +156,13 @@ public class PhotoInfoAdapter extends RecyclerView.Adapter<BaseViewHolder>{
         RelativeLayout.LayoutParams lp = (RelativeLayout.LayoutParams) ivPhoto.getLayoutParams();
         lp.height = height;
         ivPhoto.setLayoutParams(lp);
-        ivPhoto.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                int id = data.getId();
-                boolean curated = data.isCurated();
-                int total = data.getTotal_photos();
-                String title = data.getTitle();
-                CollectionDetailActivity.start(mContext,id,curated,total,title);
-            }
-        });
 
         if(cover != null ){
             String url = data.getCover_photo().getUrls().getRegular();
             Glide.with(mContext).load(url).into(ivPhoto);
         }
 
-        CircleImageView ivAvatar = holder.getView(R.id.iv_avatar);
+        final CircleImageView ivAvatar = holder.getView(R.id.iv_avatar);
         String avatarUrl = data.getUser().getProfile_image().getLarge();
         Glide.with(mContext).load(avatarUrl).into(ivAvatar);
         ivAvatar.setOnClickListener(new View.OnClickListener() {
@@ -192,6 +182,19 @@ public class PhotoInfoAdapter extends RecyclerView.Adapter<BaseViewHolder>{
         int num = data.getTotal_photos();
         String strNum = num + " "+mContext.getString(R.string.photos);
         holder.setText(R.id.tv_num,strNum);
+        ivPhoto.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                int id = data.getId();
+                int total = data.getTotal_photos();
+                String title =  data.getTitle();
+                ActivityOptionsCompat options = ActivityOptionsCompat
+                        .makeSceneTransitionAnimation((Activity) mContext,ivAvatar, Constans.TRANSITION_AVATAR);
+                CollectionDetailActivity.start(mContext,id,data.isCurated(),total,title,
+                        data.getDescription(),data.getUser().getProfile_image().getLarge(),data.getUser().getName(),
+                        data.getUser().getProfile_image().getSmall(),options.toBundle());
+            }
+        });
     }
 
     private void bindTags(BaseViewHolder holder, int position) {

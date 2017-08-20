@@ -11,6 +11,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
 import android.support.design.widget.AppBarLayout;
+import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.ActivityOptionsCompat;
 import android.support.v4.app.Fragment;
@@ -94,6 +95,8 @@ public class PhotoInfoActivity extends BaseMvpActivity implements PhotoInfoContr
     Toolbar mToolBar;
     @BindView(R.id.app_bar)
     AppBarLayout mAppBar;
+    @BindView(R.id.tool_bar_layout)
+    CollapsingToolbarLayout mToolbarLayout;
     @BindView(R.id.recycler_view)
     RecyclerView mRecyclerView;
     @BindView(R.id.loading_view)
@@ -148,12 +151,24 @@ public class PhotoInfoActivity extends BaseMvpActivity implements PhotoInfoContr
         if (ab != null) {
             ab.setDisplayHomeAsUpEnabled(true);
         }
+        mActionMenu.setClosedOnTouchOutside(true);
         resetSize();
         ImgLoader.loadDontAnimate(this, mImgUrl, mIvPhoto);
         mObjects = new ArrayList<>();
         mAdapter = new PhotoInfoAdapter(this,mObjects);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
         mRecyclerView.setAdapter(mAdapter);
+        mAppBar.addOnOffsetChangedListener(new AppBarLayout.OnOffsetChangedListener() {
+            @Override
+            public void onOffsetChanged(AppBarLayout appBarLayout, int verticalOffset) {
+                if (Math.abs(verticalOffset) >= appBarLayout.getTotalScrollRange()-30) {
+                    mToolbarLayout.setTitle(getString(R.string.APP_NAME));
+                } else {
+                    mToolbarLayout.setTitle("");
+                }
+            }
+        });
+
     }
 
 
@@ -323,10 +338,8 @@ public class PhotoInfoActivity extends BaseMvpActivity implements PhotoInfoContr
     public void showPhotoInfo(PhotoBean info) {
         mPhotoBean = info;
         mLoadingView.smoothToHide();
-
         mIsLiked = info.isLiked_by_user();
         setLike(mIsLiked);
-
         mRecyclerView.setVisibility(View.VISIBLE);
         mObjects.add(info);
         List<PhotoBean.RelatedCollectionsBean.ResultsBean> collections = info.getRelated_collections().getResults();

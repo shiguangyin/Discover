@@ -1,7 +1,6 @@
 package com.masker.discover.collection;
 
 import com.masker.discover.base.BaseLikePresenter;
-import com.masker.discover.model.entity.CollectionBean;
 import com.masker.discover.model.entity.PhotoListBean;
 import com.masker.discover.model.repository.CollectionRepository;
 import com.orhanobut.logger.Logger;
@@ -23,33 +22,6 @@ public class CollectionDetailPresenter extends BaseLikePresenter<CollectionDetai
 
     public CollectionDetailPresenter(CollectionDetailContract.View view){
         super(view);
-
-    }
-
-
-    @Override
-    public void loadCollection(int id) {
-        Subscription subscription = CollectionRepository.getCollection(id)
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Action1<CollectionBean>() {
-                    @Override
-                    public void call(CollectionBean collectionBean) {
-                        if(collectionBean != null){
-                            mView.showCollection(collectionBean);
-                        }
-                        else{
-                            mView.showError();
-                        }
-                    }
-                }, new Action1<Throwable>() {
-                    @Override
-                    public void call(Throwable throwable) {
-                        Logger.i(throwable.getMessage());
-                        mView.showError();
-                    }
-                });
-        mSubscriptions.add(subscription);
     }
 
     @Override
@@ -74,31 +46,6 @@ public class CollectionDetailPresenter extends BaseLikePresenter<CollectionDetai
                     @Override
                     public void call(Throwable throwable) {
                         Logger.e(throwable.getMessage());
-                        mView.showError();
-                    }
-                });
-        mSubscriptions.add(subscription);
-    }
-
-    @Override
-    public void loadCuratedCollection(int id) {
-        Subscription subscription = CollectionRepository.getCuratedCollection(id)
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Action1<CollectionBean>() {
-                    @Override
-                    public void call(CollectionBean collectionBean) {
-                        if(collectionBean != null){
-                            mView.showCollection(collectionBean);
-                        }
-                        else{
-                            mView.showError();
-                        }
-                    }
-                }, new Action1<Throwable>() {
-                    @Override
-                    public void call(Throwable throwable) {
-                        Logger.i(throwable.getMessage());
                         mView.showError();
                     }
                 });

@@ -51,7 +51,7 @@ public class SettingActivity extends BaseActivity {
         ActionBar ab = getSupportActionBar();
         if(ab != null){
             ab.setDisplayHomeAsUpEnabled(true);
-            ab.setTitle("Settings");
+            ab.setTitle(getString(R.string.settings));
         }
         getFragmentManager()
                 .beginTransaction()
@@ -84,8 +84,7 @@ public class SettingActivity extends BaseActivity {
 
         private void initData(){
             final Preference prefClearCache = findPreference(getString(R.string.key_clear_cache));
-            String cacheSummary = "Cache size : "+dirSize(Glide.getPhotoCacheDir(App.getApp()))+"MB";
-            prefClearCache.setSummary(cacheSummary);
+            prefClearCache.setSummary(getString(R.string.cache_size,(int)dirSize(Glide.getPhotoCacheDir(App.getApp()))));
             prefClearCache.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
                 @Override
                 public boolean onPreferenceClick(Preference preference) {
@@ -100,17 +99,31 @@ public class SettingActivity extends BaseActivity {
                             .subscribe(new Action1<Boolean>() {
                                 @Override
                                 public void call(Boolean aBoolean) {
-                                    String cacheSummary = "Cache size : "+dirSize(Glide.getPhotoCacheDir(App.getApp()))+"MB";
-                                    prefClearCache.setSummary(cacheSummary);
+                                    prefClearCache.setSummary(getString(R.string.cache_size,(int)dirSize(Glide.getPhotoCacheDir(App.getApp()))));
                                     View view = getActivity().findViewById(R.id.container);
-                                    Snackbar.make(view,"Clear Success",Snackbar.LENGTH_SHORT).show();
+                                    Snackbar.make(view,getString(R.string.clear_success),Snackbar.LENGTH_SHORT).show();
                                 }
                             });
                     return true;
                 }
             });
+            PrefChangedListener listener = new PrefChangedListener();
+            Preference prefLoadQuality = findPreference(getString(R.string.key_load_quality));
+            prefLoadQuality.setOnPreferenceChangeListener(listener);
+            Preference prefDownloadQuality = findPreference(getString(R.string.key_download_quality));
+            prefDownloadQuality.setOnPreferenceChangeListener(listener);
+            Preference prefWallpaperQuality = findPreference(getString(R.string.key_wallpaper_quality));
+            prefWallpaperQuality.setOnPreferenceChangeListener(listener);
         }
 
+        private class PrefChangedListener implements Preference.OnPreferenceChangeListener{
+
+            @Override
+            public boolean onPreferenceChange(Preference preference, Object newValue) {
+                preference.setSummary((String)newValue);
+                return true;
+            }
+        }
 
     }
 

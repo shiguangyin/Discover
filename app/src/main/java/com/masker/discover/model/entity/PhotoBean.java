@@ -465,7 +465,7 @@ public class PhotoBean {
 
             private int id;
             private String title;
-            private Object description;
+            private String description;
             private String published_at;
             private String updated_at;
             private boolean curated;
@@ -494,11 +494,11 @@ public class PhotoBean {
                 this.title = title;
             }
 
-            public Object getDescription() {
+            public String getDescription() {
                 return description;
             }
 
-            public void setDescription(Object description) {
+            public void setDescription(String description) {
                 this.description = description;
             }
 

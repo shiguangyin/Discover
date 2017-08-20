@@ -1,7 +1,6 @@
 package com.masker.discover.collection;
 
 import com.masker.discover.base.BaseLikeView;
-import com.masker.discover.model.entity.CollectionBean;
 import com.masker.discover.model.entity.PhotoListBean;
 
 import java.util.List;
@@ -15,14 +14,11 @@ import java.util.List;
 public interface CollectionDetailContract {
 
     interface View extends BaseLikeView{
-        void showCollection(CollectionBean bean);
         void showCollectionPhotos(List<PhotoListBean> photos);
     }
 
     interface Presenter{
-        void loadCollection(int id);
         void loadCollectionPhotos(int id,int page,int perPage);
-        void loadCuratedCollection(int id);
         void loadCuratedCollectionPhotos(int id,int page,int perPage);
     }
 }

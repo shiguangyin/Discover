@@ -20,69 +20,70 @@
             android:fitsSystemWindows="true"
             app:expandedTitleGravity="center"
             app:expandedTitleTextAppearance="@style/TitleTextAppearance"
+            app:collapsedTitleTextAppearance="@style/CollapsedTextAppearance"
             >
 
             <RelativeLayout
                 android:id="@+id/rl_header"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                app:layout_collapseMode="parallax"
                 android:fitsSystemWindows="true"
+                app:layout_collapseMode="parallax"
                 >
-
-                <!--<ImageView-->
-                    <!--android:id="@+id/iv_cover"-->
-                    <!--android:layout_width="match_parent"-->
-                    <!--android:layout_height="wrap_content"-->
-                    <!--android:scaleType="fitXY"/>-->
 
                 <TextView
                     android:id="@+id/tv_title"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:textSize="30sp"
+                    android:layout_centerHorizontal="true"
+                    android:textSize="26sp"
                     android:textStyle="bold"
+                    android:textColor="@color/color_text_white"
                     android:layout_marginTop="80dp"
                     android:layout_marginLeft="30dp"
                     android:layout_marginRight="30dp"
+                    android:gravity="center"
                     />
+
                 <TextView
                     android:id="@+id/tv_desc"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_centerHorizontal="true"
                     android:layout_below="@id/tv_title"
-                    android:textSize="18sp"
-                    android:gravity="center"
-                    android:layout_marginTop="30dp"
+                    android:layout_centerHorizontal="true"
                     android:layout_marginLeft="30dp"
                     android:layout_marginRight="30dp"
+                    android:layout_marginTop="20dp"
+                    android:gravity="center"
+                    android:textSize="18sp"
                     />
 
                 <RelativeLayout
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_centerHorizontal="true"
                     android:layout_below="@id/tv_desc"
-                    android:gravity="center_vertical"
+                    android:layout_centerHorizontal="true"
+                    android:layout_marginBottom="20dp"
                     android:layout_marginTop="10dp"
-                    android:layout_marginBottom="10dp">
+                    android:gravity="center_vertical">
+
                     <de.hdodenhof.circleimageview.CircleImageView
                         android:id="@+id/iv_avatar"
                         android:layout_width="30dp"
-                        android:layout_height="30dp" />
+                        android:layout_height="30dp"
+                        android:transitionName="avatar"
+                        />
+
                     <TextView
                         android:id="@+id/tv_from"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:textSize="20dp"
+                        android:layout_marginLeft="20dp"
                         android:layout_toEndOf="@id/iv_avatar"
                         android:gravity="center_vertical"
-                        android:layout_marginLeft="20dp"/>
+                        android:textSize="20dp"/>
                 </RelativeLayout>
             </RelativeLayout>
-
-
 
             <android.support.v7.widget.Toolbar
                 android:id="@+id/tool_bar"
@@ -101,11 +102,15 @@
         app:layout_behavior="@string/appbar_scrolling_view_behavior"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
-        <ProgressBar
-            android:id="@+id/progress_bar"
+
+        <com.wang.avi.AVLoadingIndicatorView
+            android:id="@+id/loading_view"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_centerInParent="true"/>
+            android:layout_centerInParent="true"
+            app:indicatorName="LineScalePulseOutIndicator"
+            android:visibility="gone"
+            />
 
         <android.support.v7.widget.RecyclerView
             android:id="@+id/recycler_view"
@@ -113,6 +118,8 @@
             android:layout_height="match_parent"
             android:visibility="gone">
         </android.support.v7.widget.RecyclerView>
+
+
     </RelativeLayout>
 
 </android.support.design.widget.CoordinatorLayout>

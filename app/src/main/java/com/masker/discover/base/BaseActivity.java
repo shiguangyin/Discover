@@ -8,6 +8,8 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.Toast;
 
+import uk.co.chrisjenx.calligraphy.CalligraphyContextWrapper;
+
 
 /**
  * Author: masker.
@@ -62,4 +64,8 @@ public abstract class BaseActivity extends AppCompatActivity{
 
     protected  void initListeners(){};
 
+    @Override
+    protected void attachBaseContext(Context newBase) {
+        super.attachBaseContext(CalligraphyContextWrapper.wrap(newBase));
+    }
 }
