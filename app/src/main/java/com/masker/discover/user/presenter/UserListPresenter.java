@@ -2,7 +2,7 @@ package com.masker.discover.user.presenter;
 
 import android.support.annotation.NonNull;
 
-import com.masker.discover.base.BasePresenter;
+import com.masker.discover.base.BaseLikePresenter;
 import com.masker.discover.model.entity.CollectionListBean;
 import com.masker.discover.model.entity.PhotoListBean;
 import com.masker.discover.model.repository.UserRepository;
@@ -22,7 +22,7 @@ import rx.schedulers.Schedulers;
  * Description:
  */
 
-public class UserListPresenter extends BasePresenter<UserListContract.View> implements UserListContract.Presenter{
+public class UserListPresenter extends BaseLikePresenter<UserListContract.View> implements UserListContract.Presenter{
 
 
     public UserListPresenter(@NonNull UserListContract.View view) {

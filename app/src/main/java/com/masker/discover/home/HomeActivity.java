@@ -8,6 +8,7 @@ import android.support.annotation.Nullable;
 import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.NavigationView;
 import android.support.design.widget.TabLayout;
+import android.support.v4.app.ActivityOptionsCompat;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
@@ -30,6 +31,7 @@ import com.masker.discover.activity.SettingActivity;
 import com.masker.discover.base.BaseMvpActivity;
 import com.masker.discover.collection.CollectionFragment;
 import com.masker.discover.downloads.DownloadsActivity;
+import com.masker.discover.global.Constans;
 import com.masker.discover.global.UserManager;
 import com.masker.discover.model.api.PhotoService;
 import com.masker.discover.model.entity.User;
@@ -122,6 +124,24 @@ public class HomeActivity extends BaseMvpActivity implements HomeContract.View,V
 
         mNavView = bind(R.id.nv_main);
         mNavMenu = mNavView.getMenu();
+        mLayoutContent = bind(R.id.layout_content);
+        mNavHeader = mNavView.getHeaderView(0);
+        mTvBio = (TextView) mNavHeader.findViewById(R.id.tv_bio);
+        mTvName = (TextView) mNavHeader.findViewById(R.id.tv_name);
+        mTvEmail = (TextView) mNavHeader.findViewById(R.id.tv_email);
+        mIvAvatar = (CircleImageView) mNavHeader.findViewById(R.id.iv_avatar);
+        mRlUnLogin = (RelativeLayout) mNavHeader.findViewById(R.id.rl_unlogin);
+        mBtnLogin = (Button) mNavHeader.findViewById(R.id.btn_login);
+        if(UserManager.getInstance().isLogin()){
+            mRlUnLogin.setVisibility(View.GONE);
+        }
+        switchFragment(FRAGMENT_HOME);
+    }
+
+    @Override
+    protected void initListeners() {
+        mIvAvatar.setOnClickListener(this);
+        mBtnLogin.setOnClickListener(this);
         mNavView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
@@ -147,9 +167,6 @@ public class HomeActivity extends BaseMvpActivity implements HomeContract.View,V
                     case R.id.item_about:
                         startActivity(new Intent(HomeActivity.this, AboutActivity.class));
                         break;
-                    case R.id.item_exit:
-                        finish();
-                        break;
                     default:
                         break;
                 }
@@ -158,24 +175,6 @@ public class HomeActivity extends BaseMvpActivity implements HomeContract.View,V
                 return true;
             }
         });
-        mLayoutContent = bind(R.id.layout_content);
-        mNavHeader = mNavView.getHeaderView(0);
-        mTvBio = (TextView) mNavHeader.findViewById(R.id.tv_bio);
-        mTvName = (TextView) mNavHeader.findViewById(R.id.tv_name);
-        mTvEmail = (TextView) mNavHeader.findViewById(R.id.tv_email);
-        mIvAvatar = (CircleImageView) mNavHeader.findViewById(R.id.iv_avatar);
-        mRlUnLogin = (RelativeLayout) mNavHeader.findViewById(R.id.rl_unlogin);
-        mBtnLogin = (Button) mNavHeader.findViewById(R.id.btn_login);
-        if(UserManager.getInstance().isLogin()){
-            mRlUnLogin.setVisibility(View.GONE);
-        }
-        switchFragment(FRAGMENT_HOME);
-    }
-
-    @Override
-    protected void initListeners() {
-        mIvAvatar.setOnClickListener(this);
-        mBtnLogin.setOnClickListener(this);
     }
 
     @Override
@@ -346,7 +345,9 @@ public class HomeActivity extends BaseMvpActivity implements HomeContract.View,V
                 break;
             case R.id.iv_avatar:
                 if(mUser != null){
-                    UserInfoActivity.start(this,mUser,UserInfoActivity.USER_SELF);
+                    ActivityOptionsCompat options = ActivityOptionsCompat
+                            .makeSceneTransitionAnimation(HomeActivity.this,mIvAvatar, Constans.TRANSITION_AVATAR);
+                    UserInfoActivity.start(this,mUser,UserInfoActivity.USER_SELF,options.toBundle());
                 }
         }
     }
@@ -369,10 +370,7 @@ public class HomeActivity extends BaseMvpActivity implements HomeContract.View,V
             mDrawer.closeDrawer(mNavView);
         }
         else{
-            Intent intent = new Intent(Intent.ACTION_MAIN);
-            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-            intent.addCategory(Intent.CATEGORY_HOME);
-            startActivity(intent);
+            finish();
         }
     }
 }

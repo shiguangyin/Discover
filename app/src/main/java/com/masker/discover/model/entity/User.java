@@ -18,9 +18,6 @@ public class User implements Parcelable {
     private String location;
     private String avatarUrl;
     private String bgUrl;
-
-
-
     private String email;
     private int totalLikes;
     private int totalPhotos;

@@ -59,7 +59,7 @@ public class SearchCollectionFragment extends BaseResultFragment{
     }
 
     @Override
-    public void showLists(Object obj,boolean refresh) {
+    public void showList(Object obj, boolean refresh) {
         CollectionSearchBean bean = (CollectionSearchBean) obj;
         mTotalCount = bean.getTotal();
         if(refresh){

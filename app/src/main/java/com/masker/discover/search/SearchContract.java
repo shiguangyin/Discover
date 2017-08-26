@@ -1,6 +1,6 @@
 package com.masker.discover.search;
 
-import com.masker.discover.base.BaseView;
+import com.masker.discover.base.BaseLikeView;
 
 /**
  * CreatedBy: masker
@@ -9,11 +9,12 @@ import com.masker.discover.base.BaseView;
  */
 
 public interface SearchContract {
-    interface View extends BaseView{
-        void showLists(Object obj,boolean refresh);
+    interface View extends BaseLikeView{
+        void showList(Object obj, boolean refresh);
         void showLoading();
         void hideLoading();
     }
+
 
     interface Presenter{
         void searchCollections(String key,int page,int perPage,boolean refresh);

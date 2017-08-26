@@ -8,6 +8,7 @@ import android.widget.ProgressBar;
 
 import com.masker.discover.R;
 import com.masker.discover.base.BaseMvpFragment;
+import com.masker.discover.model.entity.LikeResponseBean;
 import com.masker.discover.rx.RxBus;
 import com.masker.discover.rx.event.SearchEvent;
 import com.masker.discover.search.SearchContract;
@@ -78,6 +79,9 @@ public  abstract class BaseResultFragment extends BaseMvpFragment
     @Override
     protected void detach() {
         mPresenter.onUnsubscribe();
+        if(mSubscription != null && !mSubscription.isUnsubscribed()){
+            mSubscription.unsubscribe();
+        }
     }
 
 
@@ -92,4 +96,10 @@ public  abstract class BaseResultFragment extends BaseMvpFragment
 
     @Override
     protected void initData() {}
+
+    @Override
+    public void updatePhoto(LikeResponseBean bean) {}
+
+    @Override
+    public void showLikeError(String message, String id) {}
 }

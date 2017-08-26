@@ -32,6 +32,7 @@ public class UserManager {
     public static final String KEY_TOTAL_PHOTOS = "total_photos";
     public static final String KEY_TOTAL_LIKES = "total_likes";
     public static final String KEY_TOTAL_COLLECTIONS = "total_collections";
+    public static final String KEY_BG_URL = "bg_url";
 
 
     private String token;
@@ -84,6 +85,7 @@ public class UserManager {
         editor.putInt(KEY_TOTAL_PHOTOS,user.getTotalPhotos());
         editor.putInt(KEY_TOTAL_LIKES,user.getTotalLikes());
         editor.putInt(KEY_TOTAL_COLLECTIONS,user.getTotalCollections());
+        editor.putString(KEY_BG_URL,user.getBgUrl());
         editor.commit();
     }
 
@@ -107,6 +109,7 @@ public class UserManager {
             user.setTotalPhotos(sp.getInt(KEY_TOTAL_PHOTOS,0));
             user.setTotalLikes(sp.getInt(KEY_TOTAL_LIKES,0));
             user.setTotalCollections(sp.getInt(KEY_TOTAL_COLLECTIONS,0));
+            user.setBgUrl(sp.getString(KEY_BG_URL,null));
             return user;
         }
     }
@@ -126,8 +129,8 @@ public class UserManager {
         user.setTotalPhotos(bean.getTotal_photos());
         user.setTotalLikes(bean.getTotal_likes());
         user.setTotalCollections(bean.getTotal_collections());
+        user.setBgUrl(bean.getProfile_image().getSmall());
         setUser(user);
-        Logger.i(" "+user.getTotalLikes()+" "+user.getTotalCollections());
     }
 
     public void logOut(){
@@ -144,6 +147,7 @@ public class UserManager {
         editor.remove(KEY_TOTAL_PHOTOS);
         editor.remove(KEY_TOTAL_LIKES);
         editor.remove(KEY_TOTAL_COLLECTIONS);
+        editor.remove(KEY_BG_URL);
         editor.commit();
         Logger.i("is login = "+isLogin());
     }

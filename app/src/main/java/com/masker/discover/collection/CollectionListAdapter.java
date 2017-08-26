@@ -66,7 +66,9 @@ public class CollectionListAdapter extends BaseAdapter<CollectionListBean> {
             @Override
             public void onClick(View view) {
                 User user = UserManager.transform(data.getUser());
-                UserInfoActivity.start(mContext,user,UserInfoActivity.USER_OTHER);
+                ActivityOptionsCompat options = ActivityOptionsCompat
+                        .makeSceneTransitionAnimation((Activity) mContext,ivAvatar,Constans.TRANSITION_AVATAR);
+                UserInfoActivity.start(mContext,user,UserInfoActivity.USER_OTHER, options.toBundle());
             }
         });
 

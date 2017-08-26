@@ -8,7 +8,6 @@ import com.masker.discover.base.BaseAdapter;
 import com.masker.discover.model.entity.UserListBean;
 import com.masker.discover.model.entity.UserSearchBean;
 import com.masker.discover.search.UserListAdapter;
-import com.orhanobut.logger.Logger;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -58,7 +57,7 @@ public class SearchUserFragment extends BaseResultFragment{
     }
 
     @Override
-    public void showLists(Object obj,boolean refresh) {
+    public void showList(Object obj, boolean refresh) {
         UserSearchBean bean = (UserSearchBean) obj;
         mTotalCount = bean.getTotal();
         if(refresh){

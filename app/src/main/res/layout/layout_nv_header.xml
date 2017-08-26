@@ -10,6 +10,7 @@
         android:layout_marginTop="60dp"
         android:layout_marginStart="20dp"
         android:src="@drawable/ic_unlogin_white_24dp"
+        android:transitionName="avatar"
         android:visibility="gone"
        />
 
@@ -37,6 +38,7 @@
         android:layout_toEndOf="@+id/iv_avatar"
         android:textSize="20sp"
         android:text="Masker"
+        android:maxLines="1"
         android:textStyle="bold"
         android:visibility="gone"
         />

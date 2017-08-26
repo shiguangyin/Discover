@@ -1,5 +1,6 @@
 package com.masker.discover.user.view;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -7,10 +8,13 @@ import android.text.TextUtils;
 import android.view.View;
 
 import com.masker.discover.R;
+import com.masker.discover.activity.LoginActivity;
 import com.masker.discover.base.BaseAdapter;
 import com.masker.discover.base.BaseMvpFragment;
 import com.masker.discover.collection.CollectionListAdapter;
+import com.masker.discover.global.UserManager;
 import com.masker.discover.model.entity.CollectionListBean;
+import com.masker.discover.model.entity.LikeResponseBean;
 import com.masker.discover.model.entity.PhotoListBean;
 import com.masker.discover.photo.PhotoListAdapter;
 import com.masker.discover.user.contract.UserListContract;
@@ -75,6 +79,25 @@ public class UserListFragment extends BaseMvpFragment implements UserListContrac
         mRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         if(mType == TYPE_PHOTOS || mType == TYPE_LIKES){
             mPhotoAdapter = new PhotoListAdapter(mPhotos,getContext());
+            mPhotoAdapter.setOnLikeListener(new PhotoListAdapter.OnLikeListener() {
+                @Override
+                public void onLike(View view, int position) {
+                    if(UserManager.getInstance().isLogin()){
+                        PhotoListBean photo = mPhotos.get(position);
+                        boolean isLike = photo.isLiked_by_user();
+                        mPhotoAdapter.notifyItemChanged(position,PhotoListAdapter.STATE_LOADING);
+                        if(isLike){
+                            mPresenter.unlikePhoto(photo.getId());
+                        }
+                        else{
+                            mPresenter.likePhoto(photo.getId());
+                        }
+                    }
+                    else{
+                        startActivity(new Intent(getContext(), LoginActivity.class));
+                    }
+                }
+            });
             mRecyclerView.setAdapter(mPhotoAdapter);
         }
         else{
@@ -198,5 +221,29 @@ public class UserListFragment extends BaseMvpFragment implements UserListContrac
         UserListFragment fragment = new UserListFragment();
         fragment.setArguments(args);
         return fragment;
+    }
+
+    @Override
+    public void updatePhoto(LikeResponseBean bean) {
+        for (int i = 0; i < mPhotos.size(); i++) {
+            PhotoListBean photo = mPhotos.get(i);
+            if(photo.getId().equals(bean.getPhoto().getId())){
+                boolean like = bean.getPhoto().isLiked_by_user();
+                photo.setLiked_by_user(like);
+                photo.setLikes(bean.getPhoto().getLikes());
+                mPhotoAdapter.notifyItemChanged(i,PhotoListAdapter.STATE_NORMAL);
+                break;
+            }
+        }
+    }
+
+    @Override
+    public void showLikeError(String message, String id) {
+        for (int i = 0; i < mPhotos.size(); i++) {
+            PhotoListBean bean = mPhotos.get(i);
+            if(bean.getId().equals(id)){
+                mPhotoAdapter.notifyItemChanged(i,PhotoListAdapter.STATE_NORMAL);
+            }
+        }
     }
 }

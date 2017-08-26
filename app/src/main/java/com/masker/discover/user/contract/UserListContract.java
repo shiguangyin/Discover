@@ -1,6 +1,6 @@
 package com.masker.discover.user.contract;
 
-import com.masker.discover.base.BaseView;
+import com.masker.discover.base.BaseLikeView;
 import com.masker.discover.model.entity.CollectionListBean;
 import com.masker.discover.model.entity.PhotoListBean;
 
@@ -13,7 +13,7 @@ import java.util.List;
  */
 
 public class UserListContract {
-    public interface View extends BaseView{
+    public interface View extends BaseLikeView {
         void showPhotos(List<PhotoListBean> photos);
         void showLikedPhotos(List<PhotoListBean> photos);
         void showCollections(List<CollectionListBean> collections);

@@ -5,7 +5,6 @@ import android.content.Context;
 import android.support.v4.app.ActivityOptionsCompat;
 import android.view.View;
 
-import com.bumptech.glide.Glide;
 import com.masker.discover.R;
 import com.masker.discover.base.BaseAdapter;
 import com.masker.discover.base.BaseViewHolder;
@@ -13,6 +12,7 @@ import com.masker.discover.global.UserManager;
 import com.masker.discover.model.entity.User;
 import com.masker.discover.model.entity.UserListBean;
 import com.masker.discover.user.view.UserInfoActivity;
+import com.masker.discover.utils.ImgLoader;
 
 import java.util.List;
 
@@ -38,7 +38,7 @@ public class UserListAdapter extends BaseAdapter<UserListBean> {
     public void convert(BaseViewHolder holder, int position, final UserListBean data) {
         final CircleImageView ivAvator = holder.getView(R.id.iv_avatar);
         String url = data.getProfile_image().getLarge();
-        Glide.with(mContext).load(url).into(ivAvator);
+        ImgLoader.loadAvatar(mContext,url,ivAvator);
         holder.getItemView().setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

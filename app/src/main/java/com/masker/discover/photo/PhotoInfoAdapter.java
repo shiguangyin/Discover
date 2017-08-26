@@ -110,7 +110,7 @@ public class PhotoInfoAdapter extends RecyclerView.Adapter<BaseViewHolder>{
             public void onClick(View view) {
                 User user = UserManager.getInstance().transform(info.getUser());
                 ActivityOptionsCompat optionsCompat = ActivityOptionsCompat
-                        .makeSceneTransitionAnimation((Activity) mContext,ivAvatar,"avatar");
+                        .makeSceneTransitionAnimation((Activity) mContext,ivAvatar,Constans.TRANSITION_AVATAR);
                 UserInfoActivity.start(mContext,user,UserInfoActivity.USER_OTHER,optionsCompat.toBundle());
             }
         });
@@ -169,7 +169,9 @@ public class PhotoInfoAdapter extends RecyclerView.Adapter<BaseViewHolder>{
             @Override
             public void onClick(View view) {
                 User user = UserManager.transform(data.getUser());
-                UserInfoActivity.start(mContext,user,UserInfoActivity.USER_OTHER);
+                ActivityOptionsCompat optionsCompat = ActivityOptionsCompat
+                        .makeSceneTransitionAnimation((Activity) mContext,ivAvatar,Constans.TRANSITION_AVATAR);
+                UserInfoActivity.start(mContext,user,UserInfoActivity.USER_OTHER, optionsCompat.toBundle());
             }
         });
 

@@ -2,7 +2,7 @@ package com.masker.discover.search;
 
 import android.support.annotation.NonNull;
 
-import com.masker.discover.base.BasePresenter;
+import com.masker.discover.base.BaseLikePresenter;
 import com.masker.discover.model.entity.CollectionSearchBean;
 import com.masker.discover.model.entity.PhotoSearchBean;
 import com.masker.discover.model.entity.UserSearchBean;
@@ -20,7 +20,7 @@ import rx.schedulers.Schedulers;
  * Description:
  */
 
-public class SearchPresenter extends BasePresenter<SearchContract.View> implements SearchContract.Presenter{
+public class SearchPresenter extends BaseLikePresenter<SearchContract.View> implements SearchContract.Presenter{
 
 
     public SearchPresenter(@NonNull SearchContract.View view) {
@@ -35,7 +35,7 @@ public class SearchPresenter extends BasePresenter<SearchContract.View> implemen
                 .subscribe(new Action1<CollectionSearchBean>() {
                     @Override
                     public void call(CollectionSearchBean collectionSearchBean) {
-                        mView.showLists(collectionSearchBean,refresh);
+                        mView.showList(collectionSearchBean,refresh);
                         mView.hideLoading();
                     }
                 }, new Action1<Throwable>() {
@@ -57,7 +57,7 @@ public class SearchPresenter extends BasePresenter<SearchContract.View> implemen
                 .subscribe(new Action1<PhotoSearchBean>() {
                     @Override
                     public void call(PhotoSearchBean photoSearchBean) {
-                        mView.showLists(photoSearchBean,refresh);
+                        mView.showList(photoSearchBean,refresh);
                         mView.hideLoading();
                     }
                 }, new Action1<Throwable>() {
@@ -79,7 +79,7 @@ public class SearchPresenter extends BasePresenter<SearchContract.View> implemen
                 .subscribe(new Action1<UserSearchBean>() {
                     @Override
                     public void call(UserSearchBean userSearchBean) {
-                        mView.showLists(userSearchBean,refresh);
+                        mView.showList(userSearchBean,refresh);
                         mView.hideLoading();
                     }
                 }, new Action1<Throwable>() {
