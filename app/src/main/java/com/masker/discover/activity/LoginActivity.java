@@ -4,26 +4,28 @@ import android.content.Intent;
 import android.net.Uri;
 import android.support.design.widget.Snackbar;
 import android.text.TextUtils;
-import android.view.View;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 
 import com.bumptech.glide.Glide;
-import com.masker.discover.global.Constans;
 import com.masker.discover.R;
-import com.masker.discover.global.UserManager;
 import com.masker.discover.base.BaseActivity;
+import com.masker.discover.global.Constans;
+import com.masker.discover.global.UserManager;
 import com.masker.discover.home.HomeActivity;
 import com.masker.discover.model.api.TokenService;
 import com.masker.discover.model.api.UserService;
-import com.masker.discover.model.entity.UserInfoBean;
 import com.masker.discover.model.entity.TokenBean;
+import com.masker.discover.model.entity.UserInfoBean;
 import com.masker.discover.model.http.HttpClient;
 import com.orhanobut.logger.Logger;
 import com.wang.avi.AVLoadingIndicatorView;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
+import butterknife.OnClick;
 import jp.wasabeef.glide.transformations.BlurTransformation;
 import rx.Observable;
 import rx.android.schedulers.AndroidSchedulers;
@@ -37,22 +39,28 @@ import rx.schedulers.Schedulers;
  * Description: login activity
  */
 
-public class LoginActivity extends BaseActivity implements View.OnClickListener{
+public class LoginActivity extends BaseActivity{
 
-    private ImageView mIvBg;
-    private Button mBtnLogin;
-    private Button mBtnJoin;
-    private ImageButton mBtnClose;
-    private AVLoadingIndicatorView mLoadingView;
-    private RelativeLayout mRlContent;
+    @BindView(R.id.iv_bg)
+    ImageView mIvBg;
+    @BindView(R.id.btn_close)
+    ImageButton mBtnClose;
+    @BindView(R.id.btn_login)
+    Button mBtnLogin;
+    @BindView(R.id.btn_join)
+    Button mBtnJoin;
+    @BindView(R.id.loading_view)
+    AVLoadingIndicatorView mLoadingView;
+    @BindView(R.id.rl_content)
+    RelativeLayout mRlContent;
 
 
     @Override
     protected void onNewIntent(Intent intent) {
         super.onNewIntent(intent);
-        if(intent != null &&
+        if (intent != null &&
                 intent.getData() != null &&
-                TextUtils.equals(intent.getData().getAuthority(), Constans.OATHU_HOST)){
+                TextUtils.equals(intent.getData().getAuthority(), Constans.OATHU_HOST)) {
             String code = intent.getData().getQueryParameter("code");
             fetchToken(code);
         }
@@ -65,29 +73,19 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener{
 
     @Override
     protected void initViews() {
-        mIvBg = bind(R.id.iv_bg);
+        ButterKnife.bind(this);
         Glide.with(this).load(R.drawable.bg_login)
-                .bitmapTransform(new BlurTransformation(this))
+                .bitmapTransform(new BlurTransformation(this,15))
                 .into(mIvBg);
 
-        mLoadingView = bind(R.id.loading_view);
-        mRlContent = bind(R.id.rl_content);
-
-        mBtnLogin = bind(R.id.btn_login);
-        mBtnLogin.setOnClickListener(this);
-        mBtnJoin = bind(R.id.btn_join);
-        mBtnJoin.setOnClickListener(this);
-        mBtnClose = bind(R.id.btn_close);
-        mBtnClose.setOnClickListener(this);
     }
 
 
-
-    private void fetchToken(String code){
+    private void fetchToken(String code) {
         mLoadingView.smoothToShow();
         HttpClient.getClient().create(TokenService.class)
                 .getToken(Constans.APP_ID, Constans.APP_SECRET,
-                        Constans.REDIRECT_URL,code,
+                        Constans.REDIRECT_URL, code,
                         Constans.GRANT_TYPE)
                 .flatMap(new Func1<TokenBean, Observable<UserInfoBean>>() {
                     @Override
@@ -120,39 +118,28 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener{
     }
 
 
-
-
     @Override
     protected void initData() {
 
     }
 
-    @Override
-    public void onClick(View v) {
-        switch (v.getId()){
-            case R.id.btn_login:
-                login();
-                break;
-            case R.id.btn_join:
-                join();
-                break;
-            case R.id.btn_close:
-                finish();
-                break;
-            default:
-                break;
-        }
+    @OnClick(R.id.btn_close)
+    void close(){
+        finish();
     }
 
-    private void login(){
+
+    @OnClick(R.id.btn_login)
+    void login() {
         Uri uri = Uri.parse(Constans.OAUTH_URL);
-        Intent intent = new Intent(Intent.ACTION_VIEW,uri);
+        Intent intent = new Intent(Intent.ACTION_VIEW, uri);
         startActivity(intent);
     }
 
-    private void join(){
+    @OnClick(R.id.btn_join)
+    void join() {
         Uri uri = Uri.parse(Constans.JOIN_URL);
-        Intent intent = new Intent(Intent.ACTION_VIEW,uri);
+        Intent intent = new Intent(Intent.ACTION_VIEW, uri);
         startActivity(intent);
     }
 

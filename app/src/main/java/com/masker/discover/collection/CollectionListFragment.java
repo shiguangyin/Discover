@@ -41,6 +41,7 @@ public class CollectionListFragment extends BaseMvpFragment
     private SwipeRefreshLayout.OnRefreshListener mListener;
     private CollectionListAdapter mAdapter;
     private List<CollectionListBean> mCollections;
+    private RecyclerView.RecycledViewPool mRecycledViewPool;
 
     private CollectionListPresenter mPresenter;
     private int mPage = START_PAGE;
@@ -73,6 +74,7 @@ public class CollectionListFragment extends BaseMvpFragment
         mCollections = new ArrayList<>();
         mAdapter = new CollectionListAdapter(mCollections,getContext());
         mRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+        mRecyclerView.setRecycledViewPool(mRecycledViewPool);
         mRecyclerView.setAdapter(mAdapter);
     }
 
@@ -100,11 +102,12 @@ public class CollectionListFragment extends BaseMvpFragment
     }
 
 
-    public static CollectionListFragment newInstance(int type){
+    public static CollectionListFragment newInstance(int type, RecyclerView.RecycledViewPool pool){
         CollectionListFragment fragment = new CollectionListFragment();
         Bundle bundle = new Bundle();
         bundle.putInt(TYPE,type);
         fragment.setArguments(bundle);
+        fragment.mRecycledViewPool = pool;
         return fragment;
     }
 

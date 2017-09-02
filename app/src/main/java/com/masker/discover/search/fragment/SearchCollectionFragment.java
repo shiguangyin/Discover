@@ -10,7 +10,6 @@ import com.masker.discover.base.BaseAdapter;
 import com.masker.discover.collection.CollectionListAdapter;
 import com.masker.discover.model.entity.CollectionListBean;
 import com.masker.discover.model.entity.CollectionSearchBean;
-import com.orhanobut.logger.Logger;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -24,6 +23,7 @@ import java.util.List;
 public class SearchCollectionFragment extends BaseResultFragment{
 
     public static final int PER_PAGE = 10;
+    public static final int INDEX = 1;
 
     private List<CollectionListBean> mCollections;
     private CollectionListAdapter mAdapter;
@@ -69,7 +69,6 @@ public class SearchCollectionFragment extends BaseResultFragment{
         mAdapter.notifyDataSetChanged();
         mRefreshLayout.setRefreshing(false);
         mPage++;
-        Logger.i(String.format("total = %d size = %d",mTotalCount,mCollections.size()));
         if(mCollections.size() >= mTotalCount){
             mAdapter.enableLoadMore(false);
         }

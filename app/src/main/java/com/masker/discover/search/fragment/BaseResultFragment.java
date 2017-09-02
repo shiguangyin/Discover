@@ -1,5 +1,6 @@
 package com.masker.discover.search.fragment;
 
+import android.app.Activity;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -11,6 +12,7 @@ import com.masker.discover.base.BaseMvpFragment;
 import com.masker.discover.model.entity.LikeResponseBean;
 import com.masker.discover.rx.RxBus;
 import com.masker.discover.rx.event.SearchEvent;
+import com.masker.discover.search.SearchActivity;
 import com.masker.discover.search.SearchContract;
 import com.masker.discover.search.SearchPresenter;
 
@@ -101,5 +103,14 @@ public  abstract class BaseResultFragment extends BaseMvpFragment
     public void updatePhoto(LikeResponseBean bean) {}
 
     @Override
-    public void showLikeError(String message, String id) {}
+    public void showLikeError(String message, String id) {
+
+    }
+    protected void setTabTitle(int index,String title) {
+        Activity activity = getActivity();
+        if (activity != null && activity instanceof SearchActivity) {
+            ((SearchActivity) activity).setTabTitle(index, title);
+        }
+    }
+
 }

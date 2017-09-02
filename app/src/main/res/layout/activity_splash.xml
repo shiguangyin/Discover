@@ -15,10 +15,10 @@
         android:layout_centerInParent="true"/>
 
     <TextView
+        android:id="@+id/tv_name"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="100dp"
         android:text="@string/APP_NAME"
         android:textStyle="bold"
         android:textSize="36sp"

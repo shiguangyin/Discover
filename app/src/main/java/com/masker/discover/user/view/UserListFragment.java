@@ -52,6 +52,7 @@ public class UserListFragment extends BaseMvpFragment implements UserListContrac
     private List<CollectionListBean> mCollections = new ArrayList<>();
     private PhotoListAdapter mPhotoAdapter;
     private CollectionListAdapter mCollectionAdapter;
+    private RecyclerView.RecycledViewPool mRecycledViewPool;
 
     private String mUserName;
     private int mPage = 1;
@@ -98,6 +99,7 @@ public class UserListFragment extends BaseMvpFragment implements UserListContrac
                     }
                 }
             });
+            mRecyclerView.setRecycledViewPool(mRecycledViewPool);
             mRecyclerView.setAdapter(mPhotoAdapter);
         }
         else{
@@ -213,12 +215,13 @@ public class UserListFragment extends BaseMvpFragment implements UserListContrac
         mTotal = args.getInt("total");
     }
 
-    public static UserListFragment newInstance(int type,String userName,int total){
+    public static UserListFragment newInstance(int type, String userName, int total, RecyclerView.RecycledViewPool pool){
         Bundle args = new Bundle();
         args.putInt("type",type);
         args.putString("userName",userName);
         args.putInt("total",total);
         UserListFragment fragment = new UserListFragment();
+        fragment.mRecycledViewPool = pool;
         fragment.setArguments(args);
         return fragment;
     }

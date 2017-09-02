@@ -12,7 +12,6 @@ import com.masker.discover.model.entity.LikeResponseBean;
 import com.masker.discover.model.entity.PhotoListBean;
 import com.masker.discover.model.entity.PhotoSearchBean;
 import com.masker.discover.photo.PhotoListAdapter;
-import com.orhanobut.logger.Logger;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -26,6 +25,7 @@ import java.util.List;
 public class SearchPhotoFragment extends BaseResultFragment{
 
     public static final int PER_PAGE = 10;
+    public static final int INDEX = 0;
 
     private List<PhotoListBean> mPhotos;
     private PhotoListAdapter mAdapter;
@@ -102,7 +102,6 @@ public class SearchPhotoFragment extends BaseResultFragment{
         mAdapter.notifyDataSetChanged();
         mRefreshLayout.setRefreshing(false);
         mPage++;
-        Logger.i("photo size = "+mPhotos.size());
         if(mPhotos.size() == mTotalCount){
             mAdapter.enableLoadMore(false);
         }

@@ -20,6 +20,7 @@ import java.util.List;
 
 public class SearchUserFragment extends BaseResultFragment{
     public static final int PER_PAGE = 20;
+    public static final int INDEX = 2;
 
     private List<UserListBean> mUsers;
     private UserListAdapter mAdapter;

@@ -12,13 +12,5 @@ import com.masker.discover.R;
  */
 
 public class ShareUtils {
-    public static void share(Context context,String title,String content){
-        Intent shareIntent = new Intent();
-        shareIntent.setAction(Intent.ACTION_SEND);
-        shareIntent.setType("text/plain");
-        shareIntent.putExtra(Intent.EXTRA_SUBJECT, title);
-        shareIntent.putExtra(Intent.EXTRA_TEXT, content);
-        shareIntent = Intent.createChooser(shareIntent, context.getString(R.string.APP_NAME));
-        context.startActivity(shareIntent);
-    }
+
 }

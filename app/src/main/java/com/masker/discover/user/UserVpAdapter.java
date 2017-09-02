@@ -3,6 +3,7 @@ package com.masker.discover.user;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
+import android.support.v7.widget.RecyclerView;
 
 import com.masker.discover.model.entity.User;
 import com.masker.discover.user.view.UserListFragment;
@@ -15,10 +16,12 @@ import com.masker.discover.user.view.UserListFragment;
 
 public class UserVpAdapter extends FragmentPagerAdapter{
     private User mUser;
+    private RecyclerView.RecycledViewPool mRecycledViewPool;
 
     public UserVpAdapter(FragmentManager fm, User user) {
         super(fm);
         mUser = user;
+        mRecycledViewPool = new RecyclerView.RecycledViewPool();
     }
 
     /**
@@ -30,11 +33,11 @@ public class UserVpAdapter extends FragmentPagerAdapter{
     public Fragment getItem(int position) {
         switch (position){
             case 0:
-                return UserListFragment.newInstance(UserListFragment.TYPE_PHOTOS,mUser.getUserName(),mUser.getTotalPhotos());
+                return UserListFragment.newInstance(UserListFragment.TYPE_PHOTOS,mUser.getUserName(),mUser.getTotalPhotos(),mRecycledViewPool);
             case 1:
-                return UserListFragment.newInstance(UserListFragment.TYPE_LIKES,mUser.getUserName(),mUser.getTotalLikes());
+                return UserListFragment.newInstance(UserListFragment.TYPE_LIKES,mUser.getUserName(),mUser.getTotalLikes(),mRecycledViewPool);
             default:
-                return UserListFragment.newInstance(UserListFragment.TYPE_COLLECTIONS,mUser.getUserName(),mUser.getTotalCollections());
+                return UserListFragment.newInstance(UserListFragment.TYPE_COLLECTIONS,mUser.getUserName(),mUser.getTotalCollections(),mRecycledViewPool);
         }
     }
 

@@ -127,6 +127,7 @@
     <string name="followed">Followed</string>
     <string name="photos_count">%1$d Photos</string>
     <string name="collections_count">%1$d Collections</string>
+    <string name="users_count">%1$d Users</string>
     <string name="likes_count">%1$d Likes</string>
     <string name="followers_count">%1$d Followers</string>
     <string name="following_count">%1$d Following</string>

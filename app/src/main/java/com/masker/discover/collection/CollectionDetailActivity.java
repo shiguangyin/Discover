@@ -24,6 +24,7 @@ import com.masker.discover.model.entity.LikeResponseBean;
 import com.masker.discover.model.entity.PhotoListBean;
 import com.masker.discover.photo.PhotoListAdapter;
 import com.masker.discover.utils.ImgLoader;
+import com.masker.discover.utils.IntentUtils;
 import com.wang.avi.AVLoadingIndicatorView;
 
 import java.util.ArrayList;
@@ -44,6 +45,7 @@ public class CollectionDetailActivity extends BaseMvpActivity
     public static final String USER_AVATAR = "user_avatar";
     public static final String BG_URL = "bg_url";
     public static final String USER_NAME = "user_name";
+    public static final String LINK = "link";
 
     public static final int START_PAGE = 1;
     public static final int PER_PAGE = 20;
@@ -77,6 +79,7 @@ public class CollectionDetailActivity extends BaseMvpActivity
     private String mAvatarUrl;
     private String mUserName;
     private String mBgUrl;
+    private String mLink;
 
     private PhotoListAdapter mPhotoAdapter;
     private List<PhotoListBean> mPhotos;
@@ -167,7 +170,7 @@ public class CollectionDetailActivity extends BaseMvpActivity
         mTvTitle.setText(mTitle);
         mTvDesc.setText(mDes);
         ImgLoader.loadAvatar(this,mAvatarUrl,mIvAvatar,false);
-        ImgLoader.loadBlurBackgroud(this,mBgUrl,mRlHeader);
+        ImgLoader.loadBlurBackground(this,mBgUrl,mRlHeader);
         mTvFrom.setText(mUserName);
 
         if (mId != -1) {
@@ -228,11 +231,11 @@ public class CollectionDetailActivity extends BaseMvpActivity
         mAvatarUrl = intent.getStringExtra(USER_AVATAR);
         mUserName = intent.getStringExtra(USER_NAME);
         mBgUrl = intent.getStringExtra(BG_URL);
-
+        mLink = intent.getStringExtra(LINK);
     }
 
     public static void start(Context context, int id, boolean curated, int total, String title,
-                             String des, String avatarUrl, String userName, String bgUrl, Bundle bundle) {
+                             String des, String avatarUrl, String userName, String bgUrl,String link,Bundle bundle) {
         Intent intent = new Intent(context, CollectionDetailActivity.class);
         intent.putExtra(ID, id);
         intent.putExtra(CURATED, curated);
@@ -242,6 +245,7 @@ public class CollectionDetailActivity extends BaseMvpActivity
         intent.putExtra(USER_AVATAR,avatarUrl);
         intent.putExtra(USER_NAME,userName);
         intent.putExtra(BG_URL,bgUrl);
+        intent.putExtra(LINK,link);
         context.startActivity(intent,bundle);
     }
 
@@ -255,9 +259,12 @@ public class CollectionDetailActivity extends BaseMvpActivity
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         if (item.getItemId() == R.id.action_share) {
-            //Snackbar.make(mRecyclerView,"under developing",Snackbar.LENGTH_SHORT).show();
+
         } else if (item.getItemId() == android.R.id.home) {
             onBackPressed();
+        }
+        else if(item.getItemId() == R.id.action_link){
+            IntentUtils.openUrl(this,mLink);
         }
         return super.onOptionsItemSelected(item);
     }

@@ -21,6 +21,7 @@ import com.masker.discover.global.UserManager;
 import com.masker.discover.model.entity.PhotoBean;
 import com.masker.discover.model.entity.TagBean;
 import com.masker.discover.model.entity.User;
+import com.masker.discover.search.SearchActivity;
 import com.masker.discover.user.view.UserInfoActivity;
 import com.masker.discover.utils.FormatUtils;
 import com.masker.discover.utils.ImgLoader;
@@ -116,9 +117,9 @@ public class PhotoInfoAdapter extends RecyclerView.Adapter<BaseViewHolder>{
         });
 
         RelativeLayout rlHeader = holder.getView(R.id.rl_header);
-        ImgLoader.loadBlurBackgroud(mContext,info.getUser().getProfile_image().getSmall(),rlHeader);
+        ImgLoader.loadBlurBackground(mContext,info.getUser().getProfile_image().getSmall(),rlHeader);
 
-        String name = String.format("By %s From Unsplash",info.getUser().getName());
+        String name = String.format("By %s",info.getUser().getName());
         holder.setText(R.id.tv_name,name);
         holder.setText(R.id.tv_time, FormatUtils.transform(info.getUpdated_at()));
 
@@ -158,8 +159,10 @@ public class PhotoInfoAdapter extends RecyclerView.Adapter<BaseViewHolder>{
         ivPhoto.setLayoutParams(lp);
 
         if(cover != null ){
-            String url = data.getCover_photo().getUrls().getRegular();
-            Glide.with(mContext).load(url).into(ivPhoto);
+            String url = cover.getUrls().getRegular();
+            String thumbUrl = cover.getUrls().getThumb();
+            String color = cover.getColor();
+            ImgLoader.loadWithColoAndThumb(mContext,url,thumbUrl,color,ivPhoto);
         }
 
         final CircleImageView ivAvatar = holder.getView(R.id.iv_avatar);
@@ -190,11 +193,12 @@ public class PhotoInfoAdapter extends RecyclerView.Adapter<BaseViewHolder>{
                 int id = data.getId();
                 int total = data.getTotal_photos();
                 String title =  data.getTitle();
+                String link = data.getLinks().getHtml();
                 ActivityOptionsCompat options = ActivityOptionsCompat
                         .makeSceneTransitionAnimation((Activity) mContext,ivAvatar, Constans.TRANSITION_AVATAR);
                 CollectionDetailActivity.start(mContext,id,data.isCurated(),total,title,
                         data.getDescription(),data.getUser().getProfile_image().getLarge(),data.getUser().getName(),
-                        data.getUser().getProfile_image().getSmall(),options.toBundle());
+                        data.getUser().getProfile_image().getSmall(),link,options.toBundle());
             }
         });
     }
@@ -203,10 +207,15 @@ public class PhotoInfoAdapter extends RecyclerView.Adapter<BaseViewHolder>{
         TagBean data = (TagBean) mDatas.get(position);
         String url = data.getUrl()+ Constans.TAG_SUFFIX;
         ImageView ivCover = holder.getView(R.id.iv_cover);
-        Glide.with(mContext).load(url).centerCrop().into(ivCover);
-
-        String tag = data.getTitle().toUpperCase();
+        ImgLoader.loadTag(mContext,url,ivCover);
+        final String tag = data.getTitle().toUpperCase();
         holder.setText(R.id.tv_tag,tag);
+        holder.getItemView().setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                SearchActivity.start(mContext,tag);
+            }
+        });
     }
 
     @Override

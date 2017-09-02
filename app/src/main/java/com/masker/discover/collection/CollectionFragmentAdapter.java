@@ -4,9 +4,9 @@ import android.content.Context;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
+import android.support.v7.widget.RecyclerView;
 
 import com.masker.discover.R;
-import com.masker.discover.collection.CollectionListFragment;
 
 /**
  * CreatedBy: masker
@@ -16,20 +16,23 @@ import com.masker.discover.collection.CollectionListFragment;
 
 public class CollectionFragmentAdapter extends FragmentPagerAdapter {
     private Context mContext;
+    private RecyclerView.RecycledViewPool mRecycledViewPool;
+
     public CollectionFragmentAdapter(FragmentManager fm, Context context) {
         super(fm);
         mContext = context;
+        mRecycledViewPool = new RecyclerView.RecycledViewPool();
     }
 
     @Override
     public Fragment getItem(int position) {
         switch (position){
             case 0:
-                return CollectionListFragment.newInstance(CollectionListFragment.ALL);
+                return CollectionListFragment.newInstance(CollectionListFragment.ALL,mRecycledViewPool);
             case 1:
-                return CollectionListFragment.newInstance(CollectionListFragment.CURATED);
+                return CollectionListFragment.newInstance(CollectionListFragment.CURATED,mRecycledViewPool);
             case 2:
-                return CollectionListFragment.newInstance(CollectionListFragment.FEATURED);
+                return CollectionListFragment.newInstance(CollectionListFragment.FEATURED,mRecycledViewPool);
         }
         return null;
     }

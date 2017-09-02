@@ -54,8 +54,8 @@ import com.masker.discover.rx.RxTransformer;
 import com.masker.discover.rx.event.LikeEvent;
 import com.masker.discover.utils.FileUtils;
 import com.masker.discover.utils.ImgLoader;
+import com.masker.discover.utils.IntentUtils;
 import com.masker.discover.utils.ScreenUtils;
-import com.masker.discover.utils.ShareUtils;
 import com.masker.discover.utils.SpUtils;
 import com.masker.discover.widget.PhotoExifDialog;
 import com.wang.avi.AVLoadingIndicatorView;
@@ -393,7 +393,7 @@ public class PhotoInfoActivity extends BaseMvpActivity implements PhotoInfoContr
             if (mPhotoBean != null) {
                 String content = "By " + mPhotoBean.getUser().getName() + " at " + mPhotoBean.getCreated_at()
                         + " " + mPhotoBean.getLinks().getHtml();
-                ShareUtils.share(this, getString(R.string.APP_NAME), content);
+                IntentUtils.share(this, getString(R.string.APP_NAME), content);
             }
         } else if (item.getItemId() == R.id.action_link) {
             if (mPhotoBean != null) {

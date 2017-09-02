@@ -35,7 +35,7 @@ import com.masker.discover.user.UserVpAdapter;
 import com.masker.discover.user.contract.UserInfoContract;
 import com.masker.discover.user.presenter.UserInfoPresenter;
 import com.masker.discover.utils.ImgLoader;
-import com.masker.discover.utils.ShareUtils;
+import com.masker.discover.utils.IntentUtils;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -51,6 +51,7 @@ import de.hdodenhof.circleimageview.CircleImageView;
 public class UserInfoActivity extends BaseMvpActivity implements UserInfoContract.View{
     public static final String KEY_USER = "user";
     public static final String KEY_USER_TYPE = "user_type";
+    public static final int TAB_COUNT = 3;
 
     public static final int USER_SELF = 1;
     public static final int USER_OTHER = 2;
@@ -121,9 +122,9 @@ public class UserInfoActivity extends BaseMvpActivity implements UserInfoContrac
             mRlFocus.setVisibility(View.VISIBLE);
         }
 
-        mTabLayout.addTab(mTabLayout.newTab());
-        mTabLayout.addTab(mTabLayout.newTab());
-        mTabLayout.addTab(mTabLayout.newTab());
+        for (int i = 0; i < TAB_COUNT; i++) {
+            mTabLayout.addTab(mTabLayout.newTab());
+        }
         mViewPager.setAdapter(new UserVpAdapter(getSupportFragmentManager(),mUser));
         mViewPager.setOffscreenPageLimit(3);
         mTabLayout.setupWithViewPager(mViewPager);
@@ -184,7 +185,7 @@ public class UserInfoActivity extends BaseMvpActivity implements UserInfoContrac
     protected void initData() {
         if (mUser != null) {
             ImgLoader.loadAvatar(this, mUser.getAvatarUrl(), mIvAvatar,false);
-            ImgLoader.loadBlurBackgroud(this,mUser.getBgUrl(),mAppBar);
+            ImgLoader.loadBlurBackground(this,mUser.getBgUrl(),mAppBar);
             if(TextUtils.isEmpty(mUser.getLocation())){
                 mTvLocation.setText(getString(R.string.unknown));
             }
@@ -214,9 +215,13 @@ public class UserInfoActivity extends BaseMvpActivity implements UserInfoContrac
                 break;
             case R.id.item_share:
                 if(mUserInfoBean != null){
-                    ShareUtils.share(this,getString(R.string.APP_NAME),mUserInfoBean.getLinks().getHtml());
+                    IntentUtils.share(this,getString(R.string.APP_NAME),mUserInfoBean.getLinks().getHtml());
                 }
                 break;
+            case R.id.item_link:
+                if(mUserInfoBean != null){
+                    IntentUtils.openUrl(this,mUserInfoBean.getLinks().getHtml());
+                }
         }
 
         return true;

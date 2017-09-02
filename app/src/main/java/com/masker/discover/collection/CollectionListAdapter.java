@@ -7,7 +7,6 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 
-import com.bumptech.glide.Glide;
 import com.masker.discover.R;
 import com.masker.discover.base.BaseAdapter;
 import com.masker.discover.base.BaseViewHolder;
@@ -56,12 +55,13 @@ public class CollectionListAdapter extends BaseAdapter<CollectionListBean> {
         ivPhoto.setLayoutParams(lp);
         if(cover != null){
             String url = cover.getUrls().getRegular();
+            String thumbUrl = cover.getUrls().getThumb();
             String color = cover.getColor();
-            ImgLoader.loadWithColor(mContext,url,ivPhoto,color);
+            ImgLoader.loadWithColoAndThumb(mContext,url,thumbUrl,color,ivPhoto);
         }
         final CircleImageView ivAvatar = holder.getView(R.id.iv_avatar);
-        String avatorUrl = data.getUser().getProfile_image().getLarge();
-        Glide.with(mContext).load(avatorUrl).into(ivAvatar);
+        String avatarUrl = data.getUser().getProfile_image().getLarge();
+        ImgLoader.loadAvatar(mContext,avatarUrl,ivAvatar);
         ivAvatar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -81,18 +81,18 @@ public class CollectionListAdapter extends BaseAdapter<CollectionListBean> {
         int num = data.getTotal_photos();
         String strNum = num + " "+ mContext.getString(R.string.photos);
         holder.setText(R.id.tv_num,strNum);
-
         holder.getItemView().setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 int id = data.getId();
                 int total = data.getTotal_photos();
                 String title =  data.getTitle();
+                String link = data.getLinks().getHtml();
                 ActivityOptionsCompat options = ActivityOptionsCompat
                         .makeSceneTransitionAnimation((Activity) mContext,ivAvatar, Constans.TRANSITION_AVATAR);
                 CollectionDetailActivity.start(mContext,id,data.isCurated(),total,title,
                         data.getDescription(),data.getUser().getProfile_image().getLarge(),data.getUser().getName(),
-                        data.getUser().getProfile_image().getSmall(),options.toBundle());
+                        data.getUser().getProfile_image().getSmall(),link,options.toBundle());
             }
         });
 

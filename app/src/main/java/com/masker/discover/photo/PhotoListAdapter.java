@@ -63,6 +63,7 @@ public class PhotoListAdapter extends BaseAdapter<PhotoListBean> {
         String loadQuality = SpUtils.getString(Constans.SP_SETTINGS,
                 mContext.getString(R.string.key_load_quality));
         String url = null;
+        String thumbUrl = data.getUrls().getThumb();
         if(TextUtils.isEmpty(loadQuality) || loadQuality.equals(Constans.REGULAR)){
             url = data.getUrls().getRegular();
         }
@@ -79,8 +80,8 @@ public class PhotoListAdapter extends BaseAdapter<PhotoListBean> {
             url = data.getUrls().getThumb();
         }
         String color = data.getColor();
-        ImgLoader.loadWithColor(mContext,url,ivPhoto,color);
-
+        //ImgLoader.loadWithColor(mContext,url,ivPhoto,color);
+        ImgLoader.loadWithColoAndThumb(mContext,url,thumbUrl,color,ivPhoto);
         final String finalUrl = url;
         holder.getItemView().setOnClickListener(new View.OnClickListener() {
             @Override
