@@ -87,7 +87,9 @@
         app:menu_labels_singleLine="true"
         app:menu_colorNormal="@color/colorPrimary"
         app:menu_colorPressed="@color/colorPrimary"
-        app:menu_backgroundColor="#88ffffff">
+        app:menu_backgroundColor="#88ffffff"
+        app:layout_behavior="com.masker.discover.widget.FloatingActionMenuBehavior"
+        >
 
         <com.github.clans.fab.FloatingActionButton
             android:id="@+id/fab_like"
